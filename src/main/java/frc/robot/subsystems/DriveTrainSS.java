@@ -24,10 +24,11 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /** Represents a differential drive style drivetrain. */
-public class DriveTrainSS {
+public class DriveTrainSS extends SubsystemBase{
 
   private final CANSparkMax rfMotor = new CANSparkMax(Constants.DriveTrain.RFMOTOR_ID, MotorType.kBrushless);
   private final CANSparkMax rbMotor = new CANSparkMax(Constants.DriveTrain.RBMOTOR_ID, MotorType.kBrushless);
@@ -91,8 +92,7 @@ public class DriveTrainSS {
     rbEncoder.setPosition(0);
     lfEncoder.setPosition(0);
     lbEncoder.setPosition(0);
-
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), Constants.DriveTrain.INITIAL_POS);
   }
 
   /**
@@ -123,6 +123,10 @@ public class DriveTrainSS {
     var wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
     setSpeeds(wheelSpeeds);
   }
+  public void drive(ChassisSpeeds chassisSpeeds){
+    var wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
+    setSpeeds(wheelSpeeds);
+  }
 
   /** Updates the field-relative position. */
   public void updateOdometry() {
@@ -130,7 +134,7 @@ public class DriveTrainSS {
         gyro.getRotation2d(), getRightPos(), getLeftPos());
   }
 
-  public Pose2d getPosition(){
+  public Pose2d getFieldPosition(){
     return odometry.getPoseMeters();
   }
 

@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,7 +20,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public class DriveTrain{
+    public static final class DriveTrain{
 
         public static final int RFMOTOR_ID = 0;
         public static final int RBMOTOR_ID = 0;
@@ -31,6 +38,12 @@ public final class Constants {
         public static final double kV = 0;
         public static final double kS = 0;
         public static final int WHEEL_RADIUS = 0;
+        public static final Pose2d INITIAL_POS = new Pose2d(0,0, new Rotation2d(0));
+        public static final List<Translation2d> AUTON_MIDWAY_POINTS = new ArrayList<Translation2d>();
+        public static final Pose2d AUTON_FINAL_POS = new Pose2d(0,0, new Rotation2d(0));
 
+    }
+    public static final class Controller{
+        
     }
 }
