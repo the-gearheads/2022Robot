@@ -10,20 +10,14 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -48,13 +42,13 @@ public class DriveTrainSS extends SubsystemBase{
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   private final PIDController rightPIDController = new PIDController(
-    Constants.DriveTrain.RIGHT_kP,
-    Constants.DriveTrain.RIGHT_kI,
-    Constants.DriveTrain.RIGHT_kD);
+    Constants.DriveTrain.kP,
+    Constants.DriveTrain.kI,
+    Constants.DriveTrain.kD);
     private final PIDController leftPIDController = new PIDController(
-      Constants.DriveTrain.LEFT_kP,
-      Constants.DriveTrain.LEFT_kI,
-      Constants.DriveTrain.LEFT_kD);
+      Constants.DriveTrain.kP,
+      Constants.DriveTrain.kI,
+      Constants.DriveTrain.kD);
 
   private final DifferentialDriveKinematics kinematics =
       new DifferentialDriveKinematics(Constants.DriveTrain.TRACK_WIDTH);
@@ -126,6 +120,28 @@ public class DriveTrainSS extends SubsystemBase{
   public void drive(ChassisSpeeds chassisSpeeds){
     var wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
     setSpeeds(wheelSpeeds);
+  }
+
+  public void debugDrive(double kS, double kV, double kP, double kI, double kD, double rightSpeed, double leftSpeed){
+    SimpleMotorFeedforward localFeedForward = new SimpleMotorFeedforward(kS, kV);
+    PIDController localRightPIDController = new PIDController(
+    kP,
+    kI,
+    kD);
+    PIDController localLeftPIDController = new PIDController(
+      kP,
+      kI,
+      kD);
+
+    final double leftFeedforward = localFeedForward.calculate(leftSpeed);
+    final double rightFeedforward = localFeedForward.calculate(rightSpeed);
+
+    final double leftOutput =
+        localLeftPIDController.calculate(getLeftVelocity(), leftSpeed);
+    final double rightOutput =
+        localRightPIDController.calculate(getRightVelocity(), rightSpeed);
+    leftGroup.setVoltage(leftOutput + leftFeedforward);
+    rightGroup.setVoltage(rightOutput + rightFeedforward);
   }
 
   /** Updates the field-relative position. */

@@ -26,14 +26,8 @@ public final class Constants {
         public static final int RBMOTOR_ID = 0;
         public static final int LFMOTOR_ID = 0;
         public static final int LBMOTOR_ID = 0;
-        public static final double LEFT_kP = 0;
-        public static final double LEFT_kI = 0;
-        public static final double LEFT_kD = 0;
         public static final double MAX_VELOCITY = 0;
         public static final double MAX_ACCELERATION = 0;
-        public static final double RIGHT_kP = 0;
-        public static final double RIGHT_kI = 0;
-        public static final double RIGHT_kD = 0;
         public static final double TRACK_WIDTH = 0;
         public static final double kV = 0;
         public static final double kS = 0;
@@ -41,9 +35,16 @@ public final class Constants {
         public static final Pose2d INITIAL_POS = new Pose2d(0,0, new Rotation2d(0));
         public static final List<Translation2d> AUTON_MIDWAY_POINTS = new ArrayList<Translation2d>();
         public static final Pose2d AUTON_FINAL_POS = new Pose2d(0,0, new Rotation2d(0));
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
 
     }
     public static final class Controller{
-        
+
+        public static final int PORT = 0;
+        public static final int LV_AXIS = 0;
+        public static final int RH_AXIS = 0;
+
     }
 }
