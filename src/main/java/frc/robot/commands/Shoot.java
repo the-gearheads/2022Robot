@@ -4,43 +4,55 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrainSS;
+import frc.robot.subsystems.Shooter;
 
-public class ArcadeDriveC extends CommandBase {
-  private DriveTrainSS driveTrainSS;
+public class Shoot extends CommandBase {
+  private Shooter shooter;
+  private Timer timer = new Timer();
+  private boolean commandCompleted;
 
-  /** Creates a new ArcadeDriveC. */
-  public ArcadeDriveC(DriveTrainSS driveTrainSS) {
-    this.driveTrainSS = driveTrainSS;
+  /** Creates a new Shoot. */
+  public Shoot(Shooter shooter) {
+    this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveTrainSS);
+    addRequirements(shooter);
+    commandCompleted = false;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double lvAxis = DriverStation.getStickAxis(Constants.Controller.PORT, Constants.Controller.LV_AXIS);
-    double rhAxis = DriverStation.getStickAxis(Constants.Controller.PORT, Constants.Controller.RH_AXIS);
-
-    driveTrainSS.drive(lvAxis * Constants.DriveTrain.MAX_VELOCITY, rhAxis * Constants.DriveTrain.MAX_VELOCITY);
+    if(timer.get() > 1){
+      shooter.rest();
+      commandCompleted = true;
+    }else if(timer.get() > 0.5){
+      shooter.retract();
+    }else{
+      shooter.extend();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrainSS.drive(0,0);
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return commandCompleted;
   }
 }
