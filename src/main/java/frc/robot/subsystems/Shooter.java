@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
+import edu.wpi.first.hal.REVPHFaults;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -15,54 +17,58 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-    DoubleSolenoid firstPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Shooter.FIRST_PISTON_FORWARD, Constants.Shooter.FIRST_PISTON_BACKWARD);
-    DoubleSolenoid secondPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.Shooter.SECOND_PISTON_FORWARD, Constants.Shooter.SECOND_PISTON_BACKWARD);
+  public final PneumaticHub hub = new PneumaticHub();
+  boolean faults = false;
+  public final Solenoid extendLeft = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.EXTEND_LEFT_SOLENOID);
+  public final Solenoid retractLeft = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.RETRACT_LEFT_SOLENOID);
+  public final Solenoid extendRight = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.EXTEND_RIGHT_SOLENOID);
+
   /** Creates a new ExampleSubsystem. */
   public Shooter() {
       rest();
   }
 
   public void extend(){
-    setFirstPiston(Value.kForward);
-    setSecondPiston(Value.kForward);
+    retractLeft.set(false);
+    extendLeft.set(true);
+    extendRight.set(true);
+  }
+
+  public void extendOne(){
+    retractLeft.set(false);
+    extendLeft.set(false);
+    extendRight.set(true);
   }
 
   public void retract(){
-    setFirstPiston(Value.kReverse);
-    setSecondPiston(Value.kOff);
+    extendLeft.set(false);
+    extendRight.set(false);
+    retractLeft.set(true);
   }
+  
   public void rest(){
-      setFirstPiston(Value.kOff);
-      setSecondPiston(Value.kOff);
+    extendLeft.set(false);
+    extendRight.set(false);
+    retractLeft.set(false);
   }
 
-  public Value getStatus(){
-    return firstPiston.get();
-  }
-
-  /**
-   * Set the value of a solenoid.
-   *
-   * @param value The value to set (Off, Forward, Reverse)
-   */
-  public void setFirstPiston(Value value){
-    secondPiston.set(value);
-}
-
-  /**
-   * Set the value of a solenoid.
-   *
-   * @param value The value to set (Off, Forward, Reverse)
-   */
-  public void setSecondPiston(Value value){
-    firstPiston.set(value);
+  public boolean isRest(){
+    return !extendLeft.get() && !extendRight.get() && !retractLeft.get();
   }
 
   
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // SmartDashboard.putNumber("Voltage", hub.getInputVoltage());    
+    // SmartDashboard.putNumber("Current", hub.getCompressorCurrent()); 
+    // REVPHFaults hubFault = hub.getFaults();
+    // boolean isFault = hubFault.Brownout || hubFault.CanWarning || hubFault.CompressorOpen || hubFault.CompressorOverCurrent || hubFault.HardwareFault || hubFault.SolenoidOverCurrent;
+    // if(isFault){
+    //   faults = true;
+    // }
+    // SmartDashboard.putBoolean("faults", faults);
+    // hubFault = hub.getFaults();   // This method will be called once per scheduler run
   }
 
   @Override

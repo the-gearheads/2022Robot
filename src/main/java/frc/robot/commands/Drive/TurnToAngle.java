@@ -2,22 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainInterface;
 
 public class TurnToAngle extends CommandBase {
   private double requestedAngle;
-  private DriveTrain driveTrain;
+  private DriveTrainInterface driveTrain;
   private PIDController rotController = new PIDController(0.03, 0, 0);
   private int satisfactionNumber = 0;
 
   /** Creates a new TurnToAngleC. */
-  public TurnToAngle(DriveTrain driveTrain, double requestedAngle) {
+  public TurnToAngle(DriveTrainInterface driveTrain, double requestedAngle) {
     this.requestedAngle = requestedAngle;
     this.driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,7 +35,7 @@ public class TurnToAngle extends CommandBase {
     //Rotational Speed Calculations
     double currentAngle = driveTrain.getRotation();
     double maxRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY * 2;
-    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY / 1.7;
+    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY / 4;
 
     double rotSpeed = rotController.calculate(currentAngle, requestedAngle);
     double rotDirection = rotSpeed > 0? -1 : 1;

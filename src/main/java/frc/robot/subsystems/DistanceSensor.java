@@ -4,17 +4,34 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DistanceSensor extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  AnalogInput analog = new AnalogInput(1);
+  AnalogInput analog = new AnalogInput(2);
+  private final double lower = 6.7; //closest distance to hub
+  private final double upper = 36; //farthest distance to hub
+  private NetworkTableEntry display;
   public DistanceSensor() {
-    SmartDashboard.putNumber("kP", 0.03);
+    display = Shuffleboard.getTab("SmartDashboard").add("Distance", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  }
+
+  public void displayInRange(boolean inRange){
+    if(inRange){
+      display.setBoolean(true);
+    }else{
+      display.setBoolean(false);
+    }
   }
 
   public double getDistanceInCM(){
@@ -34,11 +51,16 @@ public class DistanceSensor extends SubsystemBase {
     return ((int)(value * Math.pow(10, decimalPlaces))) / Math.pow(10,decimalPlaces);
   }
 
+  private boolean isInRange(double lower, double upper){
+    return !(getDistanceInInches() < lower || getDistanceInInches() > upper);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Distance In CM", getDistanceInCM());
-    SmartDashboard.putNumber("Distance In Inches", getDistanceInInches());
+    // SmartDashboard.putNumber("Distance In Inches", getDistanceInInches());
+    displayInRange(isInRange(lower, upper));
   }
 
   @Override

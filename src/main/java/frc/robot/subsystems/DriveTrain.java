@@ -24,9 +24,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.DebugDrive;
-import frc.robot.commands.DebugDrive2;
+import frc.robot.commands.Drive.ArcadeDrive;
+import frc.robot.commands.Drive.DebugDrive;
+import frc.robot.commands.Drive.DebugDrive2;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -37,23 +38,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 /** Represents a differential drive style drivetrain. */
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
 
-  // private final CANSparkMax rfMotor = new CANSparkMax(Constants.DriveTrain.RFMOTOR_ID, MotorType.kBrushless);
-  // private final CANSparkMax rbMotor = new CANSparkMax(Constants.DriveTrain.RBMOTOR_ID, MotorType.kBrushless);
-  // private final CANSparkMax lfMotor = new CANSparkMax(Constants.DriveTrain.LFMOTOR_ID, MotorType.kBrushless);
-  // private final CANSparkMax lbMotor = new CANSparkMax(Constants.DriveTrain.LBMOTOR_ID, MotorType.kBrushless);
   
   private final WPI_TalonFX rfMotor = new WPI_TalonFX(Constants.DriveTrain.RFMOTOR_ID);
   private final WPI_TalonFX rbMotor = new WPI_TalonFX(Constants.DriveTrain.RBMOTOR_ID);
   private final WPI_TalonFX lfMotor = new WPI_TalonFX(Constants.DriveTrain.LFMOTOR_ID);
   private final WPI_TalonFX lbMotor = new WPI_TalonFX(Constants.DriveTrain.LBMOTOR_ID);
-
-
-  // private final RelativeEncoder rfEncoder = rfMotor.getEncoder();
-  // private final RelativeEncoder rbEncoder = rbMotor.getEncoder();
-  // private final RelativeEncoder lfEncoder = lfMotor.getEncoder();
-  // private final RelativeEncoder lbEncoder = lbMotor.getEncoder();
   
   private final MotorControllerGroup rightGroup =
   new MotorControllerGroup(rfMotor, rbMotor);
@@ -68,9 +59,10 @@ public class DriveTrain extends SubsystemBase{
   private DifferentialDriveOdometry odometry;
 
   // Gains are for example purposes only - must be determined for your own robot!
-  private final SimpleMotorFeedforward rfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
-  private final SimpleMotorFeedforward lfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.LEFT_kS, Constants.DriveTrain.LEFT_kV);
-  private final SimpleMotorFeedforward lfeedbackward = new SimpleMotorFeedforward(Constants.DriveTrain.LEFT_BACKWARD_kS, Constants.DriveTrain.LEFT_BACKWARD_kV);
+  private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
+  private SimpleMotorFeedforward rfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
+  private SimpleMotorFeedforward lfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.LEFT_kS, Constants.DriveTrain.LEFT_kV);
+  private SimpleMotorFeedforward lfeedbackward = new SimpleMotorFeedforward(Constants.DriveTrain.LEFT_BACKWARD_kS, Constants.DriveTrain.LEFT_BACKWARD_kV);
 
   /**
    * Constructs a differential drive object. Sets the encoder distance per pulse and resets the
@@ -83,37 +75,23 @@ public class DriveTrain extends SubsystemBase{
     }catch(Exception E){
       System.out.println("Error is where we thought it was");
     }
-    
-    TalonFXConfiguration configs = new TalonFXConfiguration();
-			/* select integ-sensor for PID0 (it doesn't matter if PID is actually used) */
-			configs.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-			/* config all the settings */
-			rfMotor.configAllSettings(configs);
-      rbMotor.configAllSettings(configs);
-      lfMotor.configAllSettings(configs);
-      lbMotor.configAllSettings(configs);
-      
+
       rfMotor.setInverted(TalonFXInvertType.CounterClockwise);
       rbMotor.setInverted(TalonFXInvertType.CounterClockwise);
       lfMotor.setInverted(TalonFXInvertType.CounterClockwise);
       lbMotor.setInverted(TalonFXInvertType.CounterClockwise);
 
       //Should all of these be rf? This is the same in DriveTrain2
+      //Who wrote this? thanks by the way
       rfMotor.setNeutralMode(NeutralMode.Brake);
-      rfMotor.setNeutralMode(NeutralMode.Brake);
-      rfMotor.setNeutralMode(NeutralMode.Brake);
-      rfMotor.setNeutralMode(NeutralMode.Brake);
-
-      rfMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-      rbMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-      lfMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-      lbMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-
+      rbMotor.setNeutralMode(NeutralMode.Brake);
+      lfMotor.setNeutralMode(NeutralMode.Brake);
+      lbMotor.setNeutralMode(NeutralMode.Brake);
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    rightGroup.setInverted(false);
+    rightGroup.setInverted(true);
     leftGroup.setInverted(false);
     // Set the distance per pulse for the drive encoders. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -126,17 +104,42 @@ public class DriveTrain extends SubsystemBase{
 
 
   public void periodic(){
-    // SmartDashboard.putString("Field Position", "xValue: " 
-    // + ((double)Math.round(getFieldPosition().getX() * 1000d) / 1000d)
-    // + " Y Value: " 
-    // +((double)Math.round(getFieldPosition().getY() * 1000d) / 1000d)
-    // + " Get Rotation: " 
-    // + ((double)Math.round(getFieldPosition().getRotation().getRadians() * 1000d) / 1000d));
     updateOdometry();
-    // SmartDashboard.putNumber("Right Encoder", getRightPos());
-    // SmartDashboard.putNumber("Left Encoder", getLeftPos());
+    // printValues();
+
+  }
+
+  public void printValues(){
+    SmartDashboard.putString("Measured Vels", "Right: " + round(getRightVelocity(), 2) + "; Left: " + round(getLeftVelocity(), 2));
+    SmartDashboard.putString("Field Position", "xValue: " 
+    + ((double)Math.round(getFieldPosition().getX() * 1000d) / 1000d)
+    + " Y Value: " 
+    +((double)Math.round(getFieldPosition().getY() * 1000d) / 1000d)
+    + " Get Rotation: " 
+    + ((double)Math.round(getFieldPosition().getRotation().getRadians() * 1000d) / 1000d));
+
+    SmartDashboard.putNumber("Right Encoder", getRightPos());
+    SmartDashboard.putNumber("Left Encoder", getLeftPos());
     // SmartDashboard.putNumber("Angle", gyro.getAngle());
-    // SmartDashboard.putNumber("Field Pos Angle", getFieldPosition().getRotation().getRadians());
+    SmartDashboard.putNumber("Field Pos Angle", getFieldPosition().getRotation().getRadians());
+  }
+
+  private double round(double value, double decimalPlaces){
+    return ((int)(value * Math.pow(10, decimalPlaces))) / Math.pow(10,decimalPlaces);
+  }
+
+  public void  setBrakeMode(boolean isBreak){
+    if(isBreak){
+      rfMotor.setNeutralMode(NeutralMode.Brake);
+      rbMotor.setNeutralMode(NeutralMode.Brake);
+      lfMotor.setNeutralMode(NeutralMode.Brake);
+      lbMotor.setNeutralMode(NeutralMode.Brake);
+    }else{
+      rfMotor.setNeutralMode(NeutralMode.Coast);
+      rbMotor.setNeutralMode(NeutralMode.Coast);
+      lfMotor.setNeutralMode(NeutralMode.Coast);
+      lbMotor.setNeutralMode(NeutralMode.Coast);
+    }
   }
 
 
@@ -147,16 +150,22 @@ public class DriveTrain extends SubsystemBase{
    */
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     final double rightFeedforward = rfeedforward.calculate(speeds.rightMetersPerSecond);
-    
-
     double leftFeedforward = 0;
-    if(speeds.leftMetersPerSecond >= 0){
+
+    // if(speeds.leftMetersPerSecond >= 0){
+      if(true){
       leftFeedforward = lfeedforward.calculate(speeds.leftMetersPerSecond);
     }else{
       leftFeedforward = lfeedbackward.calculate(speeds.leftMetersPerSecond);
     }
-    leftGroup.set(MathUtil.clamp(leftFeedforward,-12,12)/12);
-    rightGroup.set(MathUtil.clamp(rightFeedforward,-12,12)/12);
+
+    leftGroup.setVoltage(MathUtil.clamp(leftFeedforward * 0.99,-12,12));
+    rightGroup.setVoltage(MathUtil.clamp(rightFeedforward,-12,12));
+  }
+
+  public void setSpeeds(double leftSpeed, double rightSpeed){
+    leftGroup.setVoltage(leftSpeed);
+    rightGroup.setVoltage(rightSpeed);
   }
 
   /**
@@ -176,27 +185,40 @@ public class DriveTrain extends SubsystemBase{
   }
 
   public void debugDrive(double kS, double backwardkS, double kV, double backwardkV, double xSpeed, double rot){
-    var wheelSpeeds = kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
-    setSpeeds(wheelSpeeds);
-    SimpleMotorFeedforward localLFF = new SimpleMotorFeedforward(kS, kV);
-    SimpleMotorFeedforward localBLFF = new SimpleMotorFeedforward(backwardkS, backwardkV);
-    final double rightFeedforward = rfeedforward.calculate(wheelSpeeds.rightMetersPerSecond);
-    
+    var speeds = kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+    final double rightFeedforward = rfeedforward.calculate(speeds.rightMetersPerSecond);
+    var localLFF = new SimpleMotorFeedforward(kS, kV);
+    var localBLFF = new SimpleMotorFeedforward(backwardkS, backwardkV);
+
     double leftFeedforward = 0;
-    if(wheelSpeeds.leftMetersPerSecond >= 0){
-      leftFeedforward = localLFF.calculate(wheelSpeeds.leftMetersPerSecond);
+
+    if(speeds.leftMetersPerSecond >= 0){
+      leftFeedforward = localLFF.calculate(speeds.leftMetersPerSecond);
     }else{
-      leftFeedforward = localBLFF.calculate(wheelSpeeds.leftMetersPerSecond);
+      leftFeedforward = localBLFF.calculate(speeds.leftMetersPerSecond);
     }
     leftGroup.set(MathUtil.clamp(leftFeedforward,-12,12)/12);
     rightGroup.set(MathUtil.clamp(rightFeedforward,-12,12)/12);
-    
+  }
+
+
+  public void debugDrive(double xSpeed, double rot){
+    var speeds = kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+    // double rightSpeed = feedforward.calculate(speeds.rightMetersPerSecond);
+    // double leftSpeed = feedforward.calculate(speeds.leftMetersPerSecond) * Constants.DriveTrain.LEFT_SPEED_CONSTANT;
+    double rightSpeed = speeds.rightMetersPerSecond;
+    double leftSpeed = speeds.leftMetersPerSecond * Constants.DriveTrain.LEFT_SPEED_CONSTANT;
+    rightSpeed = MathUtil.clamp(rightSpeed,-12,12)/12;
+    leftSpeed = MathUtil.clamp(leftSpeed,-12,12)/12;
+
+    rightGroup.set(rightSpeed);
+    leftGroup.set(leftSpeed);
   }
 
   /** Updates the field-relative position. */
   public void updateOdometry() {
     odometry.update(
-        gyro.getRotation2d(), getRightPos(), getLeftPos());
+        gyro.getRotation2d(), getLeftPos(), getRightPos());
   }
 
   public Pose2d getFieldPosition(){
@@ -208,17 +230,24 @@ public class DriveTrain extends SubsystemBase{
   }
 
   public double getRightPos(){
-    return (rfMotor.getSelectedSensorPosition() +rbMotor.getSelectedSensorPosition())/2  * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048;
+    return (rfMotor.getSelectedSensorPosition() +rbMotor.getSelectedSensorPosition())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE/ 2048 /12.75;
   }
   public double getLeftPos(){
-    return (lfMotor.getSelectedSensorPosition() + lbMotor.getSelectedSensorPosition())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048;
+    return -(lfMotor.getSelectedSensorPosition() + lbMotor.getSelectedSensorPosition())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048 / 12.75;
   }
 
+  public double getRightRPM(){
+    return -(rfMotor.getSelectedSensorVelocity() + rbMotor.getSelectedSensorVelocity())/2 * 10;
+  }
+
+  public double getLeftRPM(){
+    return -(lfMotor.getSelectedSensorVelocity() + lbMotor.getSelectedSensorVelocity())/2 * 10;
+  }
   public double getRightVelocity(){
-    return (rfMotor.getSelectedSensorVelocity() + rfMotor.getSelectedSensorVelocity())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048;
+    return (rfMotor.getSelectedSensorVelocity() + rbMotor.getSelectedSensorVelocity())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048 / 12.75 * 10;
   }
   public double getLeftVelocity(){
-    return (rfMotor.getSelectedSensorVelocity() + rfMotor.getSelectedSensorVelocity())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048;
+    return -(lfMotor.getSelectedSensorVelocity() + lbMotor.getSelectedSensorVelocity())/2 * Constants.DriveTrain.WHEEL_CIRCUMFERENCE / 2048 / 12.75  *10;
   }
 
   public void setRF(double speed){
@@ -242,5 +271,10 @@ public class DriveTrain extends SubsystemBase{
     gyro.reset();
     gyro.setAngleAdjustment(gyro.getAngle());
     odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
+  }
+
+  public void setFieldPos(Pose2d currentPos){
+    zeroEncoders();
+    odometry = new DifferentialDriveOdometry(new Rotation2d(0), currentPos);
   }
 }

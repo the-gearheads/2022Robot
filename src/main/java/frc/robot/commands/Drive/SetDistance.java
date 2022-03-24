@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drive;
 
 import javax.naming.spi.DirObjectFactory;
 
@@ -12,11 +12,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.Constants;
 import frc.robot.subsystems.DistanceSensor;
 
 public class SetDistance extends CommandBase {
-  private DriveTrain driveTrain;
+  private DriveTrainInterface driveTrain;
   private DistanceSensor distanceSensor;
   private double requestedDistance;
   private PIDController linearController = new PIDController(0.03, 0, 0);
@@ -24,7 +25,7 @@ public class SetDistance extends CommandBase {
   private double satisfactionNumber = 0;
 
   /** Creates a new SetDistance. */
-  public SetDistance(DriveTrain driveTrain, DistanceSensor distanceSensor, double requestedDistance) {
+  public SetDistance(DriveTrainInterface driveTrain, DistanceSensor distanceSensor, double requestedDistance) {
     this.driveTrain = driveTrain;
     this.distanceSensor = distanceSensor;
     this.requestedDistance = requestedDistance;
@@ -36,16 +37,15 @@ public class SetDistance extends CommandBase {
   @Override
   public void initialize() {
     driveTrain.zeroEncoders();
+    SmartDashboard.putBoolean("Is setDistance On", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double kP = SmartDashboard.getNumber("kP", 0);
-    linearController.setP(kP);
     //Linear Speed Calculations
-    double maxSpeed = Constants.DriveTrain.MAX_VELOCITY / 1;
-    double minSpeed = 0.05;
+    double maxSpeed = Constants.DriveTrain.MAX_VELOCITY;
+    double minSpeed = 0.3;
     
     double currentDistance = distanceSensor.getDistanceInInches();
     double speed = linearController.calculate(currentDistance, requestedDistance);
@@ -55,9 +55,9 @@ public class SetDistance extends CommandBase {
     if(Math.abs(currentDistance - requestedDistance) < 0.3){
       speed = 0;
     }else
-    if(Math.abs(speed) > maxSpeed){
+    if(speed > maxSpeed){
       speed = maxSpeed;
-    }else if(Math.abs(speed) < minSpeed){
+    }else if(speed < minSpeed){
       speed = minSpeed;
     }
 

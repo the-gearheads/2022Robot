@@ -1,0 +1,73 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+
+import java.util.Map;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class Climber extends SubsystemBase {
+  /** Creates a new ExampleSubsystem. */
+    boolean disable = false;
+    CANSparkMax left = new CANSparkMax(Constants.Climber.LEFT_ID, MotorType.kBrushless);
+    CANSparkMax right = new CANSparkMax(Constants.Climber.RIGHT_ID, MotorType.kBrushless);
+    RelativeEncoder rightEncoder = right.getEncoder();
+    DigitalInput leftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
+    DigitalInput rightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
+
+  public Climber() {
+      left.setIdleMode(IdleMode.kBrake);
+      right.setIdleMode(IdleMode.kBrake);
+      rightEncoder.setPosition(0);
+  }
+
+  private double round(double value, double decimalPlaces){
+    return ((int)(value * Math.pow(10, decimalPlaces))) / Math.pow(10,decimalPlaces);
+  }
+
+  public void setSpeed(double speed){
+      if(!disable || speed > 0){
+        left.set(speed);
+        right.set(-speed);
+      }
+  }
+
+  public void stop(){
+      setSpeed(0);
+  }
+
+  public boolean limitTriggered(){
+      return !(leftLimit.get() && rightLimit.get());
+  }
+
+  @Override
+  public void periodic() {
+      if(limitTriggered()){
+          stop();
+          disable=true;
+      }else{
+          disable = false;
+      }
+  }
+
+  public double getRotations(){
+    return rightEncoder.getPosition();
+  }
+}
