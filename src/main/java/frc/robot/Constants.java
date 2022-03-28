@@ -41,11 +41,11 @@ public final class Constants {
         public static double MAX_ACCELERATION = 6;
         public static final double TEST_TRACK_WIDTH = 0.381;
         public static final double TRACK_WIDTH = 0.622;
-        public static final double LEFT_kV = 2.7217147245265187;//2.11//3.249
+        public static final double LEFT_kV = 2.977147245265187;//2.11//3.249
         public static final double LEFT_kS = 0.5;//0.077369
         public static final double LEFT_BACKWARD_kV = 3.248834213489218;//2.12
         public static final double LEFT_BACKWARD_kS = 0.077369;
-        public static final double RIGHT_kV =    2.773787777757068;//2.1055//3.248
+        public static final double RIGHT_kV =    2.973787777757068;//2.1055//3.248
         public static final double RIGHT_kS = 0.5;//0.077369
         
         public static final double TEST_LEFT_kV =   3.6236801243419694;//2.19
@@ -90,8 +90,14 @@ public final class Constants {
         public static final Pose2d INIT_POS_3 = new Pose2d(7.522,2.196,new Rotation2d(-1.95461395008));
         public static Pose2d INIT_POS_1 = new Pose2d(7.9,3,new Rotation2d(-1.95461395008));
         public static Pose2d INIT_POS_2 = new Pose2d(0,0,new Rotation2d(0));
+        
+        public static final Pose2d RIGHT_POS = new Pose2d(7.3,1.5,new Rotation2d(-1.5707963267948966)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
+        public static final Pose2d RIGHT_SHOOT_POS = new Pose2d(7.5,2.3,new Rotation2d(-1.9513027039072617)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
+        public static final Pose2d RIGHT_4_BALL = new Pose2d(6.261078072309923,2.517524446040479,new Rotation2d(-2.287338000891296)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
+        public static final Pose2d MID_POS = new Pose2d(1,1,new Rotation2d(1));
+        public static final Pose2d LEFT_POS = new Pose2d(2,2,new Rotation2d(2));
+        public static final Pose2d ZERO = new Pose2d(0,0,new Rotation2d(0));
     }
-
     public static final class Climber{
         public static final int LEFT_ID  = 11;
         public static final int RIGHT_ID = 12;
@@ -124,6 +130,6 @@ public final class Constants {
         public static final int MOTOR_ID = 8;
         public static boolean shot = false;
         public static boolean color_status = false;
-        public static boolean auto = true;
+        public static boolean auto = false;
     }
 }

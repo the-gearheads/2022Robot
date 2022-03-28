@@ -28,7 +28,7 @@ public class PreparedAuton extends CommandBase {
   /** Creates a new PreparedAuton. */
   public PreparedAuton(DriveTrainInterface driveTrain, String trajectoryJSON) {
     this.driveTrain = driveTrain;
-    this.trajectoryJSON = trajectoryJSON;
+    this.trajectoryJSON = "paths/" + trajectoryJSON + ".wpilib.json";
     this.timer = new Timer();
     this.ramsete = new RamseteController();
     // Use addRequirements() here to declare subsystem dependencies.

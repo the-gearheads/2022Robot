@@ -22,9 +22,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Vision extends SubsystemBase {
     PowerDistribution pdp = new PowerDistribution();
     public Vision() {
-        CameraServer.startAutomaticCapture(0).setResolution(144, 144);
+        CameraServer.startAutomaticCapture(0).setResolution(32, 32);
         setLED(false);
-        CameraServer.startAutomaticCapture(1).setResolution(144,144);
+        CameraServer.startAutomaticCapture(1).setResolution(32, 32);
     }
 
 

@@ -14,13 +14,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class ArcadeDrive extends CommandBase {
+  public class ArcadeDrive extends CommandBase {
   private DriveTrainInterface driveTrain;
   private XboxController controller = new XboxController(Constants.Controller.PORT);
   private final DifferentialDriveKinematics kinematics =
       new DifferentialDriveKinematics(Constants.DriveTrain.TRACK_WIDTH);
   private double prevXSpeed = 0;
   private double prevRotSpeed = 0;
+  private double prevLVAxis = 0;
 
   /** Creates a new ArcadeDriveC. */
   public ArcadeDrive(DriveTrainInterface driveTrain) {
@@ -50,13 +51,30 @@ public class ArcadeDrive extends CommandBase {
     double rotSpeed = rhAxis * Constants.DriveTrain.MAX_ROT_VELOCITY;
 
     double rightTrigger = controller.getRightTriggerAxis();
+    // if(true){
+    //   SmartDashboard.putBoolean("Working", true);
+    //   SmartDashboard.putNumber("prevXSpeed", prevXSpeed);
+    //   if(Math.abs(xSpeed - prevXSpeed) > 0.1){
+    //     double changeSpeed = 0.1;
+    //     double changeVel = ((xSpeed - prevXSpeed)/Math.abs(xSpeed - prevXSpeed)) *  changeSpeed;
+    //     SmartDashboard.putNumber("changeVel", changeVel);
+    //     xSpeed = prevXSpeed + changeVel;
+    //   }else{
+    //     xSpeed = xSpeed;
+    //     SmartDashboard.putNumber("changeVel", 0);
+    //   }
+    // }else{
+    //   SmartDashboard.putBoolean("Working", false);
+    // }
 
+    SmartDashboard.putNumber("xSpeed here", xSpeed);
 
     driveTrain.drive(xSpeed, rotSpeed);
 
     // SmartDashboard.putString("Speeds", "prev: " + round(prevRotSpeed, 2) + "; rot: " + round(rotSpeed, 2));
     // SmartDashboard.putString("x Speeds", "prev: " + round(prevXSpeed, 2) + "; x: " + round(xSpeed, 2));
-
+    
+    prevLVAxis = lvAxis;
     prevXSpeed = xSpeed;
     prevRotSpeed = rotSpeed;
   }

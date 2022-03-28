@@ -84,9 +84,9 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       //Should all of these be rf? This is the same in DriveTrain2
       //Who wrote this? thanks by the way
       rfMotor.setNeutralMode(NeutralMode.Brake);
-      rbMotor.setNeutralMode(NeutralMode.Brake);
+      rbMotor.setNeutralMode(NeutralMode.Coast);
       lfMotor.setNeutralMode(NeutralMode.Brake);
-      lbMotor.setNeutralMode(NeutralMode.Brake);
+      lbMotor.setNeutralMode(NeutralMode.Coast);
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
@@ -98,14 +98,14 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     // resolution.
 
     zeroEncoders();
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), Constants.DriveTrain.INITIAL_POS);
+    odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
     setDefaultCommand(new ArcadeDrive(this));
   }
 
 
   public void periodic(){
     updateOdometry();
-    // printValues();
+    printValues();
 
   }
 
@@ -121,7 +121,9 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     SmartDashboard.putNumber("Right Encoder", getRightPos());
     SmartDashboard.putNumber("Left Encoder", getLeftPos());
     // SmartDashboard.putNumber("Angle", gyro.getAngle());
-    SmartDashboard.putNumber("Field Pos Angle", getFieldPosition().getRotation().getRadians());
+    SmartDashboard.putNumber("Field Pos Angle", getFieldPosition().getRotation().getRadians());    
+    SmartDashboard.putNumber("Get Angle in Rad",getRotation());
+
   }
 
   private double round(double value, double decimalPlaces){
@@ -159,7 +161,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       leftFeedforward = lfeedbackward.calculate(speeds.leftMetersPerSecond);
     }
 
-    leftGroup.setVoltage(MathUtil.clamp(leftFeedforward * 0.99,-12,12));
+    leftGroup.setVoltage(MathUtil.clamp(leftFeedforward,-12,12));
     rightGroup.setVoltage(MathUtil.clamp(rightFeedforward,-12,12));
   }
 
@@ -226,7 +228,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
   }
 
   public double getRotation(){
-    return gyro.getAngle();
+    return -gyro.getAngle();
   }
 
   public double getRightPos(){
@@ -269,12 +271,13 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     lfMotor.setSelectedSensorPosition(0);
     lbMotor.setSelectedSensorPosition(0);
     gyro.reset();
-    gyro.setAngleAdjustment(gyro.getAngle());
-    odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(),new Pose2d(0,0, new Rotation2d(0)));
   }
 
   public void setFieldPos(Pose2d currentPos){
     zeroEncoders();
-    odometry = new DifferentialDriveOdometry(new Rotation2d(0), currentPos);
+    gyro.reset();
+    gyro.setAngleAdjustment(-currentPos.getRotation().getDegrees());
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), currentPos);
   }
 }

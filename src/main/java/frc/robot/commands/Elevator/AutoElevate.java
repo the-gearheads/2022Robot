@@ -46,11 +46,13 @@ public class AutoElevate extends CommandBase {
   @Override
   public void initialize() {
     prevLightStatus = false;
+    prevIntake = false;
     intakeTimer = new Timer();
     intakeTimer.reset();
     intakeTimer.stop();
     intakeFlag = false;
     shouldStop = false;
+    Constants.Elevator.shot = false;
     SmartDashboard.putBoolean("Auto Elevate", true);
   }
 
@@ -69,6 +71,7 @@ public class AutoElevate extends CommandBase {
   }
 
   private void setElevator(){
+    SmartDashboard.putString("Auto Elevate ERROR", "NONE");
     if(ballCount == 2){
       elevator.stop();
       SmartDashboard.putString("Auto Intake Status", "2 balls. We're full!");
@@ -89,7 +92,7 @@ public class AutoElevate extends CommandBase {
       SmartDashboard.putString("Auto Intake Status", "0 balls and stopped. Intake is off.");
       }
     }else if(ballCount > 2 || ballCount < 0){
-      SmartDashboard.putString("Auto Intake ERROR", "ball count is not in allowed range");
+      SmartDashboard.putString("Auto Elevate ERROR", "ball count is not in allowed range");
       shouldStop = true;
     }
   }

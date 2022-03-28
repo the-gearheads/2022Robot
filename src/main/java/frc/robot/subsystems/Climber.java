@@ -57,14 +57,24 @@ public class Climber extends SubsystemBase {
       return !(leftLimit.get() && rightLimit.get());
   }
 
+  public boolean rightLimitTriggered(){
+    return !rightLimit.get();
+  }
+
+  public boolean leftLimitTriggered(){
+    return !leftLimit.get();
+  }
+
   @Override
   public void periodic() {
-      if(limitTriggered()){
+      if(rightLimitTriggered()){
           stop();
           disable=true;
       }else{
           disable = false;
       }
+      SmartDashboard.putBoolean("LEFT Climber limit", !leftLimit.get());
+      SmartDashboard.putBoolean("RIGHT Climber limit", !rightLimit.get());
   }
 
   public double getRotations(){

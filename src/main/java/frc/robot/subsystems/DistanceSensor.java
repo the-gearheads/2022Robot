@@ -37,13 +37,13 @@ public class DistanceSensor extends SubsystemBase {
   public double getDistanceInCM(){
     double voltage_scale_factor = 5/RobotController.getVoltage5V();
     double distanceCentimeters = analog.getValue() * voltage_scale_factor * 0.125;
-    double distanceWithinRobot = 10 * 2.54;
+    double distanceWithinRobot = 12 * 2.54;
     return round(distanceCentimeters - distanceWithinRobot, 1);
   }
   public double getDistanceInInches(){
     double voltage_scale_factor = 5/RobotController.getVoltage5V();
     double distanceInches = analog.getValue() * voltage_scale_factor * 0.0492;
-    double distanceWithinRobot = 10;
+    double distanceWithinRobot = 12;
     return round(distanceInches - distanceWithinRobot, 1);
   }
 

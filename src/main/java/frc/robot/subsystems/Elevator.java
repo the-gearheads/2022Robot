@@ -8,16 +8,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Elevator.AutoElevate;
+import frc.robot.commands.Intake.FillerDefaultElevate;
 
 public class Elevator extends SubsystemBase{
   private CANSparkMax elevatorMotor = new CANSparkMax(Constants.Elevator.MOTOR_ID, MotorType.kBrushless);
-  private final double speed = 1;
+  private final double speed = 0.6;
 
 /** Creates a new ExampleSubsystem. */
   public Elevator(Intake intake, LightSensor lightSensor, ColorSensor colorSensor) {
     elevatorMotor.setIdleMode(IdleMode.kBrake);
 
-    setDefaultCommand(new AutoElevate(lightSensor, colorSensor, this, intake, 0));
+    setDefaultCommand(new AutoElevate(lightSensor, colorSensor, this, intake,1));
   }
 
   @Override

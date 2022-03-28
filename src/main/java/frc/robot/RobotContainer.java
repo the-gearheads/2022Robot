@@ -39,6 +39,7 @@ import frc.robot.commands.Intake.FillerDefaultElevate;
 import frc.robot.commands.Shooter.ActuateShooter;
 import frc.robot.commands.Shooter.AlignShooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.AutonChooser;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.DistanceSensor;
@@ -80,25 +81,13 @@ public class RobotContainer {
   private final ColorSensor colorSensor = new ColorSensor();
   private final Vision vision = new Vision();
   private final LightSensor lightSensor = new LightSensor();
+  private final AutonChooser autonChooser = new AutonChooser();
 
   private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
-  // SendableChooser<Pose2d> initialPosChooser = new SendableChooser<>();
-  // SendableChooser<String> autonChooser = new SendableChooser<>();
+  
 
   public RobotContainer() {
-    Logger.configureLoggingAndConfig(this, false);
-    
-    
-    // initialPosChooser.setDefaultOption("1", Constants.Field.INIT_POS_1);
-    // initialPosChooser.addOption("2", Constants.Field.INIT_POS_2);
-    // initialPosChooser.addOption("3", Constants.Field.INIT_POS_3);
-
-    // autonChooser.setDefaultOption("Ball 1", "ball1");
-    // autonChooser.addOption("Ball 2", "ball2");
-    // autonChooser.addOption("Human Player", "humanplayer");
-
-    // SmartDashboard.putData("Initial Position", initialPosChooser);
-    // SmartDashboard.putData("Auton Sequence", autonChooser);
+    // Logger.configureLoggingAndConfig(this, false);
 
     configureButtonBindings();
   }
@@ -117,7 +106,7 @@ public class RobotContainer {
 
     JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
     controllerBtn6.whenPressed(new InstantCommand(()->{
-      Constants.DriveTrain.MAX_VELOCITY = 3;
+      Constants.DriveTrain.MAX_VELOCITY = 5;
     })).whenReleased(new InstantCommand(()->{
       Constants.DriveTrain.MAX_VELOCITY = 2;
     }));
@@ -130,6 +119,12 @@ public class RobotContainer {
     JoystickButton controllerBtn2 = new JoystickButton(controller, 2);
     controllerBtn2.whenPressed(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=-1;
+    }));
+
+
+    JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
+    controllerBtn3.whenPressed(new InstantCommand(()->{
+      driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
     }));
 
     // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
@@ -150,7 +145,7 @@ public class RobotContainer {
 
     JoystickButton btn11 = new JoystickButton(joystick, 11);
     btn11.whenPressed(new InstantCommand(()->{
-      climber.setSpeed(0.5);
+      climber.setSpeed(0.9);
     }, climber)).whenReleased(new InstantCommand(()->{
       climber.stop();
     }, climber));
@@ -221,41 +216,109 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-  //   Pose2d initPos = initialPosChooser.getSelected();
-  //   String autonName = autonChooser.getSelected();
-    Command forward = new PreparedAuton(driveTrain, "paths/Forward.wpilib.json");
-    Command backward = new PreparedAuton(driveTrain, "paths/Backward.wpilib.json");
-    // Command auton1 = new PreparedAuton(driveTrain, "paths/startToShoot.wpilib.json");
-
-
-  //   Command reverseAuton = new InstantCommand();
-
+    Pose2d initPos = autonChooser.initialPosChooser.getSelected();
+    String autonName = autonChooser.autonChooser.getSelected();
 
     InstantCommand setInitPos = new InstantCommand(()->{
-      driveTrain.setFieldPos(Constants.Field.INIT_POS_2);
+      driveTrain.setFieldPos(initPos);
     }, driveTrain);
 
-    ActuateShooter shoot = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-    ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+    if(initPos.equals(Constants.Field.RIGHT_POS)){
+      if(autonName.equals("3 Ball - Human Player")){
+        ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        ActuateShooter shoot3 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
 
-    AutonIntake startIntake = new AutonIntake(intake, elevator, true);
+        PreparedAuton startToShoot = new PreparedAuton(driveTrain, "Right-StartToShoot");
+        InstantCommand startIntake = new InstantCommand(()->{
+          intake.extend();
+          intake.spin();
+        });
+        InstantCommand stopIntake = new InstantCommand(()->{
+          intake.retract();
+          intake.stop();
+        });
 
-    AutonIntake stopIntake = new AutonIntake(intake, elevator, false);
+        elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,1));
+        Constants.Elevator.auto = true;
+        // PreparedAuton intakeTwo = new PreparedAuton(driveTrain, "Right-IntakeTwo");
+        // PreparedAuton intakeTwoToShoot = new PreparedAuton(driveTrain, "Right-IntakeTwoToShoot");
+        PreparedAuton ShootToHuman = new PreparedAuton(driveTrain, "Right-ShootToHuman");
+        PreparedAuton HumanToShoot = new PreparedAuton(driveTrain, "Right-HumanToShoot");
+        TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+        TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+        Wait wait1 = new Wait(2);
+        Wait wait2 = new Wait(1);
 
+        return (new SequentialCommandGroup(setInitPos,startToShoot, alignShot1, shoot1, startIntake, ShootToHuman, wait1, HumanToShoot, stopIntake,alignShot2, shoot2,wait2,shoot3));
+      }else if(autonName.equals("4 Ball")){
+        setInitPos = new InstantCommand(()->{
+          driveTrain.setFieldPos(Constants.Field.RIGHT_4_BALL);
+        }, driveTrain);
 
-  //   if(autonName.equals("ball1")){
-  //     auton = new PreparedAuton(driveTrain, "paths/ball1.wpilib.json");
-  //     reverseAuton = new PreparedAuton(driveTrain, "paths/ball1ToShoot.wpilib.json");
-  //   }else if(autonName.equals("ball2")){
-  //     auton = new PreparedAuton(driveTrain, "paths/ball2.wpilib.json");
-  //     reverseAuton = new PreparedAuton(driveTrain, "paths/ball2ToShoot.wpilib.json");
-  //   }else if(autonName.equals("humanplayer")){
-  //     auton = new PreparedAuton(driveTrain, "paths/humanplayer.wpilib.json");
-  //     reverseAuton = new PreparedAuton(driveTrain, "paths/humanplayerToShoot.wpilib.json");
-  //   }
-    elevator.setDefaultCommand(new FillerDefaultElevate(elevator));
-    Constants.Elevator.auto = false;
-    return (new SequentialCommandGroup(setInitPos, shoot, startIntake, forward, backward, stopIntake, shoot2));
-    // return null;
+        ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        ActuateShooter shoot3 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+
+        InstantCommand startIntake = new InstantCommand(()->{
+          intake.extend();
+          intake.spin();
+        });
+        InstantCommand stopIntake = new InstantCommand(()->{
+          intake.retract();
+          intake.stop();
+        });
+
+        elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,1));
+        Constants.Elevator.auto = true;
+        // PreparedAuton intakeTwo = new PreparedAuton(driveTrain, "Right-IntakeTwo");
+        // PreparedAuton intakeTwoToShoot = new PreparedAuton(driveTrain, "Right-IntakeTwoToShoot")
+        PreparedAuton startToIntake = new PreparedAuton(driveTrain, "Right-4-StartToIntake");
+        PreparedAuton IntakeToShoot = new PreparedAuton(driveTrain, "Right-4-IntakeToShoot");
+        PreparedAuton shootToHuman = new PreparedAuton(driveTrain, "Right-4-ShootToHuman");
+        PreparedAuton humanToShoot = new PreparedAuton(driveTrain, "Right-4-HumanToShoot");
+
+        TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+        TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+        Wait wait1 = new Wait(2);
+        Wait wait2 = new Wait(1);
+        return (new SequentialCommandGroup(setInitPos,startToIntake, IntakeToShoot, alignShot1,shootToHuman, humanToShoot,alignShot2));
+      }else if(autonName.equals("2 Ball")){
+        return null;
+      }
+    }else if(initPos.equals(Constants.Field.MID_POS)){
+      if(autonName.equals("2 Ball")){
+        return null;
+      }
+    }else if(initPos.equals(Constants.Field.LEFT_POS)){
+      if(autonName.equals("3 Ball")){
+        return null;
+      }else if(autonName.equals("2 Ball")){
+        return null;
+      }
+    }else if(initPos.equals(Constants.Field.ZERO)){
+      if(autonName.equals("2 Ball")){
+        PreparedAuton forward = new PreparedAuton(driveTrain, "Forward");
+        PreparedAuton backward = new PreparedAuton(driveTrain, "Backward");
+        ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+        InstantCommand startIntake = new InstantCommand(()->{
+          intake.extend();
+          intake.spin();
+          elevator.elevate();
+        });
+        InstantCommand stopIntake = new InstantCommand(()->{
+          intake.retract();
+          intake.stop();
+          elevator.stop();
+        });
+        return (new SequentialCommandGroup(setInitPos, shoot1, startIntake, forward, backward, stopIntake, shoot2));
+      }
+    }
+    
+    // elevator.setDefaultCommand(new FillerDefaultElevate(elevator));
+    // Constants.Elevator.auto = false;
+
+    return null;
   }
 }

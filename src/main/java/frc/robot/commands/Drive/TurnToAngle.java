@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Drive;
 
+import java.net.Authenticator.RequestorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,7 +16,7 @@ import frc.robot.subsystems.DriveTrainInterface;
 public class TurnToAngle extends CommandBase {
   private double requestedAngle;
   private DriveTrainInterface driveTrain;
-  private PIDController rotController = new PIDController(0.03, 0, 0);
+  private PIDController rotController = new PIDController(0.05, 0, 0);
   private int satisfactionNumber = 0;
 
   /** Creates a new TurnToAngleC. */
@@ -27,15 +29,19 @@ public class TurnToAngle extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putBoolean("turning", true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //Rotational Speed Calculations
     double currentAngle = driveTrain.getRotation();
-    double maxRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY * 2;
-    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY / 4;
+    SmartDashboard.putNumber("Current Rot", currentAngle);
+    SmartDashboard.putNumber("Wanted Rot", requestedAngle);
+    double maxRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY * 3;
+    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY /1.5;
 
     double rotSpeed = rotController.calculate(currentAngle, requestedAngle);
     double rotDirection = rotSpeed > 0? -1 : 1;
@@ -50,12 +56,15 @@ public class TurnToAngle extends CommandBase {
       rotSpeed = minRotSpeed;
     }
 
-    driveTrain.drive(0, rotSpeed * rotDirection);
+    driveTrain.drive(0, - rotSpeed * rotDirection);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("turning", false);
+
+  }
 
   // Returns true when the command should end.
   @Override
