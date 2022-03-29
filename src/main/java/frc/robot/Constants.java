@@ -93,7 +93,7 @@ public final class Constants {
         
         public static final Pose2d RIGHT_POS = new Pose2d(7.3,1.5,new Rotation2d(-1.5707963267948966)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
         public static final Pose2d RIGHT_SHOOT_POS = new Pose2d(7.5,2.3,new Rotation2d(-1.9513027039072617)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
-        public static final Pose2d RIGHT_4_BALL = new Pose2d(6.261078072309923,2.517524446040479,new Rotation2d(-2.287338000891296)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
+        public static final Pose2d RIGHT_4_BALL = new Pose2d(6.462016556751126,2.3130872353349536,new Rotation2d(-2.287338000891296)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
         public static final Pose2d MID_POS = new Pose2d(1,1,new Rotation2d(1));
         public static final Pose2d LEFT_POS = new Pose2d(2,2,new Rotation2d(2));
         public static final Pose2d ZERO = new Pose2d(0,0,new Rotation2d(0));

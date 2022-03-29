@@ -277,14 +277,14 @@ public class RobotContainer {
         PreparedAuton humanToShoot = new PreparedAuton(driveTrain, "Right-4-HumanToShoot");
 
         TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
-        TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.713027039072617).getDegrees());
+        TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
         Wait wait1 = new Wait(1);
         Wait wait2 = new Wait(1);
         Wait wait3 = new Wait(1);
 
         elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
         Constants.Elevator.auto = true;
-        return (new SequentialCommandGroup(setInitPos,shoot1, startIntake, startToIntake, IntakeToShoot, alignShot1,shoot2, shootToHuman, wait1,humanToShoot, shoot3, wait2, shoot4, stopIntake));
+        return (new SequentialCommandGroup(setInitPos,shoot1, startIntake, startToIntake, IntakeToShoot, alignShot1,shoot2, shootToHuman, wait1,humanToShoot,alignShot2, shoot3, wait2, shoot4, stopIntake));
       }else if(autonName.equals("2 Ball")){
         return null;
       }

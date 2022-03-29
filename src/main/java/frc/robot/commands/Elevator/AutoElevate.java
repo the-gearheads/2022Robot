@@ -73,7 +73,11 @@ public class AutoElevate extends CommandBase {
   private void setElevator(){
     SmartDashboard.putString("Auto Elevate ERROR", "NONE");
     if(ballCount == 2){
-      elevator.stop();
+      if(!colorSensor.redOrBlue().equals("unknown")){
+        elevator.stop();
+      }else{
+        elevator.elevate();
+      }
       SmartDashboard.putString("Auto Intake Status", "2 balls. We're full!");
     }else if(ballCount == 1){
       if(colorSensor.redOrBlue().equals("unknown") || intakeFlag){
