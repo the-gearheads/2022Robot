@@ -10,6 +10,8 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,16 +23,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class Vision extends SubsystemBase {
     PowerDistribution pdp = new PowerDistribution();
+    public boolean isRunning = false;
+    public boolean isOn = false;
+    AddressableLED ledStrip = new AddressableLED(9);
+    AddressableLEDBuffer greenBuffer = new AddressableLEDBuffer(27);
+    AddressableLEDBuffer disabledBuffer = new AddressableLEDBuffer(27);
+
     public Vision() {
         CameraServer.startAutomaticCapture(0).setResolution(32, 32);
-        setLED(false);
         CameraServer.startAutomaticCapture(1).setResolution(32, 32);
+        ledStrip.setLength(27);
+
+        // for loop to fill entire buffer
+        for (int i = 0; i < greenBuffer.getLength(); i++)
+        {
+            greenBuffer.setRGB(i, 0, 255, 0);
+        }
+
+        for (int i = 0; i < disabledBuffer.getLength(); i++)
+        {
+            disabledBuffer.setRGB(i, 0, 0, 0);
+        }
+    }
+    public void turnOn() {
+        ledStrip.setData(greenBuffer);
+        ledStrip.start();
     }
 
-
-    public void setLED(boolean isOn){
-        pdp.setSwitchableChannel(isOn);
+    public void turnOff() {
+        ledStrip.setData(disabledBuffer);
+        ledStrip.start();
     }
-
-
 }

@@ -34,7 +34,6 @@ public class AlignShooter extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putBoolean("Aligning", true);
-    vision.setLED(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,7 +61,6 @@ public class AlignShooter extends CommandBase {
 @Override
 public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
-  vision.setLED(false);
 
 }
 

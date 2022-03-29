@@ -38,6 +38,7 @@ import frc.robot.commands.Intake.AutonIntake;
 import frc.robot.commands.Intake.FillerDefaultElevate;
 import frc.robot.commands.Shooter.ActuateShooter;
 import frc.robot.commands.Shooter.AlignShooter;
+import frc.robot.commands.Vision.ToggleLEDStrip;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.AutonChooser;
 import frc.robot.subsystems.Climber;
@@ -103,6 +104,8 @@ public class RobotContainer {
     // controllerbtn3.whenPressed(new InstantCommand(()->{
     //   driveTrain.zeroEncoders();
     // }));
+    JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
+    controllerBtn4.toggleWhenPressed(new ToggleLEDStrip(vision));
 
     JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
     controllerBtn6.whenPressed(new InstantCommand(()->{
