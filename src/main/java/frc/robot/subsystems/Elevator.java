@@ -12,7 +12,7 @@ import frc.robot.commands.Intake.FillerDefaultElevate;
 
 public class Elevator extends SubsystemBase{
   private CANSparkMax elevatorMotor = new CANSparkMax(Constants.Elevator.MOTOR_ID, MotorType.kBrushless);
-  private final double speed = 0.6;
+  private final double speed = 0.75;
 
 /** Creates a new ExampleSubsystem. */
   public Elevator(Intake intake, LightSensor lightSensor, ColorSensor colorSensor) {

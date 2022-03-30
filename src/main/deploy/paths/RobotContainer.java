@@ -285,18 +285,48 @@ public class RobotContainer {
         elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
         Constants.Elevator.auto = true;
         return (new SequentialCommandGroup(setInitPos,shoot1, startIntake, startToIntake, IntakeToShoot, alignShot1,shoot2, shootToHuman, wait1,humanToShoot,alignShot2, shoot3, wait2, shoot4, stopIntake));
-      }else if(autonName.equals("2 Ball")){
-        return null;
-      }
-    }else if(initPos.equals(Constants.Field.MID_POS)){
-      if(autonName.equals("2 Ball")){
-        return null;
-      }
-    }else if(initPos.equals(Constants.Field.LEFT_POS)){
+      }else if(autonName.equals("5 Ball")){
+          setInitPos = new InstantCommand(()->{
+            driveTrain.setFieldPos(new Pose2d(7.668997828753121,1.5791062893481724,new Rotation2d(-1.7463884887450778)));
+          }, driveTrain);
+
+          ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+          ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+          ActuateShooter shoot3 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+          ActuateShooter shoot4 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+
+          InstantCommand startIntake = new InstantCommand(()->{
+            intake.extend();
+            intake.spin();
+          });
+          InstantCommand stopIntake = new InstantCommand(()->{
+            intake.retract();
+            intake.stop();
+          });
+          // PreparedAuton intakeTwo = new PreparedAuton(driveTrain, "Right-IntakeTwo");
+          // PreparedAuton intakeTwoToShoot = new PreparedAuton(driveTrain, "Right-IntakeTwoToShoot")
+          PreparedAuton start  = new PreparedAuton(driveTrain, "Right-5-Start");
+          PreparedAuton shootToHuman = new PreparedAuton(driveTrain, "Right-5-ShootToHuman");
+          PreparedAuton humanToShoot = new PreparedAuton(driveTrain, "Right-5-HumanToShoot");
+
+          TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+          TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+          Wait wait1 = new Wait(1);
+          Wait wait2 = new Wait(1);
+          Wait wait3 = new Wait(1);
+
+          elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
+          Constants.Elevator.auto = true;
+          return (new SequentialCommandGroup(setInitPos, start));
+        }
+      }else if(initPos.equals(Constants.Field.LEFT_POS)){
       if(autonName.equals("3 Ball")){
-        return null;
-      }else if(autonName.equals("2 Ball")){
-        return null;
+        PreparedAuton startToIntake = new PreparedAuton(driveTrain, "Left-3-StartToIntake");
+        PreparedAuton IntakeToShoot = new PreparedAuton(driveTrain, "Left-3-IntakeToShoot");
+
+        elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
+        Constants.Elevator.auto = true;
+        return (new SequentialCommandGroup(setInitPos, startToIntake, IntakeToShoot));
       }
     }else if(initPos.equals(Constants.Field.ZERO)){
       if(autonName.equals("2 Ball")){
@@ -317,10 +347,8 @@ public class RobotContainer {
         return (new SequentialCommandGroup(setInitPos, shoot1, startIntake, forward, backward, stopIntake, shoot2));
       }
     }
-    
     // elevator.setDefaultCommand(new FillerDefaultElevate(elevator));
     // Constants.Elevator.auto = false;
-
     return null;
   }
 }

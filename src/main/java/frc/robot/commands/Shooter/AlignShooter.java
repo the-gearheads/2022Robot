@@ -14,10 +14,10 @@ import frc.robot.subsystems.Vision;
 
 public class AlignShooter extends CommandBase {
   private double x;
-  private PIDController pid = new PIDController(1.0, 0, 0);
+  private PIDController pid = new PIDController(4.3, 0, 0);
   
-  private double maxRotSpeed = 0.7;
-  private double minRotSpeed = 0.1;
+  private double maxRotSpeed = 1.7;
+  private double minRotSpeed = 0.7;
   private DriveTrainInterface driveTrain;
   private int satisfactionNumber = 0;
   private Vision vision;
@@ -33,19 +33,21 @@ public class AlignShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    satisfactionNumber = 0;
+    this.vision.turnOn();
     SmartDashboard.putBoolean("Aligning", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.x = SmartDashboard.getNumber("center X", 0);
+    this.x = SmartDashboard.getNumber("Mean X", 0);
 
   double rotSpeed = pid.calculate(x, 0);
   double rotDirection = rotSpeed > 0? -1 : 1;
   rotSpeed = Math.abs(rotSpeed);
 
-  if(Math.abs(x) < 0.05){
+  if(Math.abs(x) < 0.02){
     rotSpeed = 0;
   }else
   if(Math.abs(rotSpeed) > maxRotSpeed){
@@ -55,12 +57,15 @@ public class AlignShooter extends CommandBase {
   }
    
   driveTrain.drive(0, rotSpeed * rotDirection);
+
+  SmartDashboard.putNumber("Satisfaction N.", satisfactionNumber);
 }
 
 // Called once the command ends or is interrupted.
 @Override
 public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
+  this.vision.turnOff();
 
 }
 

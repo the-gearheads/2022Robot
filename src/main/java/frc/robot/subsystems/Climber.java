@@ -31,6 +31,8 @@ public class Climber extends SubsystemBase {
     RelativeEncoder rightEncoder = right.getEncoder();
     DigitalInput leftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
     DigitalInput rightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
+    private boolean rightDisable = false;
+    private boolean leftDisable = false;
 
   public Climber() {
       left.setIdleMode(IdleMode.kBrake);
@@ -43,9 +45,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-      if(!disable || speed > 0){
+      if(!leftLimitTriggered() || speed > 0){
         left.set(speed);
+      }else{
+        left.set(0);
+      }
+      if(!rightLimitTriggered() || speed > 0){
         right.set(-speed);
+      }else{
+        right.set(0);
       }
   }
 
@@ -67,12 +75,6 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-      if(rightLimitTriggered()){
-          stop();
-          disable=true;
-      }else{
-          disable = false;
-      }
       SmartDashboard.putBoolean("LEFT Climber limit", !leftLimit.get());
       SmartDashboard.putBoolean("RIGHT Climber limit", !rightLimit.get());
   }

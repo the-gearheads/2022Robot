@@ -30,8 +30,6 @@ public class Vision extends SubsystemBase {
     AddressableLEDBuffer disabledBuffer = new AddressableLEDBuffer(27);
 
     public Vision() {
-        CameraServer.startAutomaticCapture(0).setResolution(32, 32);
-        CameraServer.startAutomaticCapture(1).setResolution(32, 32);
         ledStrip.setLength(27);
 
         // for loop to fill entire buffer
@@ -48,10 +46,12 @@ public class Vision extends SubsystemBase {
     public void turnOn() {
         ledStrip.setData(greenBuffer);
         ledStrip.start();
+        isOn = true;
     }
 
     public void turnOff() {
         ledStrip.setData(disabledBuffer);
         ledStrip.start();
+        isOn = false;
     }
 }

@@ -28,18 +28,16 @@ public class AutonChooser extends SubsystemBase {
   public void periodic() {
     if(Constants.Field.RIGHT_POS.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.RIGHT_POS)){
       autonChooser  = new SendableChooser<>();
-      autonChooser.setDefaultOption("4 Ball", "4 Ball");
+      autonChooser.setDefaultOption("5 Ball", "5 Ball");
+      autonChooser.addOption("4 Ball", "4 Ball");
       autonChooser.addOption("3 Ball - Human Player", "3 Ball - Human Player");
-      autonChooser.addOption("5 Ball", "5 Ball");
       SmartDashboard.putData("Auton Sequence", autonChooser);
     }else if(Constants.Field.MID_POS.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.MID_POS)){
       autonChooser  = new SendableChooser<>();
-      autonChooser.setDefaultOption("2 Ball", "2 Ball");
       SmartDashboard.putData("Auton Sequence", autonChooser);
     }else if(Constants.Field.LEFT_POS.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.LEFT_POS)){
       autonChooser  = new SendableChooser<>();
       autonChooser.setDefaultOption("3 Ball", "3 Ball");
-      autonChooser.addOption("2 Ball", "2 Ball");
       SmartDashboard.putData("Auton Sequence", autonChooser);
     }else if(Constants.Field.ZERO.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.ZERO)){
       autonChooser  = new SendableChooser<>();

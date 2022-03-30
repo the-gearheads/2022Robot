@@ -25,7 +25,6 @@ public class ToggleLEDStrip extends CommandBase {
     } else {
       vision.turnOn();
     }
-    vision.isOn = !vision.isOn;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

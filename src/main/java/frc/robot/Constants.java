@@ -95,14 +95,14 @@ public final class Constants {
         public static final Pose2d RIGHT_SHOOT_POS = new Pose2d(7.5,2.3,new Rotation2d(-1.9513027039072617)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
         public static final Pose2d RIGHT_4_BALL = new Pose2d(6.462016556751126,2.3130872353349536,new Rotation2d(-2.287338000891296)); //new Pose2d(7.3,1.5,new Rotation2d(1.5707963267948966))
         public static final Pose2d MID_POS = new Pose2d(1,1,new Rotation2d(1));
-        public static final Pose2d LEFT_POS = new Pose2d(2,2,new Rotation2d(2));
+        public static final Pose2d LEFT_POS = new Pose2d(6.0822469643424935,5.3780426654553715,new Rotation2d( 2.5535900500422266));
         public static final Pose2d ZERO = new Pose2d(0,0,new Rotation2d(0));
     }
     public static final class Climber{
         public static final int LEFT_ID  = 11;
         public static final int RIGHT_ID = 12;
-        public static final int LEFT_LIMIT = 2;
-        public static final int RIGHT_LIMIT = 3;
+        public static final int LEFT_LIMIT = 3;
+        public static final int RIGHT_LIMIT = 2;
         public static final double MAX_SPEED = 0;
         public static final double MIN_SPEED = 0;
 
