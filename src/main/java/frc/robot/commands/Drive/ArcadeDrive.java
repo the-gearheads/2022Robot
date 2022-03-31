@@ -22,6 +22,7 @@ import frc.robot.subsystems.DriveTrainInterface;
   private double prevXSpeed = 0;
   private double prevRotSpeed = 0;
   private double prevLVAxis = 0;
+  private double maxAcc = 0.1;
 
   /** Creates a new ArcadeDriveC. */
   public ArcadeDrive(DriveTrainInterface driveTrain) {
@@ -66,6 +67,9 @@ import frc.robot.subsystems.DriveTrainInterface;
     // }else{
     //   SmartDashboard.putBoolean("Working", false);
     // }
+    if(lvAxis == 0 && prevXSpeed < 0 && Math.abs(prevXSpeed) > maxAcc){
+      xSpeed = prevXSpeed + maxAcc;
+    }
 
     SmartDashboard.putNumber("xSpeed here", xSpeed);
 
