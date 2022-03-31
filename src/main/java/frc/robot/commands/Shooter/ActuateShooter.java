@@ -37,7 +37,7 @@ public class ActuateShooter extends CommandBase {
     timer.start();
     //new SetPurple(shooter.leds).schedule(false);
     if(isExtend){
-      new SetPurple(shooter.leds).schedule();
+      (new SetPurple(shooter.leds)).schedule();
       if(bothPistons){
         shooter.extend();
       }else{
@@ -67,6 +67,8 @@ public class ActuateShooter extends CommandBase {
     timer.stop();
     if(isExtend){
       (new ActuateShooter(shooter, 0.1, 0.1,false, false)).schedule(false);
+    }else{
+      shooter.leds.getDefaultCommand().schedule();
     }
 
     // back to rainbow
