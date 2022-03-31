@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.LEDS.defaultLED;
+import frc.robot.commands.LEDS.DefaultRainbow;
 
 public class LEDS extends SubsystemBase {
   /** Creates a new LEDS. */
@@ -18,6 +18,7 @@ public class LEDS extends SubsystemBase {
   public AddressableLEDBuffer nullBuffer;
   public AddressableLEDBuffer purpleBuffer;
   public AddressableLEDBuffer greenBuffer;
+  public AddressableLEDBuffer shootingBuffer;
 
   // Assuming that both strips are the same length - therefore we can use one buffer
   private int length = 0;
@@ -32,6 +33,8 @@ public class LEDS extends SubsystemBase {
     nullBuffer = new AddressableLEDBuffer(length);
     purpleBuffer = new AddressableLEDBuffer(length);
     greenBuffer = new AddressableLEDBuffer(length);
+    shootingBuffer = new AddressableLEDBuffer(length);
+
     fillNullBuffer();
     fillRainbowBuffer();
     fillPurpleBuffer();
@@ -46,7 +49,7 @@ public class LEDS extends SubsystemBase {
     // send voltages to the strips
     startStrips();
 
-    setDefaultCommand(new defaultLED(this));
+    setDefaultCommand(new DefaultRainbow(this));
   }
 
   // update both strips to a new buffer
@@ -58,7 +61,7 @@ public class LEDS extends SubsystemBase {
   public void startStrips() {
     ledStrip.start();
   }
-
+  
   // fill null buffer with (0, 0, 0)
   public void fillNullBuffer() {
     for (int i = 0; i < nullBuffer.getLength(); i++) {
@@ -79,8 +82,14 @@ public class LEDS extends SubsystemBase {
   }
 
   public void fillGreenBuffer() {
-    for (int i = 0; i < purpleBuffer.getLength(); i++) {
-      purpleBuffer.setRGB(i, 0, 255, 0);
+    for (int i = 0; i < greenBuffer.getLength(); i++) {
+      greenBuffer.setRGB(i, 0, 255, 0);
+    }
+  }
+
+  public void clearShootingBuffer() {
+    for (int i = 0; i < shootingBuffer.getLength(); i++) {
+      shootingBuffer.setRGB(i, 0, 0, 0);
     }
   }
 

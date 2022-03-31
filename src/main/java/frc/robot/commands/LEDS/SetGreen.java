@@ -7,11 +7,11 @@ package frc.robot.commands.LEDS;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDS;
 
-public class setGreenLEDS extends CommandBase {
+public class SetGreen extends CommandBase {
   /** Creates a new setGreenLEDS. */
   private LEDS leds;
 
-  public setGreenLEDS(LEDS leds) {
+  public SetGreen(LEDS leds) {
     this.leds = leds;
     addRequirements(leds);
   }
@@ -20,6 +20,7 @@ public class setGreenLEDS extends CommandBase {
   @Override
   public void initialize() {
     leds.updateStrips(leds.greenBuffer);
+    leds.startStrips();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,7 +29,8 @@ public class setGreenLEDS extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

@@ -44,7 +44,7 @@ public class RobotContainer {
 
 
   // TODO 3/31: set right port and length of buffer.
-  private final LEDS leds = new LEDS(3, 27);
+  private final LEDS leds = new LEDS(3, 45);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
   private final XboxController joystick = new XboxController(Constants.Joystick.PORT);

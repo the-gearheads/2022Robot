@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.commands.LEDS.setGreenLEDS;
+import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
 
@@ -35,7 +35,10 @@ public class AlignShooter extends CommandBase {
   @Override
   public void initialize() {
     satisfactionNumber = 0;
-    new setGreenLEDS(leds);
+
+    // green leds
+    (new SetGreen(leds)).schedule();
+    
     SmartDashboard.putBoolean("Aligning", true);
   }
 
@@ -67,6 +70,8 @@ public class AlignShooter extends CommandBase {
 public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
 
+  // return to rainbow leds
+  leds.getDefaultCommand().schedule();
 }
 
 
