@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.LEDS.setGreenLEDS;
 import frc.robot.subsystems.DriveTrainInterface;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
 
 public class AlignShooter extends CommandBase {
@@ -20,21 +22,21 @@ public class AlignShooter extends CommandBase {
   private double minRotSpeed = 0.7;
   private DriveTrainInterface driveTrain;
   private int satisfactionNumber = 0;
-  private Vision vision;
+  private LEDS leds;
 
   /** Creates a new AlignShooter. */
-  public AlignShooter(DriveTrainInterface driveTrain, Vision vision) {
+  public AlignShooter(DriveTrainInterface driveTrain, Vision vision, LEDS leds) {
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
-    this.vision = vision;
     // Use addRequirements() here to declare subsystem dependencies.
+    this.leds = leds;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     satisfactionNumber = 0;
-    this.vision.turnOn();
+    new setGreenLEDS(leds);
     SmartDashboard.putBoolean("Aligning", true);
   }
 
@@ -65,7 +67,6 @@ public class AlignShooter extends CommandBase {
 @Override
 public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
-  this.vision.turnOff();
 
 }
 

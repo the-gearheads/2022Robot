@@ -48,6 +48,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain2;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LightSensor;
 import frc.robot.subsystems.Shooter;
 import io.github.oblarg.oblog.Logger;
@@ -72,10 +73,11 @@ public class RobotContainer {
   
   private final Intake intake = new Intake();
 
+  private final LEDS leds = new LEDS(3, 27);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
   private final XboxController joystick = new XboxController(Constants.Joystick.PORT);
-  private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter(leds);
   private final Climber climber = new Climber();
   
   private final DistanceSensor distanceSensor = new DistanceSensor();
@@ -85,7 +87,6 @@ public class RobotContainer {
   private final AutonChooser autonChooser = new AutonChooser();
 
   private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
-  
 
   public RobotContainer() {
     // Logger.configureLoggingAndConfig(this, false);
@@ -105,7 +106,7 @@ public class RobotContainer {
     //   driveTrain.zeroEncoders();
     // }));
     JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, vision));
+    controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, vision, leds));
 
     JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
     controllerBtn3.toggleWhenPressed(new ToggleLEDStrip(vision));

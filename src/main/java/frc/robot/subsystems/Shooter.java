@@ -22,9 +22,10 @@ public class Shooter extends SubsystemBase {
   public final Solenoid extendLeft = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.EXTEND_LEFT_SOLENOID);
   public final Solenoid retractLeft = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.RETRACT_LEFT_SOLENOID);
   public final Solenoid extendRight = new Solenoid(PneumaticsModuleType.REVPH, Constants.Shooter.EXTEND_RIGHT_SOLENOID);
-
+  public final LEDS leds;
   /** Creates a new ExampleSubsystem. */
-  public Shooter() {
+  public Shooter(LEDS leds) {
+      this.leds = leds;
       rest();
   }
 

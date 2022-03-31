@@ -7,6 +7,8 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.LEDS.setPurpleLEDS;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 
 public class ActuateShooter extends CommandBase {
@@ -34,6 +36,7 @@ public class ActuateShooter extends CommandBase {
     timer.reset();
     timer.start();
     if(isExtend){
+      new setPurpleLEDS(shooter.leds);
       if(bothPistons){
         shooter.extend();
       }else{
