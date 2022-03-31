@@ -47,7 +47,7 @@ public class RobotContainer {
 
 
   // TODO 3/31: set right port and length of buffer. // params: PWM Port and Length of strip
-  private final LEDS leds = new LEDS(9, 71);
+  private final LEDS leds = new LEDS(9, 28 * 2 + 27);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
   private final XboxController joystick = new XboxController(Constants.Joystick.PORT);
@@ -250,7 +250,7 @@ public class RobotContainer {
         PreparedAuton shootToHuman = new PreparedAuton(driveTrain, "Right-4-ShootToHuman");
         PreparedAuton humanToShoot = new PreparedAuton(driveTrain, "Right-4-HumanToShoot");
 
-        TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-1.9513027039072617).getDegrees());
+        TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-2.1513027039072617).getDegrees());
         TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.713027039072617).getDegrees());
         Wait wait1 = new Wait(1);
         Wait wait2 = new Wait(1);

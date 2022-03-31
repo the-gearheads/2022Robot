@@ -65,9 +65,9 @@ public class AutoElevate extends CommandBase {
     printValues();
   }
   private void printValues(){
-    SmartDashboard.putBoolean("intake Flag", intakeFlag);
-    SmartDashboard.putNumber("intake Timer", intakeTimer.get());
-    SmartDashboard.putBoolean("previous Light Status", prevLightStatus);
+    // SmartDashboard.putBoolean("intake Flag", intakeFlag);
+    // SmartDashboard.putNumber("intake Timer", intakeTimer.get());
+    // SmartDashboard.putBoolean("previous Light Status", prevLightStatus);
   }
 
   private void setElevator(){

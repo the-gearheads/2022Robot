@@ -71,7 +71,7 @@ import frc.robot.subsystems.DriveTrainInterface;
       xSpeed = prevXSpeed + maxAcc;
     }
 
-    SmartDashboard.putNumber("xSpeed here", xSpeed);
+    // SmartDashboard.putNumber("xSpeed here", xSpeed);
 
     driveTrain.drive(xSpeed, rotSpeed);
 

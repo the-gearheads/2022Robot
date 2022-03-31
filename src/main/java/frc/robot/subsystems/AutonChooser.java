@@ -28,9 +28,9 @@ public class AutonChooser extends SubsystemBase {
   public void periodic() {
     if(Constants.Field.RIGHT_POS.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.RIGHT_POS)){
       autonChooser  = new SendableChooser<>();
-      autonChooser.setDefaultOption("5 Ball", "5 Ball");
-      autonChooser.addOption("4 Ball", "4 Ball");
-      autonChooser.addOption("3 Ball - Human Player", "3 Ball - Human Player");
+      // autonChooser.setDefaultOption("5 Ball", "5 Ball");
+      autonChooser.setDefaultOption("4 Ball", "4 Ball");
+      // autonChooser.addOption("3 Ball - Human Player", "3 Ball - Human Player");
       SmartDashboard.putData("Auton Sequence", autonChooser);
     }else if(Constants.Field.MID_POS.equals(initialPosChooser.getSelected()) && !prevPos.equals(Constants.Field.MID_POS)){
       autonChooser  = new SendableChooser<>();

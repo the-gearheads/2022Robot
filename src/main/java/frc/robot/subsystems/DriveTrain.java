@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
 
   public void periodic(){
     updateOdometry();
-    printValues();
+    // printValues();
 
   }
 

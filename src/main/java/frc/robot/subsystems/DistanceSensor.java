@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DistanceSensor extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   AnalogInput analog = new AnalogInput(2);
-  private final double lower = 6.7; //closest distance to hub
-  private final double upper = 36; //farthest distance to hub
+  private final double lower = 22; //closest distance to hub
+  private final double upper = 57; //farthest distance to hub
   private NetworkTableEntry display;
   public DistanceSensor() {
     display = Shuffleboard.getTab("SmartDashboard").add("Distance", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
@@ -28,9 +28,9 @@ public class DistanceSensor extends SubsystemBase {
 
   public void displayInRange(boolean inRange){
     if(inRange){
-      display.setBoolean(true);
+      SmartDashboard.putBoolean("Distance", true);
     }else{
-      display.setBoolean(false);
+      SmartDashboard.putBoolean("Distance", false);
     }
   }
 
