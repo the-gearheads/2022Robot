@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.commands.LEDS.SetPurple;
+import frc.robot.commands.LEDS.SetShootingSeq;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 
@@ -37,7 +38,7 @@ public class ActuateShooter extends CommandBase {
     timer.start();
     //new SetPurple(shooter.leds).schedule(false);
     if(isExtend){
-      (new SetPurple(shooter.leds)).schedule();
+      (new SetShootingSeq(shooter.leds)).schedule();
       if(bothPistons){
         shooter.extend();
       }else{
@@ -68,7 +69,7 @@ public class ActuateShooter extends CommandBase {
     if(isExtend){
       (new ActuateShooter(shooter, 0.1, 0.1,false, false)).schedule(false);
     }else{
-      shooter.leds.getDefaultCommand().schedule();
+      //shooter.leds.getDefaultCommand().schedule();
     }
 
     // back to rainbow
