@@ -12,7 +12,6 @@ import frc.robot.Constants;
 import frc.robot.commands.LEDS.setGreenLEDS;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
-import frc.robot.subsystems.Vision;
 
 public class AlignShooter extends CommandBase {
   private double x;
@@ -25,7 +24,7 @@ public class AlignShooter extends CommandBase {
   private LEDS leds;
 
   /** Creates a new AlignShooter. */
-  public AlignShooter(DriveTrainInterface driveTrain, Vision vision, LEDS leds) {
+  public AlignShooter(DriveTrainInterface driveTrain, LEDS leds) {
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.

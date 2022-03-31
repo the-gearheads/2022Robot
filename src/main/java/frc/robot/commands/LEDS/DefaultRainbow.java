@@ -7,11 +7,11 @@ package frc.robot.commands.LEDS;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDS;
 
-public class defaultLED extends CommandBase {
+public class DefaultRainbow extends CommandBase {
   private LEDS leds;
 
   /** Creates a new defaultLED. */
-  public defaultLED(LEDS leds) {
+  public DefaultRainbow(LEDS leds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.leds = leds;
     addRequirements(leds);

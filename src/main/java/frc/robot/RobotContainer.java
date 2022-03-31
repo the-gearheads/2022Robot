@@ -3,63 +3,32 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.text.DefaultStyledDocument.ElementSpec;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.Auton.AutonDrive;
-import frc.robot.commands.Auton.WriteAuton;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Auton.PreparedAuton;
-import frc.robot.commands.Auton.ReadAuton;
 import frc.robot.commands.Auton.Wait;
-import frc.robot.commands.Drive.ArcadeDrive;
-import frc.robot.commands.Drive.FeedForwardCharacterization;
-import frc.robot.commands.Drive.FeedForwardCharacterization1;
-import frc.robot.commands.Drive.SetDistance;
 import frc.robot.commands.Drive.TurnToAngle;
 import frc.robot.commands.Elevator.AutoElevate;
-import frc.robot.commands.Intake.AutonIntake;
 import frc.robot.commands.Intake.FillerDefaultElevate;
+import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.commands.Shooter.ActuateShooter;
 import frc.robot.commands.Shooter.AlignShooter;
-import frc.robot.commands.Vision.ToggleLEDStrip;
-import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.AutonChooser;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.DistanceSensor;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain2;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LightSensor;
 import frc.robot.subsystems.Shooter;
-import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -73,6 +42,8 @@ public class RobotContainer {
   
   private final Intake intake = new Intake();
 
+
+  // TODO 3/31: set right port and length of buffer.
   private final LEDS leds = new LEDS(3, 27);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
@@ -82,7 +53,6 @@ public class RobotContainer {
   
   private final DistanceSensor distanceSensor = new DistanceSensor();
   private final ColorSensor colorSensor = new ColorSensor();
-  private final Vision vision = new Vision();
   private final LightSensor lightSensor = new LightSensor();
   private final AutonChooser autonChooser = new AutonChooser();
 
@@ -106,10 +76,10 @@ public class RobotContainer {
     //   driveTrain.zeroEncoders();
     // }));
     JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, vision, leds));
+    controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, leds));
 
     JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
-    controllerBtn3.toggleWhenPressed(new ToggleLEDStrip(vision));
+    controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
     JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
     controllerBtn6.whenPressed(new InstantCommand(()->{
