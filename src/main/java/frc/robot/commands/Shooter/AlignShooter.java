@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.commands.LEDS.SetAlignError;
 import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
@@ -22,6 +23,8 @@ public class AlignShooter extends CommandBase {
   private DriveTrainInterface driveTrain;
   private int satisfactionNumber = 0;
   private LEDS leds;
+  private double nContours = 0;
+  private boolean cannotAlign = false;
 
   /** Creates a new AlignShooter. */
   public AlignShooter(DriveTrainInterface driveTrain, LEDS leds) {
@@ -35,6 +38,12 @@ public class AlignShooter extends CommandBase {
   @Override
   public void initialize() {
     satisfactionNumber = 0;
+    nContours = SmartDashboard.getNumber("contourNum", 0);
+
+    if (true) {
+      (new SetAlignError(leds)).schedule(false);
+      cannotAlign = true;
+    }
 
     // green leds
     (new SetGreen(leds)).schedule();
@@ -71,7 +80,7 @@ public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
 
   // return to rainbow leds
-  leds.getDefaultCommand().schedule();
+  //leds.getDefaultCommand().schedule();
 }
 
 
@@ -83,6 +92,6 @@ public boolean isFinished() {
   }else{
     satisfactionNumber=0;
   }
-  return satisfactionNumber > 20;
+  return satisfactionNumber > 20 || cannotAlign;
 }
 }

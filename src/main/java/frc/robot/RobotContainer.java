@@ -30,6 +30,9 @@ import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LightSensor;
 import frc.robot.subsystems.Shooter;
 
+// auton speeds : 4m/s top speeds | acc: 2.5 m/s/s
+// 3 ball : 1m/s top speed | .5 m/s/s
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -43,7 +46,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
 
 
-  // TODO 3/31: set right port and length of buffer.
+  // TODO 3/31: set right port and length of buffer. // params: PWM Port and Length of strip
   private final LEDS leds = new LEDS(9, 71);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);

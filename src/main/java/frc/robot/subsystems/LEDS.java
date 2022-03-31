@@ -16,7 +16,7 @@ public class LEDS extends SubsystemBase {
   // one buffer for all the live shit, one for no lights
   public AddressableLEDBuffer liveBuffer;
   public AddressableLEDBuffer nullBuffer;
-  public AddressableLEDBuffer purpleBuffer;
+  public AddressableLEDBuffer orangeBuffer;
   public AddressableLEDBuffer greenBuffer;
   public AddressableLEDBuffer shootingBuffer;
 
@@ -31,13 +31,13 @@ public class LEDS extends SubsystemBase {
     // initialize buffers
     liveBuffer = new AddressableLEDBuffer(length);
     nullBuffer = new AddressableLEDBuffer(length);
-    purpleBuffer = new AddressableLEDBuffer(length);
+    orangeBuffer = new AddressableLEDBuffer(length);
     greenBuffer = new AddressableLEDBuffer(length);
     shootingBuffer = new AddressableLEDBuffer(length);
 
     fillNullBuffer();
     fillRainbowBuffer();
-    fillPurpleBuffer();
+    fillOrangeBuffer();
     fillGreenBuffer();
 
     // both strips same length
@@ -75,9 +75,9 @@ public class LEDS extends SubsystemBase {
     }
   }
 
-  public void fillPurpleBuffer() {
-    for (int i = 0; i < purpleBuffer.getLength(); i++) {
-      purpleBuffer.setRGB(i, 255, 0, 255);
+  public void fillOrangeBuffer() {
+    for (int i = 0; i < orangeBuffer.getLength(); i++) {
+      orangeBuffer.setRGB(i, 255, 165, 0);
     }
   }
 

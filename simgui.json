@@ -2,7 +2,7 @@
   "HALProvider": {
     "Addressable LEDs": {
       "0": {
-        "columns": 48,
+        "columns": 107,
         "order": 1,
         "serpentine": true,
         "start": 1
@@ -41,6 +41,11 @@
         "header": {
           "open": true
         }
+      }
+    },
+    "PWM Outputs": {
+      "window": {
+        "visible": true
       }
     }
   },

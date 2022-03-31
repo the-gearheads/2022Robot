@@ -9,7 +9,7 @@ import frc.robot.subsystems.LEDS;
 
 public class SetShootingSeq extends CommandBase {
   private LEDS leds;
-  private final int lenOfRunningSegments = 4;
+  private final int lenOfRunningSegments = 10;
   
   private int ledIndex = 0;
   private boolean seqDone = false;
@@ -30,8 +30,8 @@ public class SetShootingSeq extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) - ledIndex, 255, 0, 255);
-    leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) + ledIndex, 255, 0, 255);
+    leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) - ledIndex, 255 - (ledIndex * 5), 0, 255);
+    leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) + ledIndex, 255 - (ledIndex * 5), 0, 255);
     leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) - ledIndex + lenOfRunningSegments, 0, 0, 0);
     leds.shootingBuffer.setRGB((leds.shootingBuffer.getLength() / 2) + ledIndex - lenOfRunningSegments, 0, 0, 0);
     leds.updateStrips(leds.shootingBuffer);
