@@ -18,7 +18,7 @@ public class Elevator extends SubsystemBase{
   public Elevator(Intake intake, LightSensor lightSensor, ColorSensor colorSensor) {
     elevatorMotor.setIdleMode(IdleMode.kBrake);
 
-    setDefaultCommand(new AutoElevate(lightSensor, colorSensor, this, intake,0));
+    setDefaultCommand(new FillerDefaultElevate(this));
   }
 
   @Override

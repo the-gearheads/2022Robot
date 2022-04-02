@@ -22,6 +22,7 @@ public class AutonChooser extends SubsystemBase {
     initialPosChooser.addOption("Generic", Constants.Field.ZERO);
 
     SmartDashboard.putData("Initial Position", initialPosChooser);
+    SmartDashboard.putBoolean("4 Ball?", true);
   }
 
   @Override

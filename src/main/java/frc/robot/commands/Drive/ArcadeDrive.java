@@ -67,9 +67,6 @@ import frc.robot.subsystems.DriveTrainInterface;
     // }else{
     //   SmartDashboard.putBoolean("Working", false);
     // }
-    if(lvAxis == 0 && prevXSpeed < 0 && Math.abs(prevXSpeed) > maxAcc){
-      xSpeed = prevXSpeed + maxAcc;
-    }
 
     // SmartDashboard.putNumber("xSpeed here", xSpeed);
 

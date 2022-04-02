@@ -17,6 +17,6 @@ public class LightSensor extends SubsystemBase {
   }
   @Override
   public void periodic() {
-    // SmartDashboard.putBoolean("Light Sensor", get());
+    SmartDashboard.putBoolean("Light Sensor", get());
   }
 }

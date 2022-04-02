@@ -75,8 +75,8 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-      // SmartDashboard.putBoolean("LEFT Climber limit", !leftLimit.get());
-      // SmartDashboard.putBoolean("RIGHT Climber limit", !rightLimit.get());
+      SmartDashboard.putBoolean("LEFT Climber limit", !leftLimit.get());
+      SmartDashboard.putBoolean("RIGHT Climber limit", !rightLimit.get());
   }
 
   public double getRotations(){

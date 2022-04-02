@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.commands.LEDS.SetAlignError;
 import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
@@ -42,7 +41,7 @@ public class AlignShooter extends CommandBase {
     //checkTimer.reset();
     //checkTimer.start();
     satisfactionNumber = 0;
-    nContours = SmartDashboard.getNumber("Contour Num", 0);
+    //nContours = SmartDashboard.getNumber("Contour Num", 0);
 
     // green leds
     (new SetGreen(leds)).schedule();
