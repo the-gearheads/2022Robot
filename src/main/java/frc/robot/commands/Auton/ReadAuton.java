@@ -55,8 +55,8 @@ public class ReadAuton extends CommandBase {
   @Override
   public void initialize() {
     //Set field pos to 0
-
     driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
+    
     // Get Trajectory
     try{
       this.reader = Files.newBufferedReader(Paths.get("/home/lvuser/deploy/autons/" + autonPath));
@@ -65,9 +65,9 @@ public class ReadAuton extends CommandBase {
       e.printStackTrace();
     }
     this.recording = gson.fromJson(reader, recording.getClass());
+    
+    //Set up trajectory
     ramsete = new RamseteController();
-
-
     TrajectoryConfig config = new TrajectoryConfig(1.2, 0.3);//*2 and *1.5
     config.setReversed(isBackward);
     trajectory = TrajectoryGenerator.generateTrajectory(recording, config);
@@ -82,6 +82,7 @@ public class ReadAuton extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //Run ramsete controller ig
     driveTrain.updateOdometry();
     Trajectory.State goal = trajectory.sample(timer.get());
     ChassisSpeeds ramseteValue = ramsete.calculate(driveTrain.getFieldPosition(), goal);
@@ -91,12 +92,14 @@ public class ReadAuton extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //Don't want that bot to keep moving!
     driveTrain.drive(0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //Please stop at some point
     return timer.get() > trajectory.getTotalTimeSeconds();
   }
 }

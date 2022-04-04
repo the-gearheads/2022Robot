@@ -22,8 +22,6 @@ public class WriteAuton extends CommandBase {
   // private DriveTrainInterface driveTrain;
   private boolean started = false;
   private ArrayList<Pose2d> recording = new ArrayList<Pose2d>();
-  private XboxController controller = new XboxController(Constants.Controller.PORT);
-  private Joystick joy = new Joystick(Constants.Joystick.PORT);
   private DriveTrainInterface driveTrain;
 
   /** Creates a new CreateAuton. */
@@ -35,15 +33,19 @@ public class WriteAuton extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Put in smartdashboard booleans to start recording
     SmartDashboard.putBoolean("start recording", false);
     SmartDashboard.putBoolean("Running", true);
     started = false;
+
+    //Set position to 0
     driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // start recording
     if(SmartDashboard.getBoolean("start recording", false)){
       started = true;
 
@@ -55,6 +57,7 @@ public class WriteAuton extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //Paste recording so I can copy and paste that into a json file
     String json = (new Gson()).toJson(recording);
     SmartDashboard.putString("auton path", json);
     SmartDashboard.putBoolean("Running", false);
@@ -63,6 +66,7 @@ public class WriteAuton extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Please finish at some point
     return started && !SmartDashboard.getBoolean("start recording", false);
   }
 }
