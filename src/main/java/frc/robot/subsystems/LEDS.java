@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.LEDS.DefaultIdle;
 import frc.robot.commands.LEDS.DefaultRainbow;
 
 public class LEDS extends SubsystemBase {
@@ -49,7 +50,7 @@ public class LEDS extends SubsystemBase {
     // send voltages to the strips
     startStrips();
 
-    setDefaultCommand(new DefaultRainbow(this));
+    setDefaultCommand(new DefaultIdle(this));
   }
 
   // update both strips to a new buffer
@@ -90,6 +91,18 @@ public class LEDS extends SubsystemBase {
   public void clearShootingBuffer() {
     for (int i = 0; i < shootingBuffer.getLength(); i++) {
       shootingBuffer.setRGB(i, 0, 0, 0);
+    }
+  }
+
+  public void clearBuffer(AddressableLEDBuffer buffer) {
+    for (int i = 0; i < buffer.getLength(); i++) {
+      buffer.setRGB(i, 0, 0, 0);
+    }
+  }
+
+  public void clearBufferYellow(AddressableLEDBuffer buffer) {
+    for (int i = 0; i < buffer.getLength(); i++) {
+      buffer.setRGB(i, 64, 64, 0);
     }
   }
 

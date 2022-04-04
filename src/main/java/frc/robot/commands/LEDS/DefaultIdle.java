@@ -4,15 +4,18 @@
 
 package frc.robot.commands.LEDS;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDS;
 
-public class DefaultRainbow extends CommandBase {
+public class DefaultIdle extends CommandBase {
+  /** Creates a new DefaultIdle. */
   private LEDS leds;
 
-  /** Creates a new defaultLED. */
-  public DefaultRainbow(LEDS leds) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private int direction = 1;
+  private int ledIndex = 0;
+
+  public DefaultIdle(LEDS leds) {
     this.leds = leds;
     addRequirements(leds);
   }
@@ -20,16 +23,24 @@ public class DefaultRainbow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    leds.test = 0;
+    ledIndex = 0;
+    leds.clearBuffer(leds.liveBuffer);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    leds.fillRainbowBuffer();
-    leds.updateStrips(leds.liveBuffer);
-    leds.test += 5;
-    leds.test %= 180;
+      leds.liveBuffer.setRGB(ledIndex, 255, 255, 0);
+      if (ledIndex == leds.liveBuffer.getLength() - 1) {
+        direction = -1;
+      }
+      else if (ledIndex == 0) {
+        direction = 1;        
+      }
+      ledIndex += 1 * direction;
+      leds.updateStrips(leds.liveBuffer);
+      leds.clearBufferYellow(leds.liveBuffer);
   }
 
   // Called once the command ends or is interrupted.

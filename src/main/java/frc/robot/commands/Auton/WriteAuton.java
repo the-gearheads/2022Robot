@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,13 +21,14 @@ import frc.robot.subsystems.DriveTrainInterface;
 public class WriteAuton extends CommandBase {
   // private DriveTrainInterface driveTrain;
   private boolean started = false;
-  private ArrayList<HashMap<String, Double>> recording = new ArrayList<HashMap<String, Double>>();
+  private ArrayList<Pose2d> recording = new ArrayList<Pose2d>();
   private XboxController controller = new XboxController(Constants.Controller.PORT);
   private Joystick joy = new Joystick(Constants.Joystick.PORT);
+  private DriveTrainInterface driveTrain;
 
   /** Creates a new CreateAuton. */
-  public WriteAuton() {
-    // this.driveTrain = driveTrain;
+  public WriteAuton(DriveTrainInterface driveTrain) {
+    this.driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -35,6 +38,7 @@ public class WriteAuton extends CommandBase {
     SmartDashboard.putBoolean("start recording", false);
     SmartDashboard.putBoolean("Running", true);
     started = false;
+    driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,21 +47,7 @@ public class WriteAuton extends CommandBase {
     if(SmartDashboard.getBoolean("start recording", false)){
       started = true;
 
-      HashMap<String, Double> point = new HashMap<String, Double>();
-
-      double lv = controller.getLeftY();
-      double rh = controller.getRightX();
-      double shoot = joy.getRawButton(6)?1:0;
-      double intake = joy.getRawButton(1)?1:0;
-      double elevator = joy.getRawButton(3)?1:0;
-
-      point.put("lv", lv);
-      point.put("rh",rh);
-      point.put("shoot", shoot);
-      point.put("intake", intake);
-      point.put("elevator", elevator);
-
-
+      Pose2d point = driveTrain.getFieldPosition();
       recording.add(point);
     }
   }
