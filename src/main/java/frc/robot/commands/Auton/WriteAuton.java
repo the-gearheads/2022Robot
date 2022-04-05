@@ -40,6 +40,7 @@ public class WriteAuton extends CommandBase {
 
     //Set position to 0
     driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
+    recording.add(new Pose2d(0,0, new Rotation2d(0)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,9 +49,10 @@ public class WriteAuton extends CommandBase {
     // start recording
     if(SmartDashboard.getBoolean("start recording", false)){
       started = true;
-
       Pose2d point = driveTrain.getFieldPosition();
-      recording.add(point);
+      if(point.getTranslation().getDistance(recording.get(recording.size() - 1).getTranslation()) > 1E-12){
+        recording.add(point);
+      }
     }
   }
 

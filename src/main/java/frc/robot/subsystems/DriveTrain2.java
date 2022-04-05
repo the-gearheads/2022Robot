@@ -56,7 +56,7 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
   private DifferentialDriveOdometry odometry;
 
   // Gains are for example purposes only - must be determined for your own robot!
-  private final SimpleMotorFeedforward rfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
+  private final SimpleMotorFeedforward rfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.TEST_RIGHT_kS, Constants.DriveTrain.TEST_RIGHT_kV);
   private final SimpleMotorFeedforward lfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.TEST_LEFT_kS, Constants.DriveTrain.TEST_LEFT_kV);
   private final SimpleMotorFeedforward lfeedbackward = new SimpleMotorFeedforward(Constants.DriveTrain.TEST_LEFT_BACKWARD_kS, Constants.DriveTrain.TEST_LEFT_BACKWARD_kV);
 
@@ -246,12 +246,13 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
     lfEncoder.setPosition(0);
     lbEncoder.setPosition(0);
     gyro.reset();
-    gyro.setAngleAdjustment(gyro.getAngle());
-    odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(),new Pose2d(0,0, new Rotation2d(0)));
   }
+
   public void setFieldPos(Pose2d currentPos){
     zeroEncoders();
-    odometry = new DifferentialDriveOdometry(new Rotation2d(0), currentPos);
-    
+    gyro.reset();
+    gyro.setAngleAdjustment(-currentPos.getRotation().getDegrees());
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), currentPos);
   }
 }

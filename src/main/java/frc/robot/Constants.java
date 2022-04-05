@@ -48,10 +48,12 @@ public final class Constants {
         public static final double RIGHT_kV =    2.973787777757068;//2.1055//3.248
         public static final double RIGHT_kS = 0.5;//0.077369
         
-        public static final double TEST_LEFT_kV =   3.6236801243419694;//2.19
-        public static final double TEST_LEFT_kS = 0.077369;
-        public static final double TEST_LEFT_BACKWARD_kV =    3.6236801243419694;//2.19
-        public static final double TEST_LEFT_BACKWARD_kS = 0.077369;
+        public static final double TEST_RIGHT_kV =   1.6236801243419694;//2.19
+        public static final double TEST_RIGHT_kS = 0;
+        public static final double TEST_LEFT_kV =   1.6236801243419694;//2.19
+        public static final double TEST_LEFT_kS = 0;
+        public static final double TEST_LEFT_BACKWARD_kV =    1.6236801243419694;//2.19
+        public static final double TEST_LEFT_BACKWARD_kS = 0;
         public static final double WHEEL_CIRCUMFERENCE = 0.2032 * Math.PI;//used to be 0.19
 
         public static final double TEST_WHEEL_CIRCUMFERENCE =0.15*Math.PI;

@@ -5,13 +5,16 @@
 package frc.robot.commands.Auton;
 
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -41,6 +44,7 @@ public class ReadAuton extends CommandBase {
   private boolean isBackward;
   private Trajectory trajectory;
   private Timer timer;
+  private boolean isPlay;
 
 
   /** Creates a new ReadAuton. */
@@ -48,28 +52,44 @@ public class ReadAuton extends CommandBase {
     this.driveTrain = driveTrain;
     this.autonPath = auton;
     this.isBackward = isBackward;
+    this.isPlay = false;
+
+    // Get Trajectory
+    try{
+      this.reader = Files.newBufferedReader(Paths.get("/home/lvuser/deploy/autons/" + autonPath + ".json"));
+    }catch(Exception e){
+      SmartDashboard.putString("ERROR", "Error in ReadAuton.java: " + e.getMessage() + e.getLocalizedMessage());
+      e.printStackTrace();
+    }
+    Type castType = new TypeToken<ArrayList<Pose2d>>(){}.getType(); 
+    this.recording = gson.fromJson(reader, castType);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  public ReadAuton(DriveTrainInterface driveTrain, boolean isBackward) {
+    this.driveTrain = driveTrain;
+    this.isBackward = isBackward;
+    this.isPlay = true;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(isPlay){
+      String pathJSON = SmartDashboard.getString("auton path", "");
+      Type castType = new TypeToken<ArrayList<Pose2d>>(){}.getType(); 
+      this.recording = gson.fromJson(pathJSON, castType);
+      SmartDashboard.putString("Here is what I see", gson.toJson(recording));
+    }
     //Set field pos to 0
     driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
-    
-    // Get Trajectory
-    try{
-      this.reader = Files.newBufferedReader(Paths.get("/home/lvuser/deploy/autons/" + autonPath));
-    }catch(Exception e){
-      SmartDashboard.putString("ERROR", "Error in ReadAuton.java: " + e.getMessage() + e.getLocalizedMessage());
-      e.printStackTrace();
-    }
-    this.recording = gson.fromJson(reader, recording.getClass());
-    
+      
     //Set up trajectory
     ramsete = new RamseteController();
-    TrajectoryConfig config = new TrajectoryConfig(1.2, 0.3);//*2 and *1.5
+    TrajectoryConfig config = new TrajectoryConfig(2, 0.5);//*2 and *1.5
     config.setReversed(isBackward);
+    SmartDashboard.putString("Recording", recording.get(0).toString());
     trajectory = TrajectoryGenerator.generateTrajectory(recording, config);
 
     //Start Timer
@@ -100,6 +120,7 @@ public class ReadAuton extends CommandBase {
   @Override
   public boolean isFinished() {
     //Please stop at some point
+    // return true;
     return timer.get() > trajectory.getTotalTimeSeconds();
   }
 }
