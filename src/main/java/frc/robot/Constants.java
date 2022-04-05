@@ -114,6 +114,10 @@ public final class Constants {
         public static final int PORT = 1;
     }
 
+    public static class Auton{
+        public static boolean readingAuton = false;
+    }
+
     public static Robot TimedRobot;
 
     public static final class ColorSensor{

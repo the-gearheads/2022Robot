@@ -20,9 +20,10 @@ import frc.robot.subsystems.DriveTrainInterface;
 
 public class WriteAuton extends CommandBase {
   // private DriveTrainInterface driveTrain;
-  private boolean started = false;
+  // private boolean started = false;
   private ArrayList<Pose2d> recording = new ArrayList<Pose2d>();
   private DriveTrainInterface driveTrain;
+  private int discountedNum = 0;
 
   /** Creates a new CreateAuton. */
   public WriteAuton(DriveTrainInterface driveTrain) {
@@ -34,26 +35,30 @@ public class WriteAuton extends CommandBase {
   @Override
   public void initialize() {
     //Put in smartdashboard booleans to start recording
-    SmartDashboard.putBoolean("start recording", false);
+    // SmartDashboard.putBoolean("start recording", false);
     SmartDashboard.putBoolean("Running", true);
-    started = false;
+    // started = false;
 
     //Set position to 0
     driveTrain.setFieldPos(new Pose2d(0,0, new Rotation2d(0)));
     recording.add(new Pose2d(0,0, new Rotation2d(0)));
+
+    discountedNum = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // start recording
-    if(SmartDashboard.getBoolean("start recording", false)){
-      started = true;
+    // if(SmartDashboard.getBoolean("start recording", false)){
+    //   started = true;
       Pose2d point = driveTrain.getFieldPosition();
       if(point.getTranslation().getDistance(recording.get(recording.size() - 1).getTranslation()) > 1E-12){
         recording.add(point);
+      }else{
+        SmartDashboard.putNumber("discountedNum", ++discountedNum);
       }
-    }
+    // }
   }
 
   // Called once the command ends or is interrupted.
@@ -69,6 +74,7 @@ public class WriteAuton extends CommandBase {
   @Override
   public boolean isFinished() {
     // Please finish at some point
-    return started && !SmartDashboard.getBoolean("start recording", false);
+    // return started && !SmartDashboard.getBoolean("start recording", false);
+    return false;
   }
 }
