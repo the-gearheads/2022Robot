@@ -57,6 +57,7 @@
       "/LiveWindow/ColorSensor": "Subsystem",
       "/LiveWindow/DistanceSensor": "Subsystem",
       "/LiveWindow/DriveTrain": "Subsystem",
+      "/LiveWindow/DriveTrain2": "Subsystem",
       "/LiveWindow/Elevator": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/LEDS": "Subsystem",

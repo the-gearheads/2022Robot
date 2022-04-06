@@ -87,7 +87,7 @@ public class ReadAuton extends CommandBase {
       
     //Set up trajectory
     ramsete = new RamseteController();
-    TrajectoryConfig config = new TrajectoryConfig(2, 0.5);//*2 and *1.5
+    TrajectoryConfig config = new TrajectoryConfig(1, 0.25);//*2 and *1.5
     config.setReversed(isBackward);
     SmartDashboard.putString("Recording", recording.get(0).toString());
     trajectory = TrajectoryGenerator.generateTrajectory(recording, config);

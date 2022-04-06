@@ -21,7 +21,7 @@ import frc.robot.subsystems.DriveTrainInterface;
 public class WriteAuton extends CommandBase {
   // private DriveTrainInterface driveTrain;
   // private boolean started = false;
-  private ArrayList<Pose2d> recording = new ArrayList<Pose2d>();
+  private ArrayList<Pose2d> recording;
   private DriveTrainInterface driveTrain;
   private int discountedNum = 0;
 
@@ -34,6 +34,7 @@ public class WriteAuton extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    recording = new ArrayList<Pose2d>();
     //Put in smartdashboard booleans to start recording
     // SmartDashboard.putBoolean("start recording", false);
     SmartDashboard.putBoolean("Running", true);

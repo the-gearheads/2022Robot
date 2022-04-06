@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -21,6 +22,7 @@ public class Intake extends SubsystemBase {
   private final double speed = 0.6;
   private final CANSparkMax leftMotor = new CANSparkMax(Constants.Intake.LEFT_MOTOR, MotorType.kBrushless);
   private final CANSparkMax rightMotor = new CANSparkMax(Constants.Intake.RIGHT_MOTOR, MotorType.kBrushless);
+  private final RelativeEncoder rightEncoder = rightMotor.getEncoder();
   public final Solenoid retractSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.RETRACT_SOLENOID);
   public final Solenoid extendSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.Intake.EXTEND_SOLENOID);
   /** Creates a new ExampleSubsystem. */
@@ -32,13 +34,22 @@ public class Intake extends SubsystemBase {
         rightMotor.set(-speed);
     }
 
+    public void setSpeed(double speed){
+      leftMotor.set(-speed);
+        rightMotor.set(-speed);
+    }
+
     public void reverse() {
       leftMotor.set(speed);
       rightMotor.set(speed);
     }
 
     public double getMotorSpeed(){
-      return rightMotor.get();
+      return -rightMotor.get();
+    }
+
+    public double getRPM(){
+      return -rightEncoder.getVelocity();
     }
 
     public void stop() {

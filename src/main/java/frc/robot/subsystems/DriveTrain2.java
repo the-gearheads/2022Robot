@@ -77,10 +77,7 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
       lfMotor.setInverted(false);
       lbMotor.setInverted(false);
 
-      rfMotor.setIdleMode(IdleMode.kBrake);
-      rbMotor.setIdleMode(IdleMode.kBrake);
-      lfMotor.setIdleMode(IdleMode.kBrake);
-      lbMotor.setIdleMode(IdleMode.kBrake);
+      setBrakeMode(false);
 
       lbEncoder.setVelocityConversionFactor(1);
       lfEncoder.setVelocityConversionFactor(1);      
@@ -254,5 +251,18 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
     gyro.reset();
     gyro.setAngleAdjustment(-currentPos.getRotation().getDegrees());
     odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), currentPos);
+  }
+  public void setBrakeMode(boolean isBreak){
+    if(isBreak){
+      rfMotor.setIdleMode(IdleMode.kBrake);
+      rbMotor.setIdleMode(IdleMode.kBrake);
+      lfMotor.setIdleMode(IdleMode.kBrake);
+      lbMotor.setIdleMode(IdleMode.kBrake);
+    }else{
+      rfMotor.setIdleMode(IdleMode.kCoast);
+      rbMotor.setIdleMode(IdleMode.kCoast);
+      lfMotor.setIdleMode(IdleMode.kCoast);
+      lbMotor.setIdleMode(IdleMode.kCoast);
+    }
   }
 }
