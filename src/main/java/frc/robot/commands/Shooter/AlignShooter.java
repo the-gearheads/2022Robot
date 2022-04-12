@@ -16,7 +16,7 @@ import frc.robot.subsystems.LEDS;
 
 public class AlignShooter extends CommandBase {
   private double x;
-  private PIDController pid = new PIDController(2, 0, 0);
+  private PIDController pid = new PIDController(0.1, 0, 0);
   
   private double maxRotSpeed = 1.9;
   private double minRotSpeed = 0.8;
@@ -35,6 +35,11 @@ public class AlignShooter extends CommandBase {
     this.leds = leds;
   }
 
+  public AlignShooter(DriveTrainInterface driveTrain) {
+    this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -44,7 +49,7 @@ public class AlignShooter extends CommandBase {
     //nContours = SmartDashboard.getNumber("Contour Num", 0);
 
     // green leds
-    (new SetGreen(leds)).schedule();
+    // (new SetGreen(leds)).schedule();
     
     /*if (nContours < 1) {
       (new SetAlignError(leds)).schedule(false);
@@ -68,10 +73,10 @@ public class AlignShooter extends CommandBase {
   this.x = SmartDashboard.getNumber("Mean X", 0);
   
   double rotSpeed = pid.calculate(x, 0);
-  double rotDirection = rotSpeed > 0? -1 : 1;
+  double rotDirection = rotSpeed > 0? 1 : -1;// CHANGE TO 1 : -1
   rotSpeed = Math.abs(rotSpeed);
 
-  if(Math.abs(x) < 0.05){
+  if(Math.abs(x) < 3){
     rotSpeed = 0;
   }else
   if(Math.abs(rotSpeed) > maxRotSpeed){
@@ -92,14 +97,14 @@ public void end(boolean interrupted) {
   //checkTimer.stop();
 
   // return to rainbow leds
-  leds.getDefaultCommand().schedule();
+  // leds.getDefaultCommand().schedule();
 }
 
 
 // Returns true when the command should end.
 @Override
 public boolean isFinished() {
-  if(Math.abs(x) < 0.07){
+  if(Math.abs(x) < 4){
     satisfactionNumber++;
   }else{
     satisfactionNumber=0;

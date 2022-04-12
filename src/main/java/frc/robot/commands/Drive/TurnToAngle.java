@@ -41,13 +41,13 @@ public class TurnToAngle extends CommandBase {
     SmartDashboard.putNumber("Current Rot", currentAngle);
     SmartDashboard.putNumber("Wanted Rot", requestedAngle);
     double maxRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY * 3;
-    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY /1.5;
+    double minRotSpeed = Constants.DriveTrain.MAX_ROT_VELOCITY /1.7;
 
     double rotSpeed = rotController.calculate(currentAngle, requestedAngle);
     double rotDirection = rotSpeed > 0? -1 : 1;
     rotSpeed = Math.abs(rotSpeed);
 
-    if(Math.abs(currentAngle - requestedAngle) < 3){
+    if(Math.abs(currentAngle - requestedAngle) < 2){
       rotSpeed = 0;
     }else
     if(Math.abs(rotSpeed) > maxRotSpeed){
@@ -62,6 +62,7 @@ public class TurnToAngle extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveTrain.drive(0,0);
     SmartDashboard.putBoolean("turning", false);
 
   }
@@ -75,6 +76,6 @@ public class TurnToAngle extends CommandBase {
     }else{
       satisfactionNumber=0;
     }
-    return satisfactionNumber > 20;
+    return satisfactionNumber > 5;
   }
 }

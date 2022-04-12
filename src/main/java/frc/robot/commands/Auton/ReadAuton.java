@@ -87,7 +87,7 @@ public class ReadAuton extends CommandBase {
       
     //Set up trajectory
     ramsete = new RamseteController();
-    TrajectoryConfig config = new TrajectoryConfig(1, 0.25);//*2 and *1.5
+    TrajectoryConfig config = new TrajectoryConfig(SmartDashboard.getNumber("Velocity", 0.1), SmartDashboard.getNumber("Acc", 0.1));//*2 and *1.5
     config.setReversed(isBackward);
     SmartDashboard.putString("Recording", recording.get(0).toString());
     trajectory = TrajectoryGenerator.generateTrajectory(recording, config);
@@ -106,6 +106,9 @@ public class ReadAuton extends CommandBase {
     driveTrain.updateOdometry();
     Trajectory.State goal = trajectory.sample(timer.get());
     ChassisSpeeds ramseteValue = ramsete.calculate(driveTrain.getFieldPosition(), goal);
+    if(timer.get() > (2.0/3) * trajectory.getTotalTimeSeconds()){
+      ramseteValue.omegaRadiansPerSecond /= 2;
+    }
     driveTrain.drive(ramseteValue);
   }
 
@@ -114,6 +117,9 @@ public class ReadAuton extends CommandBase {
   public void end(boolean interrupted) {
     //Don't want that bot to keep moving!
     driveTrain.drive(0,0);
+    // if(recording.get(recording.size() - 1).getTranslation().getDistance(driveTrain.getFieldPosition().getTranslation()) > 0.01){
+    //   (new AutonDrive(driveTrain, driveTrain.getFieldPosition(), recording.get(recording.size() - 1))).schedule();
+    // }
   }
 
   // Returns true when the command should end.

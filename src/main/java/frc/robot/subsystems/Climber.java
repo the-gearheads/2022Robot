@@ -14,7 +14,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.Climber.DefaultClimber;
 
 public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -34,10 +37,35 @@ public class Climber extends SubsystemBase {
     private boolean rightDisable = false;
     private boolean leftDisable = false;
 
+    public final Solenoid armsRetract = new Solenoid(PneumaticsModuleType.REVPH, Constants.Climber.ARMS_RETRACT);
+    public final Solenoid armsExtend = new Solenoid(PneumaticsModuleType.REVPH, Constants.Climber.ARMS_EXTEND);
+
   public Climber() {
       left.setIdleMode(IdleMode.kBrake);
       right.setIdleMode(IdleMode.kBrake);
       rightEncoder.setPosition(0);
+
+      setDefaultCommand(new DefaultClimber(this));
+
+  }
+
+  public void liftArms() {
+    armsRetract.set(false);
+    armsExtend.set(true);
+  }
+
+  public void lowerArms() {
+    armsRetract.set(true);
+    armsExtend.set(false);
+  }
+
+  public void restArms(){
+    armsRetract.set(false);
+    armsExtend.set(false);
+  }
+
+  public boolean areArmsAtRest(){
+    return !armsRetract.get() && !armsExtend.get();
   }
 
   private double round(double value, double decimalPlaces){

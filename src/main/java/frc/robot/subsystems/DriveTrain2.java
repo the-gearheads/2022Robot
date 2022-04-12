@@ -77,7 +77,7 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
       lfMotor.setInverted(false);
       lbMotor.setInverted(false);
 
-      setBrakeMode(false);
+      setBrakeMode(true);
 
       lbEncoder.setVelocityConversionFactor(1);
       lfEncoder.setVelocityConversionFactor(1);      
@@ -103,6 +103,9 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
     SmartDashboard.putString("Initial Angle", gyro.getRotation2d() + "");
     odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), new Pose2d(0,0,new Rotation2d(0)));
     setDefaultCommand(new ArcadeDrive(this));
+
+    SmartDashboard.putNumber("Velocity", 0.1);
+    SmartDashboard.putNumber("Acc", 0.1);
   }
 
 

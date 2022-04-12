@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Auton.AutonDrive2;
 import frc.robot.commands.Auton.PreparedAuton;
 import frc.robot.commands.Auton.ReadAuton;
 import frc.robot.commands.Auton.Wait;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LightSensor;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 
 // auton speeds : 4m/s top speeds | acc: 2.5 m/s/s
 // 3 ball : 1m/s top speed | .5 m/s/s
@@ -47,29 +49,45 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // private final DriveTrain driveTrain = new DriveTrain();
-  private final DriveTrain2 driveTrain = new DriveTrain2();
+  private final DriveTrain driveTrain = new DriveTrain();
+  // private final DriveTrain2 driveTrain = new DriveTrain2();
+  Vision vision = new Vision();
   
   // private final Intake intake = new Intake();
 
 
   // TODO 3/31: set right port and length of buffer. // params: PWM Port and Length of strip
-  // private final LEDS leds = new LEDS(9, 71);
+  private final LEDS leds = new LEDS(9, 71);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
-  // private final XboxController joystick = new XboxController(Constants.Joystick.PORT);
-  // private final Shooter shooter = new Shooter(leds);
-  // private final Climber climber = new Climber();
+  private final XboxController joystick = new XboxController(Constants.Joystick.PORT);
+  private final Shooter shooter = new Shooter(leds);
+  private final Climber climber = new Climber();
   
   // private final DistanceSensor distanceSensor = new DistanceSensor();
-  // private final ColorSensor colorSensor = new ColorSensor();
-  // private final LightSensor lightSensor = new LightSensor();
+  private final ColorSensor colorSensor = new ColorSensor();
+  private final LightSensor lightSensor = new LightSensor();
   // private final AutonChooser autonChooser = new AutonChooser();
+  private final Intake intake = new Intake();
 
-  // private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
-
+  private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
   public RobotContainer() {
     // Logger.configureLoggingAndConfig(this, false);
+    // SmartDashboard.putNumber("X val", 100);
+    // SmartDashboard.putNumber("Y val", 0);
+    // SmartDashboard.putNumber("Angle", 0);
+    SmartDashboard.putNumber("Turn 1", 0);
+    SmartDashboard.putNumber("Drive 1", 0);
+    SmartDashboard.putNumber("Turn 2", 0);
+    SmartDashboard.putNumber("Drive 2", 0);
+    
+    SmartDashboard.putNumber("Turn 1 Reverse", 0);
+    SmartDashboard.putNumber("Drive 1 Reverse", 0);
+    SmartDashboard.putNumber("Turn 2 Reverse", 0);
+    SmartDashboard.putNumber("Drive 2 Reverse", 0);
+
+    SmartDashboard.putNumber("Velocity", 1);
+    SmartDashboard.putNumber("Acc", 0.5);
 
     configureButtonBindings();
 
@@ -85,19 +103,139 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
-    controllerBtn1.toggleWhenPressed(new WriteAuton(driveTrain));
 
-    JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    controllerBtn4.toggleWhenPressed(new ReadAuton(driveTrain, false));
-    
-    JoystickButton controllerBtn2 = new JoystickButton(controller, 2);
-    controllerBtn2.toggleWhenPressed(new StartEndCommand(()->{
-      driveTrain.setBrakeMode(true);
-    }, ()->{
-      driveTrain.setBrakeMode(false);
+    JoystickButton btn1 = new JoystickButton(joystick, 1);
+    btn1.whenPressed(new InstantCommand(()->{
+      intake.extend();
+      intake.spin();
+      if(!Constants.Elevator.auto){
+      elevator.elevate();
+      }
+    }, intake)).whenReleased(new InstantCommand(()->{
+      intake.retract();
+      intake.stop();
+      if(!Constants.Elevator.auto){
+        elevator.stop();
+        }
+    }, intake));
+    JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
+    controllerBtn1.toggleWhenPressed(new InstantCommand(()->{
+      driveTrain.setFieldPos(new Pose2d(7.668997828753121,1.5791062893481724, new Rotation2d(-1.5707963267948966)));
+      PreparedAuton intake = new PreparedAuton(driveTrain, "Right-5-Start");
+      TurnToAngle turn = new TurnToAngle(driveTrain, new Rotation2d(-1.917500707738926 - 2 * Math.PI).getDegrees());
+      (new SequentialCommandGroup(intake, turn)).schedule();
     }));
 
+    JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
+    controllerBtn4.whenPressed(new InstantCommand(()->{
+      driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
+      TurnToAngle turn1 = new TurnToAngle(driveTrain, SmartDashboard.getNumber("Turn 1", 0));
+      AutonDrive2 drive1 = new AutonDrive2(driveTrain, -SmartDashboard.getNumber("Drive 1", 0));
+
+      TurnToAngle turn2 = new TurnToAngle(driveTrain, SmartDashboard.getNumber("Turn 2", 0));
+      AutonDrive2 drive2 = new AutonDrive2(driveTrain, -SmartDashboard.getNumber("Drive 2", 0));
+      
+      SequentialCommandGroup auton = new SequentialCommandGroup(turn1, drive1, turn2, drive2);
+      auton.schedule();
+    }));
+    
+    JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
+    controllerBtn3.whenPressed(new InstantCommand(()->{
+      driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
+      TurnToAngle turn1 = new TurnToAngle(driveTrain, -SmartDashboard.getNumber("Turn 1 Reverse", 0));
+      AutonDrive2 drive1 = new AutonDrive2(driveTrain, SmartDashboard.getNumber("Drive 1 Reverse", 0));
+
+      TurnToAngle turn2 = new TurnToAngle(driveTrain, -SmartDashboard.getNumber("Turn 2 Reverse", 0));
+      AutonDrive2 drive2 = new AutonDrive2(driveTrain, SmartDashboard.getNumber("Drive 2 Reverse", 0));
+      
+      SequentialCommandGroup auton = new SequentialCommandGroup(drive2, turn2, drive1, turn1);
+      auton.schedule();
+    }));
+
+    JoystickButton controllerBtn2 = new JoystickButton(controller, 2);
+    controllerBtn2.whenPressed(new InstantCommand(()->{
+      driveTrain.setFieldPos(new Pose2d(7.668997828753121,1.5791062893481724, new Rotation2d(-1.5707963267948966)));
+
+      PreparedAuton intakeAuton = new PreparedAuton(driveTrain, "Right-5-Start");
+      TurnToAngle turn = new TurnToAngle(driveTrain, new Rotation2d(-1.917500707738926 - 2 * Math.PI).getDegrees());
+
+      InstantCommand zero1 = new InstantCommand(()->{
+        driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
+      });
+
+      TurnToAngle turn1 = new TurnToAngle(driveTrain, -49);
+      AutonDrive2 drive1 = new AutonDrive2(driveTrain, -220);
+
+      TurnToAngle turn2 = new TurnToAngle(driveTrain, 35);
+      AutonDrive2 drive2 = new AutonDrive2(driveTrain, -15);
+
+      InstantCommand zero2 = new InstantCommand(()->{
+        driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
+      });
+
+      TurnToAngle turn1R = new TurnToAngle(driveTrain, 52);
+      AutonDrive2 drive1R = new AutonDrive2(driveTrain, 210);
+
+      TurnToAngle turn2R = new TurnToAngle(driveTrain, -42);
+      AutonDrive2 drive2R = new AutonDrive2(driveTrain, 15);
+
+
+      InstantCommand startIntake = new InstantCommand(()->{
+        intake.extend();
+        intake.spin();
+      });
+      InstantCommand stopIntake = new InstantCommand(()->{
+        intake.retract();
+        intake.stop();
+      });
+
+      ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+      ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+      ActuateShooter shoot3 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+      ActuateShooter shoot4 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+      ActuateShooter shoot5 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+
+      Wait wait1 = new Wait(0.5);
+
+      Wait wait2 = new Wait(0.5);
+      Wait wait3 = new Wait(1);
+
+      elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake, 0));
+      SequentialCommandGroup auton = new SequentialCommandGroup(startIntake, shoot1, intakeAuton, turn, shoot2, wait1, shoot3, zero1, turn1, drive1, turn2, drive2, zero2, drive2R, turn2R, drive1R, turn1R, shoot4, wait2, shoot5, stopIntake);
+      // SequentialCommandGroup auton = new SequentialCommandGroup(intakeAuton, turn, wait1, zero1, turn1, drive1, turn2, drive2, zero2, drive2R, turn2R, drive1R, turn1R);
+      auton.schedule();
+    }));
+
+    
+    JoystickButton btn8 = new JoystickButton(joystick, 8);
+    btn8.whenPressed(new InstantCommand(()->{
+      climber.liftArms();
+    }, climber));
+
+    JoystickButton btn9 = new JoystickButton(joystick, 9);
+    btn9.whenPressed(new InstantCommand(()->{
+      climber.lowerArms();
+    }, climber));
+
+    
+    JoystickButton btn11 = new JoystickButton(joystick, 11);
+    btn11.whileHeld(new InstantCommand(()->{
+      climber.setSpeed(0.9);
+    }, climber)).whenReleased(new InstantCommand(()->{
+      climber.stop();
+    }, climber));
+
+    JoystickButton btn10 = new JoystickButton(joystick, 10);
+    btn10.whileHeld(new InstantCommand(()->{
+      climber.setSpeed(-0.89);
+    }, climber)).whenReleased(new InstantCommand(()->{
+      climber.stop();
+    }, climber));
+    
+
+
+    // JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
+    // controllerBtn3.toggleWhenPressed(new AlignShooter(driveTrain));
   }
 
   /**
@@ -110,6 +248,8 @@ public class RobotContainer {
     }
 }
 
+
+//THIS IS A BARRIER++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // public class RobotContainer {
 //   private final DriveTrain driveTrain = new DriveTrain();
@@ -180,18 +320,27 @@ public class RobotContainer {
 //     // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
 //     // controllerBtn4.whenPressed(new AlignShooter(driveTrain, vision));
 
+//     JoystickButton btn8 = new JoystickButton(joystick, 8);
+//     btn8.whenPressed(new InstantCommand(()->{
+//       climber.liftArms();
+//     }, climber));
 
 //     JoystickButton btn9 = new JoystickButton(joystick, 9);
 //     btn9.whenPressed(new InstantCommand(()->{
-//       elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
-//       Constants.Elevator.auto = true;
-//     }, elevator));
+//       climber.lowerArms();
+//     }, climber));
+    
+//     // JoystickButton btn9 = new JoystickButton(joystick, 9);
+//     // btn9.whenPressed(new InstantCommand(()->{
+//     //   elevator.setDefaultCommand(new AutoElevate(lightSensor, colorSensor, elevator, intake,0));
+//     //   Constants.Elevator.auto = true;
+//     // }, elevator));
 
-//     JoystickButton btn8 = new JoystickButton(joystick, 8);
-//     btn8.whenPressed(new InstantCommand(()->{
-//       elevator.setDefaultCommand(new FillerDefaultElevate(elevator));
-//       Constants.Elevator.auto = false;
-//     }, elevator));
+//     // JoystickButton btn8 = new JoystickButton(joystick, 8);
+//     // btn8.whenPressed(new InstantCommand(()->{
+//     //   elevator.setDefaultCommand(new FillerDefaultElevate(elevator));
+//     //   Constants.Elevator.auto = false;
+//     // }, elevator));
 
 //     JoystickButton btn11 = new JoystickButton(joystick, 11);
 //     btn11.whileHeld(new InstantCommand(()->{

@@ -84,9 +84,9 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       //Should all of these be rf? This is the same in DriveTrain2
       //Who wrote this? thanks by the way
       rfMotor.setNeutralMode(NeutralMode.Brake);
-      rbMotor.setNeutralMode(NeutralMode.Coast);
+      rbMotor.setNeutralMode(NeutralMode.Brake);
       lfMotor.setNeutralMode(NeutralMode.Brake);
-      lbMotor.setNeutralMode(NeutralMode.Coast);
+      lbMotor.setNeutralMode(NeutralMode.Brake);
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
 
   public void periodic(){
     updateOdometry();
-    // printValues();
+    printValues();
 
   }
 

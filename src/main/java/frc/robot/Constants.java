@@ -54,7 +54,7 @@ public final class Constants {
         public static final double TEST_LEFT_kS = 0;
         public static final double TEST_LEFT_BACKWARD_kV =    1.6236801243419694;//2.19
         public static final double TEST_LEFT_BACKWARD_kS = 0;
-        public static final double WHEEL_CIRCUMFERENCE = 0.2032 * Math.PI;//used to be 0.19
+        public static final double WHEEL_CIRCUMFERENCE = 8 * 0.0254 * Math.PI;//used to be 0.19
 
         public static final double TEST_WHEEL_CIRCUMFERENCE =0.15*Math.PI;
         public static final Pose2d INITIAL_POS = new Pose2d(0,0, new Rotation2d(0));
@@ -107,6 +107,9 @@ public final class Constants {
         public static final int RIGHT_LIMIT = 2;
         public static final double MAX_SPEED = 0;
         public static final double MIN_SPEED = 0;
+        public static final int RIGHT_RETRACT = 0;
+        public static final int ARMS_RETRACT = 5;
+        public static final int ARMS_EXTEND = 6;
 
     }
 
@@ -129,6 +132,10 @@ public final class Constants {
         public static final int RETRACT_SOLENOID = 3;
         public static final int LEFT_MOTOR = 10;
         public static final int RIGHT_MOTOR = 9;
+        public static final int RIGHT_EXTEND = 0;
+        public static final int LEFT_RETRACT = 0;
+        public static final int LEFT_EXTEND = 0;
+        public static final int ARMS_EXTEND = 0;
 
     }
 
