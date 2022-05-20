@@ -207,7 +207,11 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
   public double getRotation(){
     return gyro.getAngle();
   }
+  public void setRampRate(boolean isTrue){
+  }
 
+  public void setRampRate(double val){
+  }
   public double getRightPos(){
     return -(rfEncoder.getPosition() +rbEncoder.getPosition())/2  * Constants.DriveTrain.TEST_WHEEL_CIRCUMFERENCE/ 7.3;
   }

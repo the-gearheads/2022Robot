@@ -100,13 +100,34 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     zeroEncoders();
     odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
     setDefaultCommand(new ArcadeDrive(this));
+    SmartDashboard.putNumber("rampRate", 0);
   }
 
 
   public void periodic(){
     updateOdometry();
     printValues();
+  }
 
+  public void setRampRate(boolean isTrue){
+    if(isTrue){
+      lbMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0.7));
+      lfMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0.7));
+      rbMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0.7));
+      rfMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0.7));
+    }else{
+      lbMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0));
+      lfMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0));
+      rbMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0));
+      rfMotor.configOpenloopRamp(SmartDashboard.getNumber("rampRate", 0));
+    }
+  }
+
+  public void setRampRate(double val){
+      lbMotor.configOpenloopRamp(val);
+      lfMotor.configOpenloopRamp(val);
+      rbMotor.configOpenloopRamp(val);
+      rfMotor.configOpenloopRamp(val);
   }
 
   public void printValues(){

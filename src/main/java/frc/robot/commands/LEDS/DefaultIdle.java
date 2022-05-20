@@ -6,6 +6,7 @@ package frc.robot.commands.LEDS;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.LEDS;
 
 public class DefaultIdle extends CommandBase {
@@ -31,13 +32,21 @@ public class DefaultIdle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      leds.liveBuffer.setRGB(ledIndex, 255, 255, 0);
+
+      leds.liveBuffer.setRGB(
+        ledIndex, 
+        Constants.LEDS.red,  // team colors
+        Constants.LEDS.green,
+        Constants.LEDS.blue
+      );
+
       if (ledIndex == leds.liveBuffer.getLength() - 1) {
         direction = -1;
       }
       else if (ledIndex == 0) {
         direction = 1;        
       }
+
       ledIndex += 1 * direction;
       leds.updateStrips(leds.liveBuffer);
       leds.clearBufferYellow(leds.liveBuffer);

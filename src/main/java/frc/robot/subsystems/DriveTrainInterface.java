@@ -44,4 +44,6 @@ public interface DriveTrainInterface extends Subsystem{
   public void setSpeeds(double leftSpeed, double rightSpeed);
 
   public void printValues();
+  public void setRampRate(double val);
+  public void setRampRate(boolean isTrue);
 }

@@ -45,7 +45,7 @@ public class ActuateShooter extends CommandBase {
       }
 
       //External Code (sorry)
-      if(Constants.Elevator.color_status){
+      if(Constants.Elevator.color_status && Constants.Elevator.auto){
         Constants.Elevator.shot = true;
       }
     }else{

@@ -18,14 +18,20 @@ public class Elevator extends SubsystemBase{
   public Elevator(Intake intake, LightSensor lightSensor, ColorSensor colorSensor) {
     elevatorMotor.setIdleMode(IdleMode.kBrake);
 
-    setDefaultCommand(new AutoElevate(lightSensor, colorSensor, this, intake, 1));
+    // setDefaultCommand(new AutoElevate(lightSensor, colorSensor, this, intake, 1));
+        setDefaultCommand(new FillerDefaultElevate(this));
+
   }
 
   @Override
   public void periodic() {
       // SmartDashboard.putNumber("Elevator Speed", elevatorMotor.get());
-
-    // This method will be called once per scheduler run
+      if(Constants.Elevator.auto){
+        SmartDashboard.putBoolean("Auto Elevate", true);
+      }else{
+        SmartDashboard.putBoolean("Auto Elevate", false);
+      }
+      // This method will be called once per scheduler run
   }
 
   public void elevate(){

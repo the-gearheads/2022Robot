@@ -36,8 +36,9 @@ public final class Constants {
         public static final int RBMOTOR_ID = 5;
         public static final int LFMOTOR_ID = 6;
         public static final int LBMOTOR_ID = 7;
-        public static double MAX_VELOCITY = 3;//1
-        public static final double MAX_ROT_VELOCITY = 2.5;//2.5
+        public static double MAX_VELOCITY = 2;//1
+        public static final double MAX_ROT_VELOCITY = 2.2;//2.5
+        
         public static double MAX_ACCELERATION = 6;
         public static final double TEST_TRACK_WIDTH = 0.381;
         public static final double TRACK_WIDTH = 0.622;
@@ -144,5 +145,11 @@ public final class Constants {
         public static boolean shot = false;
         public static boolean color_status = false;
         public static boolean auto = false;
+    }
+
+    public static final class LEDS {
+        public static final int red = 0xff;
+        public static final int green = 0xf2;
+        public static final int blue = 0x22;
     }
 }

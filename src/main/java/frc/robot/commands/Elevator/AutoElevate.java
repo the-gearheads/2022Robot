@@ -54,6 +54,7 @@ public class AutoElevate extends CommandBase {
     shouldStop = false;
     Constants.Elevator.shot = false;
     SmartDashboard.putBoolean("Auto Elevate", true);
+    Constants.Elevator.auto = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -140,6 +141,7 @@ public class AutoElevate extends CommandBase {
   public void end(boolean interrupted) {
     elevator.stop();
     SmartDashboard.putBoolean("Auto Elevate", false);
+    Constants.Elevator.auto = false;
   }
 
   // Returns true when the command should end.

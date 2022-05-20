@@ -15,6 +15,14 @@ public class AutonChooser extends SubsystemBase {
   public Pose2d prevPos = new Pose2d();
   public SendableChooser<Pose2d> initialPosChooser = new SendableChooser<>();
   public SendableChooser<String> autonChooser = new SendableChooser<>();
+  public double xHuman = 1.835;
+  public double yHuman = 0.56;
+  public double rotHuman = -2.2;
+
+  public double xShoot = 7.03;
+  public double yShoot = 1.695;
+  public double rotShoot = -1.82;
+
   public AutonChooser() {
     initialPosChooser.setDefaultOption("Right", Constants.Field.RIGHT_POS);
     initialPosChooser.addOption("Mid", Constants.Field.MID_POS);
@@ -23,6 +31,18 @@ public class AutonChooser extends SubsystemBase {
 
     SmartDashboard.putData("Initial Position", initialPosChooser);
     SmartDashboard.putBoolean("4 Ball?", true);
+
+    SmartDashboard.putNumber("5 Ball Human X",xHuman);
+    SmartDashboard.putNumber("5 Ball Human Y", yHuman);
+    SmartDashboard.putNumber("5 Ball Human Rot", rotHuman);
+
+
+    SmartDashboard.putNumber("5 Ball Shoot X", xShoot);
+    SmartDashboard.putNumber("5 Ball Shoot Y", yShoot);
+    SmartDashboard.putNumber("5 Ball Shoot Rot", rotShoot);
+
+    SmartDashboard.putNumber("Velocity", 4);
+    SmartDashboard.putNumber("Acc", 1.2);
   }
 
   @Override
@@ -47,5 +67,34 @@ public class AutonChooser extends SubsystemBase {
     }
     prevPos = initialPosChooser.getSelected();
     // This method will be called once per scheduler run
+
+
+    if(SmartDashboard.getNumber("5 Ball Human X",0) == 0){
+      SmartDashboard.putNumber("5 Ball Human X",xHuman);
+    }
+    if(SmartDashboard.getNumber("5 Ball Human Y", 0) == 0){
+      SmartDashboard.putNumber("5 Ball Human Y", yHuman);
+    }    
+    if(SmartDashboard.getNumber("5 Ball Human Rot", 0) == 0){
+      SmartDashboard.putNumber("5 Ball Human Rot", rotHuman);
+    }
+
+
+    if(SmartDashboard.getNumber("5 Ball Shoot X", 0) == 0){
+      SmartDashboard.putNumber("5 Ball Shoot X", xShoot);
+    }
+    if(SmartDashboard.getNumber("5 Ball Shoot Y", 0) == 0){
+      SmartDashboard.putNumber("5 Ball Shoot Y", yShoot);
+    }
+    if(SmartDashboard.getNumber("5 Ball Shoot Rot", 0) == 0){
+    SmartDashboard.putNumber("5 Ball Shoot Rot", rotShoot);
+    }
+
+    if(SmartDashboard.getNumber("Velocity", 0) == 0){
+      SmartDashboard.putNumber("Velocity", 4);
+    }
+    if(SmartDashboard.getNumber("Acc", 0) == 0){
+      SmartDashboard.putNumber("Acc", 1.2);
+    }
   }
 }
