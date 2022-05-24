@@ -16,12 +16,16 @@ public class AutomatedHighClimb extends CommandBase {
   private boolean secure;
   private int currentLimit;
   private boolean running;
-
+  private boolean stageChanged;
+  private double betweenStageWait;
+  private boolean pause;
   /** Creates a new AutomatedHighClimb. */
   public AutomatedHighClimb(Climber climber) {
     this.climber = climber;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
+    SmartDashboard.putBoolean("pause", true);
+    SmartDashboard.putNumber("betweenStageWait", SmartDashboard.getNumber("betweenStageWait", 2));
   }
 
   // Called when the command is initially scheduled.
@@ -31,6 +35,7 @@ public class AutomatedHighClimb extends CommandBase {
     stage = 1;
     this.secure = false;
     running = true;
+    stageChanged = false;
   }
 
   public void print(){
@@ -39,23 +44,45 @@ public class AutomatedHighClimb extends CommandBase {
     SmartDashboard.putNumber("Right Climber Current", climber.getRightCurrent());
     SmartDashboard.putBoolean("isRunning", running);
     SmartDashboard.putBoolean("secure", secure);
+    this.pause = SmartDashboard.getBoolean("pause", true);
+    betweenStageWait = SmartDashboard.getNumber("betweenStageWait", 2);
   }
 
+  private void setStage(int stage){
+    if(stage != -1){
+      stageChanged = true;
+    }
+    this.stage = stage;
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(pause){
+      return;
+    }
+
     print();
+    if(stageChanged){
+      if(timer == null){
+        timer.reset();
+        timer.start();
+      }else if(timer.get() > betweenStageWait){
+        stageChanged = false;
+        timer = null;
+      }
+    }
     switch (stage){
       case 1:
         if(!climber.getUpperRightLimit() || !climber.getUpperLeftLimit()){
           climber.setSpeed(0.9);
         }else{
           climber.setSpeed(0);
-          stage = 2;
+          setStage(2);
         }
         break;
       case 2:
         climber.lowerArms();
+        setStage(3);
         break;
       case 3: 
         if(timer == null){
@@ -69,10 +96,12 @@ public class AutomatedHighClimb extends CommandBase {
             secure = true;
           }
         }else{
+          climber.setSpeed(0);
+          timer = null;
           if(secure == true){
-            stage = 4;
+            setStage(4);
           }else{
-            stage = -1;
+            setStage(-1);
           }
         }
         break;
@@ -81,12 +110,12 @@ public class AutomatedHighClimb extends CommandBase {
           climber.setSpeed(-0.9);
         }else{
           climber.setSpeed(0);
-          stage = 5;
+          setStage(5);
         }
         break;
       case 5:
         climber.liftArms();
-        stage = 6;
+        setStage(6);
         break;
       case -1:
         running = false;
