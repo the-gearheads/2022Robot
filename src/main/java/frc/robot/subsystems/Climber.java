@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -35,8 +36,10 @@ public class Climber extends SubsystemBase {
     DigitalInput lowerLeftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
     DigitalInput lowerRightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
 
-    DigitalInput upperLeftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
-    DigitalInput upperRightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
+    DigitalInput upperLeftLimit = new DigitalInput(Constants.Climber.UPPER_LEFT_LIMIT);
+    DigitalInput upperRightLimit = new DigitalInput(Constants.Climber.UPPER_RIGHT_LIMIT);
+    LinearFilter leftCurrentFilter = LinearFilter.movingAverage(15);
+    LinearFilter rightCurrentFilter = LinearFilter.movingAverage(15);
 
     private boolean rightDisable = false;
     private boolean leftDisable = false;
@@ -77,16 +80,17 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-      if(!getLowerLeftLimit() || speed > 0){
+      if((!getLowerLeftLimit() || speed >= 0) && (!getUpperLeftLimit() || speed <= 0)){
         left.set(speed);
       }else{
         left.set(0);
       }
-      if(!getLowerRightLimit() || speed > 0){
+      if((!getLowerRightLimit() || speed >= 0) && (!getUpperRightLimit() || speed <= 0)){
         right.set(-speed);
       }else{
         right.set(0);
       }
+
   }
 
   public void stop(){
@@ -111,6 +115,12 @@ public class Climber extends SubsystemBase {
       SmartDashboard.putBoolean("LOWER RIGHT Climber limit", !lowerRightLimit.get());
       SmartDashboard.putBoolean("UPPER LEFT Climber limit", !upperLeftLimit.get());
       SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
+      SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
+      SmartDashboard.putNumber("Climber Right Current", getRightCurrent());
+      SmartDashboard.putNumber("Climber Left Current", getLeftCurrent());
+      leftCurrentFilter.calculate(left.getOutputCurrent());
+      rightCurrentFilter.calculate(right.getOutputCurrent());
+
   }
 
   public double getRotations(){
@@ -125,11 +135,11 @@ public boolean getUpperLeftLimit() {
     return !upperLeftLimit.get();
 }
 
-public int getRightCurrent() {
-    return 0;
+public double getRightCurrent() {
+    return rightCurrentFilter.calculate(right.getOutputCurrent());
 }
 
-public int getLeftCurrent() {
-    return 0;
+public double getLeftCurrent() {
+  return leftCurrentFilter.calculate(left.getOutputCurrent());
 }
 }

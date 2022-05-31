@@ -111,6 +111,8 @@ public final class Constants {
         public static final int RIGHT_RETRACT = 0;
         public static final int ARMS_RETRACT = 5;
         public static final int ARMS_EXTEND = 6;
+        public static final int UPPER_LEFT_LIMIT = 5;
+        public static final int UPPER_RIGHT_LIMIT = 7;
 
     }
 

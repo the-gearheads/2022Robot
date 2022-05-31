@@ -23,6 +23,7 @@ import frc.robot.commands.Auton.PreparedAuton;
 import frc.robot.commands.Auton.ReadAuton;
 import frc.robot.commands.Auton.Wait;
 import frc.robot.commands.Auton.WriteAuton;
+import frc.robot.commands.Climber.AutomatedHighClimb;
 import frc.robot.commands.Drive.TurnToAngle;
 import frc.robot.commands.Elevator.AutoElevate;
 import frc.robot.commands.Intake.FillerDefaultElevate;
@@ -316,6 +317,7 @@ public class RobotContainer {
     // SmartDashboard.putNumber("5 Ball Human X",1.835);
     // SmartDashboard.putNumber("5 Ball Human Y", 0.16);
     // SmartDashboard.putNumber("5 Ball Human Rot", -2.2);
+    SmartDashboard.putString("message", "nothing");
 
 
     // SmartDashboard.putNumber("5 Ball Shoot X", 6.43);
@@ -489,21 +491,23 @@ public class RobotContainer {
     }, climber));
 
 
-    JoystickButton btn1 = new JoystickButton(joystick, 1);
-    btn1.whenPressed(new InstantCommand(()->{
-      intake.extend();
-      intake.spin();
-      if(!Constants.Elevator.auto){
-      elevator.elevate();
-      }
-    }, intake)).whenReleased(new InstantCommand(()->{
-      intake.retract();
-      intake.stop();
-      if(!Constants.Elevator.auto){
-        elevator.stop();
-        }
-    }, intake));
+    // JoystickButton btn1 = new JoystickButton(joystick, 1);
+    // btn1.whenPressed(new InstantCommand(()->{
+    //   intake.extend();
+    //   intake.spin();
+    //   if(!Constants.Elevator.auto){
+    //   elevator.elevate();
+    //   }
+    // }, intake)).whenReleased(new InstantCommand(()->{
+    //   intake.retract();
+    //   intake.stop();
+    //   if(!Constants.Elevator.auto){
+    //     elevator.stop();
+    //     }
+    // }, intake));
 
+    JoystickButton btn1  = new JoystickButton(joystick, 1);
+    btn1.whenPressed(new AutomatedHighClimb(climber));
     
 
     JoystickButton btn5 = new JoystickButton(joystick, 5);
@@ -534,10 +538,15 @@ public class RobotContainer {
     JoystickButton btn6 = new JoystickButton(joystick, 6);
     btn6.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, true));
 
-    JoystickButton btn7 = new JoystickButton(joystick, 7);
-    btn7.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, false));
+    // JoystickButton btn7 = new JoystickButton(joystick, 7);
+    // btn7.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, false));
 
-    
+    JoystickButton btn7 = new JoystickButton(joystick, 7);
+    btn7.whileHeld(new InstantCommand(()->{
+      climber.setSpeed(-0.1);
+    }, climber)).whenReleased(new InstantCommand(()->{
+      climber.stop();
+    }, climber));
   }
 
   /**

@@ -14,28 +14,32 @@ public class AutomatedHighClimb extends CommandBase {
   private int stage;
   private Climber climber;
   private boolean secure;
-  private int currentLimit;
+  private int currentLimit = 10;
   private boolean running;
   private boolean stageChanged;
-  private double betweenStageWait;
+  private double betweenStageWait = 0.5;
   private boolean pause;
+  private int count;
+  private int prevStage;
+  private int nextStage;
   /** Creates a new AutomatedHighClimb. */
   public AutomatedHighClimb(Climber climber) {
     this.climber = climber;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
-    SmartDashboard.putBoolean("pause", true);
-    SmartDashboard.putNumber("betweenStageWait", SmartDashboard.getNumber("betweenStageWait", 2));
+    SmartDashboard.putBoolean("pause", false);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    pause = false;
     this.timer = null;
     stage = 1;
     this.secure = false;
     running = true;
     stageChanged = false;
+    SmartDashboard.putString("message", "nothing");
   }
 
   public void print(){
@@ -44,40 +48,28 @@ public class AutomatedHighClimb extends CommandBase {
     SmartDashboard.putNumber("Right Climber Current", climber.getRightCurrent());
     SmartDashboard.putBoolean("isRunning", running);
     SmartDashboard.putBoolean("secure", secure);
-    this.pause = SmartDashboard.getBoolean("pause", true);
-    betweenStageWait = SmartDashboard.getNumber("betweenStageWait", 2);
   }
 
   private void setStage(int stage){
-    if(stage != -1){
-      stageChanged = true;
-    }
-    this.stage = stage;
+    this.stage = -2;
+    nextStage = stage;
+
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(pause){
-      return;
-    }
 
     print();
-    if(stageChanged){
-      if(timer == null){
-        timer.reset();
-        timer.start();
-      }else if(timer.get() > betweenStageWait){
-        stageChanged = false;
-        timer = null;
-      }
-    }
+
     switch (stage){
       case 1:
         if(!climber.getUpperRightLimit() || !climber.getUpperLeftLimit()){
           climber.setSpeed(0.9);
+          SmartDashboard.putString("message", "Running Up: " + count++);
         }else{
           climber.setSpeed(0);
           setStage(2);
+          SmartDashboard.putString("message", "Stopped");
         }
         break;
       case 2:
@@ -119,6 +111,16 @@ public class AutomatedHighClimb extends CommandBase {
         break;
       case -1:
         running = false;
+        break;
+      case -2:
+        if(timer == null){
+          timer = new Timer();
+          timer.reset();
+          timer.start();
+        }else if(timer.get() > betweenStageWait){
+          this.stage = nextStage;
+          timer = null;
+        }
         break;
       default:
         break;
