@@ -639,7 +639,7 @@ public class RobotContainer {
   // }
       InstantCommand setInitPos = new InstantCommand(()->{
         driveTrain.setFieldPos(Constants.Field.RIGHT_4_BALL);
-        driveTrain.setRampRate(false);
+      //  driveTrain.setRampRate(false);
       }, driveTrain);
 
       ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
@@ -658,7 +658,7 @@ public class RobotContainer {
         intake.stop();
         (new FillerDefaultElevate(elevator)).schedule();
         Constants.Elevator.auto = false;
-        driveTrain.setRampRate(true);
+       // driveTrain.setRampRate(true);
       });
       // PreparedAuton intakeTwo = new PreparedAuton(driveTrain, "Right-IntakeTwo");
       // PreparedAuton intakeTwoToShoot = new PreparedAuton(driveTrain, "Right-IntakeTwoToShoot")
