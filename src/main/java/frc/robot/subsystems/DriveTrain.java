@@ -69,6 +69,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
    * gyro.
    */
   public DriveTrain() {
+    setRampRate(false);
     try{
       gyro = new AHRS(SPI.Port.kMXP);
       

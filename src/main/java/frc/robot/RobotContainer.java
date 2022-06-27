@@ -349,8 +349,8 @@ public class RobotContainer {
     //JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
     //controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, leds));
 
-    JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
-    controllerBtn3.toggleWhenPressed(new SetGreen(leds));
+    // JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
+    // controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
     // JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
     // controllerBtn6.whenPressed(new InstantCommand(()->{
@@ -369,10 +369,10 @@ public class RobotContainer {
       Constants.DriveTrain.FORWARD_DIRECTION=-1;
     }));
 
-    JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
-    controllerBtn1.whenPressed(new InstantCommand(()->{
-      driveTrain.setRampRate(true);
-    }));
+    // JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
+    // controllerBtn1.whenPressed(new InstantCommand(()->{
+    //   driveTrain.setRampRate(true);
+    // }));
 
     // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
     // controllerBtn4.toggleWhenPressed(new StartEndCommand(()->{
@@ -483,7 +483,7 @@ public class RobotContainer {
       climber.stop();
     }, climber));
 
-    JoystickButton btn10 = new JoystickButton(joystick, 10);
+    JoystickButton btn10 = new JoystickButton(joystick, 1);
     btn10.whileHeld(new InstantCommand(()->{
       climber.setSpeed(-0.89);
     }, climber)).whenReleased(new InstantCommand(()->{
@@ -491,23 +491,23 @@ public class RobotContainer {
     }, climber));
 
 
-    // JoystickButton btn1 = new JoystickButton(joystick, 1);
-    // btn1.whenPressed(new InstantCommand(()->{
-    //   intake.extend();
-    //   intake.spin();
-    //   if(!Constants.Elevator.auto){
-    //   elevator.elevate();
-    //   }
-    // }, intake)).whenReleased(new InstantCommand(()->{
-    //   intake.retract();
-    //   intake.stop();
-    //   if(!Constants.Elevator.auto){
-    //     elevator.stop();
-    //     }
-    // }, intake));
+    JoystickButton btn1 = new JoystickButton(joystick, 1);
+    btn1.whenPressed(new InstantCommand(()->{
+      intake.extend();
+      intake.spin();
+      if(!Constants.Elevator.auto){
+      elevator.elevate();
+      }
+    }, intake)).whenReleased(new InstantCommand(()->{
+      intake.retract();
+      intake.stop();
+      if(!Constants.Elevator.auto){
+        elevator.stop();
+        }
+    }, intake));
 
-    JoystickButton btn1  = new JoystickButton(joystick, 1);
-    btn1.whenPressed(new AutomatedHighClimb(climber));
+    // JoystickButton btn1  = new JoystickButton(joystick, 1);
+    // btn1.whenPressed(new AutomatedHighClimb(climber));
     
 
     JoystickButton btn5 = new JoystickButton(joystick, 5);
@@ -538,17 +538,17 @@ public class RobotContainer {
     JoystickButton btn6 = new JoystickButton(joystick, 6);
     btn6.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, true));
 
-    // JoystickButton btn7 = new JoystickButton(joystick, 7);
-    // btn7.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, false));
-
     JoystickButton btn7 = new JoystickButton(joystick, 7);
-    btn7.whileHeld(new InstantCommand(()->{
-      climber.setSpeed(-0.1);
-    }, climber)).whenReleased(new InstantCommand(()->{
-      climber.stop();
-    }, climber));
-  }
+    btn7.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, false));
 
+  //   JoystickButton btn7 = new JoystickButton(joystick, 7);
+  //   btn7.whileHeld(new InstantCommand(()->{
+  //     climber.setSpeed(-0.1);
+  //   }, climber)).whenReleased(new InstantCommand(()->{
+  //     climber.stop();
+  //   }, climber));
+  // }
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

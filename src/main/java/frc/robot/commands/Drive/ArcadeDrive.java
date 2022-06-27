@@ -79,14 +79,14 @@ import frc.robot.subsystems.DriveTrainInterface;
     //   driveTrain.setRampRate(0.7);
     // }
     
-    double vel = (Math.abs(driveTrain.getLeftVelocity()) + Math.abs(driveTrain.getRightVelocity())) / 2;
-    SmartDashboard.putNumber("Velocity for Ramprate", vel);
-    double minVal = SmartDashboard.getNumber("Min Val", 0.5);
-    double maxVal =  SmartDashboard.getNumber("Max Val", 0.7);
-    double steepness =  SmartDashboard.getNumber("steepness", 3);
-    double meanX =  SmartDashboard.getNumber("meanXSpeed", 1.5);
-    double result = (maxVal-minVal)/(1+Math.pow(Math.E, steepness * (vel-meanX)))+minVal;
-    driveTrain.setRampRate(experimentalAccFormula.applyAsDouble(vel));
+    // double vel = (Math.abs(driveTrain.getLeftVelocity()) + Math.abs(driveTrain.getRightVelocity())) / 2;
+    // SmartDashboard.putNumber("Velocity for Ramprate", vel);
+    // double minVal = SmartDashboard.getNumber("Min Val", 0.5);
+    // double maxVal =  SmartDashboard.getNumber("Max Val", 0.7);
+    // double steepness =  SmartDashboard.getNumber("steepness", 3);
+    // double meanX =  SmartDashboard.getNumber("meanXSpeed", 1.5);
+    // double result = (maxVal-minVal)/(1+Math.pow(Math.E, steepness * (vel-meanX)))+minVal;
+    // driveTrain.setRampRate(experimentalAccFormula.applyAsDouble(vel));
 
     // ChassisSpeeds prevSpeeds = kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(driveTrain.getLeftVelocity(),driveTrain.getRightVelocity()));
     double lvAxis = Constants.DriveTrain.FORWARD_DIRECTION  * controller.getLeftY();
