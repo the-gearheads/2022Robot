@@ -359,12 +359,12 @@ public class RobotContainer {
     //   Constants.DriveTrain.MAX_VELOCITY = 2;
     // }));
 
-    JoystickButton controllerBtn5 = new JoystickButton(controller, 5);
+    JoystickButton controllerBtn5 = new JoystickButton(controller, 1);
     controllerBtn5.whenPressed(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=1;
     }));
 
-    JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
+    JoystickButton controllerBtn6 = new JoystickButton(controller, 2);
     controllerBtn6.whenPressed(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=-1;
     }));
