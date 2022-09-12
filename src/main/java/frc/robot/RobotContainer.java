@@ -308,10 +308,11 @@ public class RobotContainer {
   private final ColorSensor colorSensor = new ColorSensor();
   private final LightSensor lightSensor = new LightSensor();
   private final AutonChooser autonChooser = new AutonChooser();
+  
+  // private final Vision vision = new Vision(); //TURN ON FOR VISION
 
   private final FillerSubsystem fillerSubsystem = new FillerSubsystem();
   private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
-
   public RobotContainer() {
     // Logger.configureLoggingAndConfig(this, false);
     // SmartDashboard.putNumber("5 Ball Human X",1.835);
@@ -359,15 +360,19 @@ public class RobotContainer {
     //   Constants.DriveTrain.MAX_VELOCITY = 2;
     // }));
 
-    JoystickButton controllerBtn5 = new JoystickButton(controller, 1);
+    JoystickButton controllerBtn5 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
     controllerBtn5.whenPressed(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=1;
     }));
 
-    JoystickButton controllerBtn6 = new JoystickButton(controller, 2);
+    JoystickButton controllerBtn6 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
     controllerBtn6.whenPressed(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=-1;
     }));
+
+    // TURN ON FOR VISION
+    // JoystickButton controllerBtn1 = new JoystickButton(controller, XboxController.Button.kA.value);
+    // controllerBtn6.whenPressed(new AlignShooter(driveTrain, vision, leds)); 
 
     // JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
     // controllerBtn1.whenPressed(new InstantCommand(()->{
@@ -483,7 +488,7 @@ public class RobotContainer {
       climber.stop();
     }, climber));
 
-    JoystickButton btn10 = new JoystickButton(joystick, 1);
+    JoystickButton btn10 = new JoystickButton(joystick, 10);
     btn10.whileHeld(new InstantCommand(()->{
       climber.setSpeed(-0.89);
     }, climber)).whenReleased(new InstantCommand(()->{

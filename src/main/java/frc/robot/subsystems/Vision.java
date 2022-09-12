@@ -14,11 +14,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
-  PhotonCamera camera = new PhotonCamera("Shooting");
+ 
+  PhotonCamera camera;
   private boolean flag = true;
+  private boolean isVisionWorking = false;
   /** Creates a new Vision. */
-  public Vision() {}
+  public Vision() {
+    connectToCamera();
+  }
 
+  public boolean isVisionWorking(){
+    return isVisionWorking;
+  }
+  public void connectToCamera(){
+    try{
+      this.isVisionWorking = true;
+      camera = new PhotonCamera("Shooting");
+    }catch(Exception e){
+      this.isVisionWorking = false;
+    }
+  }
   @Override
   public void periodic() {
     flag = !flag;
@@ -33,4 +48,25 @@ public class Vision extends SubsystemBase {
     }
     // This method will be called once per scheduler run
   }
+  public double getTargetXPos(){
+    var result = camera.getLatestResult();
+    if (result.hasTargets()) {
+      List<PhotonTrackedTarget> targets = result.getTargets();
+
+      double meanXPos = targets.stream().map((e)->e.getYaw()).reduce(0.0, Double::sum);
+      meanXPos/=targets.size();
+      return meanXPos;
+    }else{
+      return 15;
+    }
+  }
+  public int getTargetNum(){
+    var result = camera.getLatestResult();
+    if (result.hasTargets()) {
+      List<PhotonTrackedTarget> targets = result.getTargets();
+      return targets.size();
+  }else{
+    return 0;
+  }
+}
 }

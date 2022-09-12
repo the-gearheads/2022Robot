@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+/// Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -36,8 +36,8 @@ public final class Constants {
         public static final int RBMOTOR_ID = 5;
         public static final int LFMOTOR_ID = 6;
         public static final int LBMOTOR_ID = 7;
-        public static double MAX_VELOCITY = 1;//2
-        public static final double MAX_ROT_VELOCITY = 1;//2.2
+        public static double MAX_VELOCITY = 2;//2
+        public static final double MAX_ROT_VELOCITY = 2.2;//2.2
         
         public static double MAX_ACCELERATION = 6;
         public static final double TEST_TRACK_WIDTH = 0.381;

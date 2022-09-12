@@ -25,10 +25,12 @@ public class LEDS extends SubsystemBase {
   // Assuming that both strips are the same length - therefore we can use one buffer
   private int length = 0;
   public int test = 0;
+  public boolean runRainbow = true;
 
   public LEDS(int port , int stripLength) {
     ledStrip = new AddressableLED(port);
     length = stripLength;
+    runRainbow = true;
     
     // initialize buffers
     liveBuffer = new AddressableLEDBuffer(length);
@@ -111,12 +113,16 @@ public class LEDS extends SubsystemBase {
       );
     }
   }
-
+  public void setRainbow(boolean runRainbow){
+    this.runRainbow = runRainbow;
+  }
   @Override
   public void periodic() {
-    fillRainbowBuffer();
-    updateStrips(liveBuffer);
-    test += 5;
-    test %= 180;
+    if(runRainbow){
+      fillRainbowBuffer();
+      updateStrips(liveBuffer);
+      test += 5;
+      test %= 180;
+    }
   }
 }

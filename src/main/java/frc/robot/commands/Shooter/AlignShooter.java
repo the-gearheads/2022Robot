@@ -13,91 +13,78 @@ import frc.robot.Constants;
 import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Vision;
 
 public class AlignShooter extends CommandBase {
-  private double x;
   private PIDController pid = new PIDController(0.1, 0, 0);
-  
   private double maxRotSpeed = 1.9;
   private double minRotSpeed = 0.8;
+  private double x;
+  
   private DriveTrainInterface driveTrain;
-  private int satisfactionNumber = 0;
   private LEDS leds;
-  private double nContours = 0;
-  private boolean cannotAlign = false;
-  private Timer checkTimer = new Timer();
+  private Vision vision;
+
+  private int satisfactionNumber = 0;
+  private boolean canAlign = false;
+  private Timer timer = new Timer();
 
   /** Creates a new AlignShooter. */
-  public AlignShooter(DriveTrainInterface driveTrain, LEDS leds) {
+  public AlignShooter(DriveTrainInterface driveTrain, LEDS leds, Vision vision) {
     this.driveTrain = driveTrain;
-    addRequirements(driveTrain);
-    // Use addRequirements() here to declare subsystem dependencies.
     this.leds = leds;
-  }
-
-  public AlignShooter(DriveTrainInterface driveTrain) {
-    this.driveTrain = driveTrain;
-    addRequirements(driveTrain);
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.vision = vision;
+    addRequirements(driveTrain, vision, leds);
   }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //checkTimer.reset();
-    //checkTimer.start();
-    satisfactionNumber = 0;
-    //nContours = SmartDashboard.getNumber("Contour Num", 0);
-
-    // green leds
-    // (new SetGreen(leds)).schedule();
-    
-    /*if (nContours < 1) {
-      (new SetAlignError(leds)).schedule(false);
-      cannotAlign = true;
-    }*/
-
     SmartDashboard.putBoolean("Aligning", true);
+    satisfactionNumber = 0;
+    timer.reset();
+    timer.start();
+    
+    vision.connectToCamera();
+    this.canAlign = vision.isVisionWorking();
+
+    leds.setRainbow(false);
+    if(canAlign){
+      leds.updateStrips(leds.greenBuffer);
+    }else{
+      leds.updateStrips(leds.orangeBuffer);
+    }
+    leds.startStrips();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  
-  /*if (checkTimer.hasElapsed(0.25)) {
-    if (nContours < 1) {
-      (new SetAlignError(leds)).schedule(false);
-      cannotAlign = true;
+    if(canAlign){
+      x = vision.getTargetXPos();
+      double rotSpeed = pid.calculate(x, 0);
+      double rotDirection = rotSpeed > 0? 1 : -1;// CHANGE TO 1 : -1
+      rotSpeed = Math.abs(rotSpeed);
+    
+      if(Math.abs(x) < 3){
+        rotSpeed = 0;
+      }else
+      if(Math.abs(rotSpeed) > maxRotSpeed){
+        rotSpeed = maxRotSpeed;
+      }else if(Math.abs(rotSpeed) < minRotSpeed){
+        rotSpeed = minRotSpeed;
+      }
+       
+      driveTrain.drive(0, rotSpeed * rotDirection);
+    
+      SmartDashboard.putNumber("Satisfaction N.", satisfactionNumber);
     }
-  }*/  
-
-  this.x = SmartDashboard.getNumber("Mean X", 0);
-  
-  double rotSpeed = pid.calculate(x, 0);
-  double rotDirection = rotSpeed > 0? 1 : -1;// CHANGE TO 1 : -1
-  rotSpeed = Math.abs(rotSpeed);
-
-  if(Math.abs(x) < 3){
-    rotSpeed = 0;
-  }else
-  if(Math.abs(rotSpeed) > maxRotSpeed){
-    rotSpeed = maxRotSpeed;
-  }else if(Math.abs(rotSpeed) < minRotSpeed){
-    rotSpeed = minRotSpeed;
-  }
-   
-  driveTrain.drive(0, rotSpeed * rotDirection);
-
-  SmartDashboard.putNumber("Satisfaction N.", satisfactionNumber);
 }
 
 // Called once the command ends or is interrupted.
 @Override
 public void end(boolean interrupted) {
   SmartDashboard.putBoolean("Aligning", false);
-  //checkTimer.stop();
-
-  // return to rainbow leds
-  // leds.getDefaultCommand().schedule();
+  leds.setRainbow(true);
 }
 
 
@@ -109,6 +96,12 @@ public boolean isFinished() {
   }else{
     satisfactionNumber=0;
   }
-  return satisfactionNumber > 20 || cannotAlign;
+  boolean tookTooLong = false;
+  if(timer.get() > 2){
+    tookTooLong = true;
+    timer.stop();
+    SmartDashboard.putBoolean("Took Too Long To Align Shooter", true);
+  }
+  return satisfactionNumber > 20 || !canAlign || tookTooLong;
 }
 }

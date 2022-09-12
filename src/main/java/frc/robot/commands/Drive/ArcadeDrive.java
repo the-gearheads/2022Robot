@@ -112,12 +112,12 @@ import frc.robot.subsystems.DriveTrainInterface;
     SmartDashboard.putNumber("rot Speed man", rotFilter.calculate(rotSpeed));
 
 
-    double rightTrigger = controller.getRightTriggerAxis();
-    if(rightTrigger > 0.5){
-      Constants.DriveTrain.MAX_VELOCITY = 3;
-    }else{
-      Constants.DriveTrain.MAX_VELOCITY = 2;
-    }
+    // double rightTrigger = controller.getRightTriggerAxis();
+    // if(rightTrigger > 0.5){
+    //   Constants.DriveTrain.MAX_VELOCITY = 3;
+    // }else{
+    //   Constants.DriveTrain.MAX_VELOCITY = 2;
+    // }
     // if(xSpeed == 0){
     //   SmartDashboard.putBoolean("Working", true);
     //   SmartDashboard.putNumber("prevXSpeed", prevXSpeed);
