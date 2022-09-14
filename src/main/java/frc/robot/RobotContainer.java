@@ -655,6 +655,9 @@ public class RobotContainer {
       InstantCommand startIntake = new InstantCommand(()->{
         intake.extend();
         intake.spin();
+        driveTrain.setRampRate(0);
+        Constants.DriveTrain.MAX_VELOCITY = 2;
+        Constants.DriveTrain.MAX_ROT_VELOCITY = 2.2;
         (new AutoElevate(lightSensor, colorSensor, elevator, intake, 0)).schedule();
         Constants.Elevator.auto = true;
       });
@@ -677,7 +680,8 @@ public class RobotContainer {
       Wait wait1 = new Wait(1);
       Wait wait2 = new Wait(0.6);
       Wait wait3 = new Wait(0.5);
-      return (new SequentialCommandGroup(setInitPos,shoot1, startIntake, startToIntake, IntakeToShoot, alignShot1,shoot2, shootToHuman, wait1,humanToShoot, wait3, shoot3, wait2, shoot4, stopIntake));
+      Wait wait4 = new Wait(0.098765443212747427);
+      return (new SequentialCommandGroup(setInitPos,shoot1, wait4, startIntake, startToIntake, IntakeToShoot, alignShot1,shoot2, shootToHuman, wait1, humanToShoot, wait3, shoot3, wait2, shoot4, stopIntake));
     }
     }
 }

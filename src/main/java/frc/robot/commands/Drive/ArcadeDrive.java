@@ -59,6 +59,7 @@ import frc.robot.subsystems.DriveTrainInterface;
     SmartDashboard.putNumber("Max Val", SmartDashboard.getNumber("Max Val", 0.7));
     SmartDashboard.putNumber("steepness", SmartDashboard.getNumber("steepness", 3));
     SmartDashboard.putNumber("meanXSpeed", SmartDashboard.getNumber("meanXSpeed", 1.5));
+    SmartDashboard.putNumber("ARCADEDRIVErampRate", SmartDashboard.getNumber("ARCADEDRIVErampRate", 1));
   }
 
 // Called when the command is initially scheduled.
@@ -66,6 +67,7 @@ import frc.robot.subsystems.DriveTrainInterface;
   public void initialize() {
     prevXSpeed = 0;
     prevRotSpeed = 0;
+    Constants.DriveTrain.MAX_ROT_VELOCITY = 3.5;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -73,6 +75,7 @@ import frc.robot.subsystems.DriveTrainInterface;
   public void execute() {
     SmartDashboard.putNumber("Left Speed", driveTrain.getLeftVelocity());
     SmartDashboard.putNumber("Right Speed", driveTrain.getRightVelocity());
+    driveTrain.setRampRate(SmartDashboard.getNumber("ARCADEDRIVErampRate", 1));
     // if((Math.abs(driveTrain.getLeftVelocity()) + Math.abs(driveTrain.getRightVelocity())) / 2 > 2){
     //   driveTrain.setRampRate(0.5);
     // }else{

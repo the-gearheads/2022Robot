@@ -37,7 +37,7 @@ public final class Constants {
         public static final int LFMOTOR_ID = 6;
         public static final int LBMOTOR_ID = 7;
         public static double MAX_VELOCITY = 2;//2
-        public static final double MAX_ROT_VELOCITY = 2.2;//2.2
+        public static double MAX_ROT_VELOCITY = 2.2;//2.2
         
         public static double MAX_ACCELERATION = 6;
         public static final double TEST_TRACK_WIDTH = 0.381;
