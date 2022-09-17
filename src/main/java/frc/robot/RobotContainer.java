@@ -353,12 +353,12 @@ public class RobotContainer {
     // JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
     // controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
-    // JoystickButton controllerBtn6 = new JoystickButton(controller, 6);
-    // controllerBtn6.whenPressed(new InstantCommand(()->{
-    //   Constants.DriveTrain.MAX_VELOCITY = 5;
-    // })).whenReleased(new InstantCommand(()->{
-    //   Constants.DriveTrain.MAX_VELOCITY = 2;
-    // }));
+    JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
+    controllerBtn4.whenPressed(new InstantCommand(()->{
+      Constants.DriveTrain.MAX_VELOCITY = 5;
+    })).whenReleased(new InstantCommand(()->{
+      Constants.DriveTrain.MAX_VELOCITY = 2;
+    }));
 
     JoystickButton controllerBtn5 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
     controllerBtn5.whenPressed(new InstantCommand(()->{
@@ -569,6 +569,7 @@ public class RobotContainer {
       PreparedAuton backward = new PreparedAuton(driveTrain, "Backward");
       ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
       ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
+      Wait pleaseWait = new Wait(Math.PI/30);
       InstantCommand startIntake = new InstantCommand(()->{
         intake.extend();
         intake.spin();
@@ -579,7 +580,7 @@ public class RobotContainer {
         intake.stop();
         elevator.stop();
       });
-      return (new SequentialCommandGroup(setInitPos, shoot1, startIntake, forward, backward, shoot2, stopIntake));
+      return (new SequentialCommandGroup(setInitPos, shoot1, startIntake, pleaseWait, forward, backward, shoot2, stopIntake));
     }else{
   //     return (new InstantCommand(()->{
   //       // InstantCommand zero1 = new InstantCommand(()->{
