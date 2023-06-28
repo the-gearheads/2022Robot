@@ -99,7 +99,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     // resolution.
 
     zeroEncoders();
-    odometry = new DifferentialDriveOdometry(new Rotation2d(0), Constants.DriveTrain.INITIAL_POS);
+    odometry = new DifferentialDriveOdometry(new Rotation2d(0), getLeftPos(), getRightPos(), Constants.DriveTrain.INITIAL_POS);
     setDefaultCommand(new ArcadeDrive(this));
     SmartDashboard.putNumber("rampRate", 0);
   }
@@ -293,13 +293,13 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     lfMotor.setSelectedSensorPosition(0);
     lbMotor.setSelectedSensorPosition(0);
     gyro.reset();
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(),new Pose2d(0,0, new Rotation2d(0)));
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, new Pose2d(0,0, new Rotation2d(0)));
   }
 
   public void setFieldPos(Pose2d currentPos){
     zeroEncoders();
     gyro.reset();
     gyro.setAngleAdjustment(-currentPos.getRotation().getDegrees());
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), currentPos);
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, currentPos);
   }
 }

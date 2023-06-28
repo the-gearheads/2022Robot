@@ -101,7 +101,7 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
 
     zeroEncoders();
     SmartDashboard.putString("Initial Angle", gyro.getRotation2d() + "");
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), new Pose2d(0,0,new Rotation2d(0)));
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, new Pose2d(0,0,new Rotation2d(0)));
     setDefaultCommand(new ArcadeDrive(this));
 
     SmartDashboard.putNumber("Velocity", 0.1);
@@ -250,14 +250,14 @@ public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
     lfEncoder.setPosition(0);
     lbEncoder.setPosition(0);
     gyro.reset();
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(),new Pose2d(0,0, new Rotation2d(0)));
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, new Pose2d(0,0, new Rotation2d(0)));
   }
 
   public void setFieldPos(Pose2d currentPos){
     zeroEncoders();
     gyro.reset();
     gyro.setAngleAdjustment(-currentPos.getRotation().getDegrees());
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), currentPos);
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, currentPos);
   }
   public void setBrakeMode(boolean isBreak){
     if(isBreak){

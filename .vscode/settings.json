@@ -25,6 +25,5 @@
       }
     },
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests",
-  "editor.minimap.maxColumn": 1
+  "java.test.defaultConfig": "WPIlibUnitTests"
 }

@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
@@ -21,7 +22,7 @@ public class DistanceSensor extends SubsystemBase {
   AnalogInput analog = new AnalogInput(2);
   private final double lower = 22; //closest distance to hub
   private final double upper = 57; //farthest distance to hub
-  private NetworkTableEntry display;
+  private GenericEntry display;
   public DistanceSensor() {
     display = Shuffleboard.getTab("SmartDashboard").add("Distance", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
   }

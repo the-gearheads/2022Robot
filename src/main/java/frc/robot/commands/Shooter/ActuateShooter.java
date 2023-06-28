@@ -37,7 +37,7 @@ public class ActuateShooter extends CommandBase {
     timer.start();
     
     if(isExtend){
-      (new SetShootingSeq(shooter.leds)).schedule(false);
+      (new SetShootingSeq(shooter.leds)).schedule();
       if(bothPistons){
         shooter.extend();
       }else{
@@ -66,7 +66,7 @@ public class ActuateShooter extends CommandBase {
   public void end(boolean interrupted) {
     timer.stop();
     if(isExtend){
-      (new ActuateShooter(shooter, 0.1, 0.1,false, false)).schedule(false);
+      (new ActuateShooter(shooter, 0.1, 0.1,false, false)).schedule();
     }else{
     }
 
