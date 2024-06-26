@@ -11,10 +11,10 @@ import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class FeedForwardCharacterization1 extends CommandBase {
+public class FeedForwardCharacterization1 extends Command {
   private DriveTrainInterface driveTrain;
   private double testSpeed;
   private double maxVoltage;

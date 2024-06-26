@@ -4,10 +4,10 @@
 
 package frc.robot.commands.Shooter;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
-public class DefaultShooter extends CommandBase {
+public class DefaultShooter extends Command {
   private Shooter shooter;
 
   /** Creates a new DefaultShooter. */

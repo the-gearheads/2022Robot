@@ -8,12 +8,12 @@ import java.net.Authenticator.RequestorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class TurnToAngle extends CommandBase {
+public class TurnToAngle extends Command {
   private double requestedAngle;
   private DriveTrainInterface driveTrain;
   private PIDController rotController = new PIDController(0.05, 0, 0);

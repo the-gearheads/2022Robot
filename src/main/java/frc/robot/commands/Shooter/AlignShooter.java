@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.commands.LEDS.SetGreen;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
 
-public class AlignShooter extends CommandBase {
+public class AlignShooter extends Command {
   private PIDController pid = new PIDController(0.1, 0, 0);
   private double maxRotSpeed = 1.9;
   private double minRotSpeed = 0.8;

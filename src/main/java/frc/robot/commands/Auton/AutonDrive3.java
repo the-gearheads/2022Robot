@@ -17,12 +17,12 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class AutonDrive3 extends CommandBase {
+public class AutonDrive3 extends Command {
   private DriveTrainInterface driveTrain;
   private Trajectory trajectory;
   RamseteController ramsete = new RamseteController();

@@ -26,13 +26,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.Constants;
 import frc.robot.commands.Shooter.ActuateShooter;
 
 
-public class ReadAuton extends CommandBase {
+public class ReadAuton extends Command {
   Reader reader;
   Gson gson = new Gson();
   private DriveTrainInterface driveTrain;
@@ -130,7 +130,7 @@ public class ReadAuton extends CommandBase {
 }
 
 
-// public class ReadAuton extends CommandBase {
+// public class ReadAuton extends Command {
 //   Reader reader;
 //   Gson gson = new Gson();
 //   private Shooter shooter;

@@ -5,10 +5,10 @@
 package frc.robot.commands.LEDS;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDS;
 
-public class SetAlignError extends CommandBase {
+public class SetAlignError extends Command {
   /** Creates a new setGreenLEDS. */
   private LEDS leds;
 

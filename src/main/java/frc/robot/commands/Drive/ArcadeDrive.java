@@ -14,11 +14,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainInterface;
 
-  public class ArcadeDrive extends CommandBase {
+  public class ArcadeDrive extends Command {
   private DriveTrainInterface driveTrain;
   private XboxController controller = new XboxController(Constants.Controller.PORT);
   private final DifferentialDriveKinematics kinematics =

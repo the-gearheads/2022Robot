@@ -4,12 +4,12 @@
 
 package frc.robot.commands.Climber;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake;
 
-public class DefaultClimber extends CommandBase {
+public class DefaultClimber extends Command {
   private Climber climber;
 
   /** Creates a new DefaultIntake. */

@@ -10,13 +10,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrainInterface;
 import frc.robot.Constants;
 import frc.robot.subsystems.DistanceSensor;
 
-public class SetDistance extends CommandBase {
+public class SetDistance extends Command {
   private DriveTrainInterface driveTrain;
   private DistanceSensor distanceSensor;
   private double requestedDistance;

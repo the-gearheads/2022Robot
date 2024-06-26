@@ -6,10 +6,10 @@ package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class AutomatedHighClimb extends CommandBase {
+public class AutomatedHighClimb extends Command {
   private Timer timer;
   private int stage;
   private Climber climber;

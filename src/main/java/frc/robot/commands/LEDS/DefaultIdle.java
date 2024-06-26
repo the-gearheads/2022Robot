@@ -5,11 +5,11 @@
 package frc.robot.commands.LEDS;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.LEDS;
 
-public class DefaultIdle extends CommandBase {
+public class DefaultIdle extends Command {
   /** Creates a new DefaultIdle. */
   private LEDS leds;
 

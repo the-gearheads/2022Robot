@@ -4,10 +4,10 @@
 
 package frc.robot.commands.Intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 
-public class FillerDefaultElevate extends CommandBase {
+public class FillerDefaultElevate extends Command {
   /** Creates a new FillerDefaultElevate. */
   public FillerDefaultElevate(Elevator elevator) {
     addRequirements(elevator);

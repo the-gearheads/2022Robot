@@ -4,10 +4,10 @@
 
 package frc.robot.commands.LEDS;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDS;
 
-public class SetShootingSeq extends CommandBase {
+public class SetShootingSeq extends Command {
   private LEDS leds;
   private final int lenOfRunningSegments = 10;
   

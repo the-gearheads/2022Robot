@@ -5,13 +5,13 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.commands.LEDS.SetShootingSeq;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 
-public class ActuateShooter extends CommandBase {
+public class ActuateShooter extends Command {
   private Shooter shooter;
   private Timer timer = new Timer();
   private boolean isExtend;

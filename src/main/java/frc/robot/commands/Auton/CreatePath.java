@@ -9,10 +9,10 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class CreatePath extends CommandBase {
+public class CreatePath extends Command {
   private DriveTrainInterface driveTrain;
   private Timer timer = new Timer();
   private int status = 0;

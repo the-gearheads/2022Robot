@@ -6,10 +6,10 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 
-public class SetIntakeSpeed extends CommandBase {
+public class SetIntakeSpeed extends Command {
   PIDController pid = new PIDController(1,0,0);
   Intake intake;
   double requestedSpeed;

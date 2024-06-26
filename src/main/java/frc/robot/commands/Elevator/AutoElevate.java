@@ -6,14 +6,14 @@ package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LightSensor;
 
-public class AutoElevate extends CommandBase {
+public class AutoElevate extends Command {
   /** Creates a new AutoElevate. */
   private double ballCount;
 

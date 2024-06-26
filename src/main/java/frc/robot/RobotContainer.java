@@ -354,19 +354,19 @@ public class RobotContainer {
     // controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
     JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    controllerBtn4.whenPressed(new InstantCommand(()->{
+    controllerBtn4.onTrue(new InstantCommand(()->{
       Constants.DriveTrain.MAX_VELOCITY = 5;
-    })).whenReleased(new InstantCommand(()->{
+    })).onFalse(new InstantCommand(()->{
       Constants.DriveTrain.MAX_VELOCITY = 2;
     }));
 
     JoystickButton controllerBtn5 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    controllerBtn5.whenPressed(new InstantCommand(()->{
+    controllerBtn5.onTrue(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=1;
     }));
 
     JoystickButton controllerBtn6 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    controllerBtn6.whenPressed(new InstantCommand(()->{
+    controllerBtn6.onFalse(new InstantCommand(()->{
       Constants.DriveTrain.FORWARD_DIRECTION=-1;
     }));
 
@@ -451,12 +451,12 @@ public class RobotContainer {
     // controllerBtn4.whenPressed(new AlignShooter(driveTrain, vision));
 
     JoystickButton btn8 = new JoystickButton(joystick, 8);
-    btn8.whenPressed(new InstantCommand(()->{
+    btn8.onTrue(new InstantCommand(()->{
       climber.liftArms();
     }, climber));
 
     JoystickButton btn9 = new JoystickButton(joystick, 9);
-    btn9.whenPressed(new InstantCommand(()->{
+    btn9.onTrue(new InstantCommand(()->{
       climber.lowerArms();
     }, climber));
 
@@ -467,7 +467,7 @@ public class RobotContainer {
     // }, climber));
     
     JoystickButton btn4 = new JoystickButton(joystick, 4);
-    btn4.toggleWhenPressed(new StartEndCommand(()->{
+    btn4.toggleOnTrue(new StartEndCommand(()->{
       (new AutoElevate(lightSensor, colorSensor, elevator, intake,0)).schedule();
       Constants.Elevator.auto = true;
     }, ()->{
@@ -482,28 +482,28 @@ public class RobotContainer {
     // }, elevator));
 
     JoystickButton btn11 = new JoystickButton(joystick, 11);
-    btn11.whileHeld(new InstantCommand(()->{
+    btn11.whileTrue(new InstantCommand(()->{
       climber.setSpeed(0.9);
-    }, climber)).whenReleased(new InstantCommand(()->{
+    }, climber)).whileFalse(new InstantCommand(()->{
       climber.stop();
     }, climber));
 
     JoystickButton btn10 = new JoystickButton(joystick, 10);
-    btn10.whileHeld(new InstantCommand(()->{
+    btn10.whileTrue(new InstantCommand(()->{
       climber.setSpeed(-0.89);
-    }, climber)).whenReleased(new InstantCommand(()->{
+    }, climber)).whileFalse(new InstantCommand(()->{
       climber.stop();
     }, climber));
 
 
     JoystickButton btn1 = new JoystickButton(joystick, 1);
-    btn1.whenPressed(new InstantCommand(()->{
+    btn1.whileTrue(new InstantCommand(()->{
       intake.extend();
       intake.spin();
       if(!Constants.Elevator.auto){
       elevator.elevate();
       }
-    }, intake)).whenReleased(new InstantCommand(()->{
+    }, intake)).whileFalse(new InstantCommand(()->{
       intake.retract();
       intake.stop();
       if(!Constants.Elevator.auto){
@@ -516,35 +516,35 @@ public class RobotContainer {
     
 
     JoystickButton btn5 = new JoystickButton(joystick, 5);
-    btn5.whenPressed(new InstantCommand(()->{
+    btn5.whileTrue(new InstantCommand(()->{
       intake.extend();
       intake.reverse();
       elevator.reverse();
-    }, intake)).whenReleased(new InstantCommand(()->{
+    }, intake)).whileFalse(new InstantCommand(()->{
       intake.retract();
       intake.stop();
       elevator.stop();
     }, intake));
 
     JoystickButton btn3 = new JoystickButton(joystick, 3);
-    btn3.whileHeld(new InstantCommand(()->{
+    btn3.whileTrue(new InstantCommand(()->{
       elevator.elevate();
-    }, elevator)).whenReleased(new InstantCommand(()->{
+    }, elevator)).whileFalse(new InstantCommand(()->{
       elevator.stop();
     },elevator));
 
     JoystickButton btn2 = new JoystickButton(joystick, 2);
-    btn2.whileHeld(new InstantCommand(()->{
+    btn2.whileTrue(new InstantCommand(()->{
       elevator.reverse();
-    })).whenReleased(new InstantCommand(()->{
+    })).whileFalse(new InstantCommand(()->{
       elevator.stop();
     }));
 
     JoystickButton btn6 = new JoystickButton(joystick, 6);
-    btn6.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, true));
+    btn6.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, true));
 
     JoystickButton btn7 = new JoystickButton(joystick, 7);
-    btn7.whenPressed(new ActuateShooter(shooter, 0.15, 0.15,true, false));
+    btn7.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, false));
 
   //   JoystickButton btn7 = new JoystickButton(joystick, 7);
   //   btn7.whileHeld(new InstantCommand(()->{

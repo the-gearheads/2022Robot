@@ -4,10 +4,10 @@
 
 package frc.robot.commands.LEDS;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LEDS;
 
-public class DefaultRainbow extends CommandBase {
+public class DefaultRainbow extends Command {
   private LEDS leds;
 
   /** Creates a new defaultLED. */

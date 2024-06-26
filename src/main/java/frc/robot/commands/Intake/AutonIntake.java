@@ -7,11 +7,11 @@ package frc.robot.commands.Intake;
 import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 
-public class AutonIntake extends CommandBase {
+public class AutonIntake extends Command {
   private Intake intake;
   private Elevator elevator;
   private boolean start;

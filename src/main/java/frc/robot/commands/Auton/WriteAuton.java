@@ -14,11 +14,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainInterface;
 
-public class WriteAuton extends CommandBase {
+public class WriteAuton extends Command {
   // private DriveTrainInterface driveTrain;
   // private boolean started = false;
   private ArrayList<Pose2d> recording;
