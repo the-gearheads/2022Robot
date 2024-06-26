@@ -292,13 +292,16 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(leds);
   private final Climber climber = new Climber();
   
+  @SuppressWarnings("unused")
   private final DistanceSensor distanceSensor = new DistanceSensor();
   private final ColorSensor colorSensor = new ColorSensor();
   private final LightSensor lightSensor = new LightSensor();
+  @SuppressWarnings("unused")
   private final AutonChooser autonChooser = new AutonChooser();
   
   // private final Vision vision = new Vision(); //TURN ON FOR VISION
 
+  @SuppressWarnings("unused")
   private final FillerSubsystem fillerSubsystem = new FillerSubsystem();
   private final Elevator elevator = new Elevator(intake, lightSensor, colorSensor);
   public RobotContainer() {
@@ -665,6 +668,7 @@ public class RobotContainer {
       PreparedAuton humanToShoot = new PreparedAuton(driveTrain, "Right-4-HumanToShoot");
 
       TurnToAngle alignShot1 = new TurnToAngle(driveTrain, new Rotation2d(-2.1513027039072617).getDegrees());
+      @SuppressWarnings("unused")
       TurnToAngle alignShot2 = new TurnToAngle(driveTrain, new Rotation2d(-1.713027039072617).getDegrees());
       Wait wait1 = new Wait(1);
       Wait wait2 = new Wait(0.6);

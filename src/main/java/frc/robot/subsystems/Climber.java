@@ -32,7 +32,9 @@ public class Climber extends SubsystemBase {
     LinearFilter leftCurrentFilter = LinearFilter.movingAverage(15);
     LinearFilter rightCurrentFilter = LinearFilter.movingAverage(15);
 
+    @SuppressWarnings("unused")
     private boolean rightDisable = false;
+    @SuppressWarnings("unused")
     private boolean leftDisable = false;
 
     public final Solenoid armsRetract = new Solenoid(PneumaticsModuleType.REVPH, Constants.Climber.ARMS_RETRACT);

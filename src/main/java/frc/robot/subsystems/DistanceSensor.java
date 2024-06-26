@@ -17,6 +17,7 @@ public class DistanceSensor extends SubsystemBase {
   AnalogInput analog = new AnalogInput(2);
   private final double lower = 22; //closest distance to hub
   private final double upper = 57; //farthest distance to hub
+  @SuppressWarnings("unused")
   private GenericEntry display;
   public DistanceSensor() {
     display = Shuffleboard.getTab("SmartDashboard").add("Distance", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();

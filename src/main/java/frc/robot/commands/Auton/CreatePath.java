@@ -16,6 +16,7 @@ public class CreatePath extends Command {
   private DriveTrainInterface driveTrain;
   private Timer timer = new Timer();
   private int status = 0;
+  @SuppressWarnings("unused")
   private ArrayList<HashMap<String,Double>> path = new ArrayList<HashMap<String,Double>>();
   private double prevSpeed = 0;
 

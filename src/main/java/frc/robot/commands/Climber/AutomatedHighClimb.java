@@ -16,10 +16,13 @@ public class AutomatedHighClimb extends Command {
   private boolean secure;
   private int currentLimit = 10;
   private boolean running;
+  @SuppressWarnings("unused")
   private boolean stageChanged;
   private double betweenStageWait = 0.5;
+  @SuppressWarnings("unused")
   private boolean pause;
   private int count;
+  @SuppressWarnings("unused")
   private int prevStage;
   private int nextStage;
   /** Creates a new AutomatedHighClimb. */

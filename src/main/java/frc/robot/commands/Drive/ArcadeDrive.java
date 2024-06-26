@@ -18,14 +18,20 @@ import frc.robot.subsystems.DriveTrainInterface;
   public class ArcadeDrive extends Command {
   private DriveTrainInterface driveTrain;
   private XboxController controller = new XboxController(Constants.Controller.PORT);
+  @SuppressWarnings("unused")
   private final DifferentialDriveKinematics kinematics =
       new DifferentialDriveKinematics(Constants.DriveTrain.TRACK_WIDTH);
+  @SuppressWarnings("unused")
   private double prevXSpeed = 0;
+  @SuppressWarnings("unused")
   private double prevRotSpeed = 0;
+  @SuppressWarnings("unused")
   private double prevLVAxis = 0;
+  @SuppressWarnings("unused")
   private double maxAcc = 0.1;
   SlewRateLimiter filter = new SlewRateLimiter(4.5);
   SlewRateLimiter rotFilter = new SlewRateLimiter(3.5);
+  @SuppressWarnings("unused")
   private DoubleUnaryOperator accFormula = (vel)->{
     double minVal = 0.5;
     double maxVal = 0.7;
@@ -35,6 +41,7 @@ import frc.robot.subsystems.DriveTrainInterface;
     return result;
   };
 
+  @SuppressWarnings("unused")
   private DoubleUnaryOperator experimentalAccFormula = (vel)->{
     double c1 = -0.0008347,
            c2 = 5.02779,
@@ -150,6 +157,7 @@ import frc.robot.subsystems.DriveTrainInterface;
     prevRotSpeed = rotSpeed;
   }
 
+  @SuppressWarnings("unused")
   private double round(double value, double decimalPlaces){
     return ((int)(value * Math.pow(10, decimalPlaces))) / Math.pow(10,decimalPlaces);
   }

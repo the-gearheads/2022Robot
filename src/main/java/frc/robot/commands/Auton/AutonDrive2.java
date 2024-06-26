@@ -24,9 +24,12 @@ public class AutonDrive2 extends Command {
   private Trajectory trajectory;
   RamseteController ramsete = new RamseteController();
   private Timer timer = new Timer();
+  @SuppressWarnings("unused")
   private Pose2d initialPos;
   private List<Translation2d> interiorWaypoints;
+  @SuppressWarnings("unused")
   private Pose2d finalPos;
+  @SuppressWarnings("unused")
   private boolean isBackward = false;
   private double requestedXInches;
 

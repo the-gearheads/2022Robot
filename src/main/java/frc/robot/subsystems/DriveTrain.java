@@ -52,6 +52,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
   private DifferentialDriveOdometry odometry;
 
   // Gains are for example purposes only - must be determined for your own robot!
+  @SuppressWarnings("unused")
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
   private SimpleMotorFeedforward rfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.RIGHT_kS, Constants.DriveTrain.RIGHT_kV);
   private SimpleMotorFeedforward lfeedforward = new SimpleMotorFeedforward(Constants.DriveTrain.LEFT_kS, Constants.DriveTrain.LEFT_kV);

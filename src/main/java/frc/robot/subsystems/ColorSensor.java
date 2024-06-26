@@ -35,6 +35,7 @@ public class ColorSensor extends SubsystemBase {
    * with given confidence range.
    */
   private final ColorMatch colorMatcher = new ColorMatch();
+  @SuppressWarnings("unused")
   private final GenericHID controller = new GenericHID(1);
 
   /**
