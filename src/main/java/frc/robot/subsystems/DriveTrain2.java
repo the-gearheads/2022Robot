@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,8 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Drive.ArcadeDrive;
-import frc.robot.commands.Drive.DebugDrive;
-import frc.robot.commands.Drive.FeedForwardCharacterization1;
 
 /** Represents a differential drive style drivetrain. */
 public class DriveTrain2 extends SubsystemBase implements DriveTrainInterface{
