@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Auton.PreparedAuton;
 import frc.robot.commands.Auton.Wait;
 import frc.robot.commands.Drive.TurnToAngle;
@@ -288,7 +288,6 @@ public class RobotContainer {
   private final LEDS leds = new LEDS(9, 71);
 
   private final XboxController controller = new XboxController(Constants.Controller.PORT);
-  private final XboxController joystick = new XboxController(Constants.Joystick.PORT);
   private final Shooter shooter = new Shooter(leds);
   private final Climber climber = new Climber();
   
@@ -344,21 +343,11 @@ public class RobotContainer {
     // JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
     // controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
-    JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    controllerBtn4.onTrue(new InstantCommand(()->{
+    Trigger speedBtn = new Trigger(controller::getLeftBumper);
+    speedBtn.onTrue(new InstantCommand(()->{
       Constants.DriveTrain.MAX_VELOCITY = 5;
     })).onFalse(new InstantCommand(()->{
       Constants.DriveTrain.MAX_VELOCITY = 2;
-    }));
-
-    JoystickButton controllerBtn5 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    controllerBtn5.onTrue(new InstantCommand(()->{
-      Constants.DriveTrain.FORWARD_DIRECTION=1;
-    }));
-
-    JoystickButton controllerBtn6 = new JoystickButton(controller, XboxController.Button.kRightBumper.value);
-    controllerBtn6.onFalse(new InstantCommand(()->{
-      Constants.DriveTrain.FORWARD_DIRECTION=-1;
     }));
 
     // TURN ON FOR VISION
@@ -441,23 +430,13 @@ public class RobotContainer {
     // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
     // controllerBtn4.whenPressed(new AlignShooter(driveTrain, vision));
 
-    JoystickButton btn8 = new JoystickButton(joystick, 8);
-    btn8.onTrue(new InstantCommand(()->{
-      climber.liftArms();
-    }, climber));
-
-    JoystickButton btn9 = new JoystickButton(joystick, 9);
-    btn9.onTrue(new InstantCommand(()->{
-      climber.lowerArms();
-    }, climber));
-
     // JoystickButton btn4 = new JoystickButton(joystick, 4);
     // btn4.whenPressed(new InstantCommand(()->{
     //   (new FillerDefaultElevate(elevator)).schedule();
     //   Constants.Elevator.auto = false;
     // }, climber));
     
-    JoystickButton btn4 = new JoystickButton(joystick, 4);
+    Trigger btn4 = new Trigger(controller::getRightBumper);
     btn4.toggleOnTrue(new StartEndCommand(()->{
       (new AutoElevate(lightSensor, colorSensor, elevator, intake,0)).schedule();
       Constants.Elevator.auto = true;
@@ -472,23 +451,8 @@ public class RobotContainer {
     //   Constants.Elevator.auto = false;
     // }, elevator));
 
-    JoystickButton btn11 = new JoystickButton(joystick, 11);
-    btn11.whileTrue(new InstantCommand(()->{
-      climber.setSpeed(0.9);
-    }, climber)).whileFalse(new InstantCommand(()->{
-      climber.stop();
-    }, climber));
-
-    JoystickButton btn10 = new JoystickButton(joystick, 10);
-    btn10.whileTrue(new InstantCommand(()->{
-      climber.setSpeed(-0.89);
-    }, climber)).whileFalse(new InstantCommand(()->{
-      climber.stop();
-    }, climber));
-
-
-    JoystickButton btn1 = new JoystickButton(joystick, 1);
-    btn1.whileTrue(new InstantCommand(()->{
+    Trigger intakeBtn = new Trigger(() -> controller.getRightTriggerAxis() > 0.1);
+    intakeBtn.whileTrue(new InstantCommand(()->{
       intake.extend();
       intake.spin();
       if(!Constants.Elevator.auto){
@@ -506,8 +470,8 @@ public class RobotContainer {
     // btn1.whenPressed(new AutomatedHighClimb(climber));
     
 
-    JoystickButton btn5 = new JoystickButton(joystick, 5);
-    btn5.whileTrue(new InstantCommand(()->{
+    Trigger manualIntake = new Trigger(controller::getYButton);
+    manualIntake.whileTrue(new InstantCommand(()->{
       intake.extend();
       intake.reverse();
       elevator.reverse();
@@ -517,25 +481,25 @@ public class RobotContainer {
       elevator.stop();
     }, intake));
 
-    JoystickButton btn3 = new JoystickButton(joystick, 3);
-    btn3.whileTrue(new InstantCommand(()->{
+    Trigger manualElevator = new Trigger(() -> controller.getPOV() == 0);
+    manualElevator.whileTrue(new InstantCommand(()->{
       elevator.elevate();
     }, elevator)).whileFalse(new InstantCommand(()->{
       elevator.stop();
     },elevator));
 
-    JoystickButton btn2 = new JoystickButton(joystick, 2);
-    btn2.whileTrue(new InstantCommand(()->{
+    Trigger reverseElevator = new Trigger(() -> controller.getPOV() == 180);
+    reverseElevator.whileTrue(new InstantCommand(()->{
       elevator.reverse();
     })).whileFalse(new InstantCommand(()->{
       elevator.stop();
     }));
 
-    JoystickButton btn6 = new JoystickButton(joystick, 6);
-    btn6.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, true));
+    Trigger fullShotBtn = new Trigger(controller::getXButton);
+    fullShotBtn.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, true));
 
-    JoystickButton btn7 = new JoystickButton(joystick, 7);
-    btn7.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, false));
+    Trigger halfShotBtn = new Trigger(controller::getAButton);
+    halfShotBtn.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, false));
 
   //   JoystickButton btn7 = new JoystickButton(joystick, 7);
   //   btn7.whileHeld(new InstantCommand(()->{

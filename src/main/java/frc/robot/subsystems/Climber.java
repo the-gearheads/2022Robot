@@ -21,16 +21,16 @@ import frc.robot.commands.Climber.DefaultClimber;
 public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
     boolean disable = false;
-    CANSparkMax left = new CANSparkMax(Constants.Climber.LEFT_ID, MotorType.kBrushless);
-    CANSparkMax right = new CANSparkMax(Constants.Climber.RIGHT_ID, MotorType.kBrushless);
-    RelativeEncoder rightEncoder = right.getEncoder();
-    DigitalInput lowerLeftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
-    DigitalInput lowerRightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
+    // CANSparkMax left = new CANSparkMax(Constants.Climber.LEFT_ID, MotorType.kBrushless);
+    // CANSparkMax right = new CANSparkMax(Constants.Climber.RIGHT_ID, MotorType.kBrushless);
+    // RelativeEncoder rightEncoder = right.getEncoder();
+    // DigitalInput lowerLeftLimit = new DigitalInput(Constants.Climber.LEFT_LIMIT);
+    // DigitalInput lowerRightLimit = new DigitalInput(Constants.Climber.RIGHT_LIMIT);
 
-    DigitalInput upperLeftLimit = new DigitalInput(Constants.Climber.UPPER_LEFT_LIMIT);
-    DigitalInput upperRightLimit = new DigitalInput(Constants.Climber.UPPER_RIGHT_LIMIT);
-    LinearFilter leftCurrentFilter = LinearFilter.movingAverage(15);
-    LinearFilter rightCurrentFilter = LinearFilter.movingAverage(15);
+    // DigitalInput upperLeftLimit = new DigitalInput(Constants.Climber.UPPER_LEFT_LIMIT);
+    // DigitalInput upperRightLimit = new DigitalInput(Constants.Climber.UPPER_RIGHT_LIMIT);
+    // LinearFilter leftCurrentFilter = LinearFilter.movingAverage(15);
+    // LinearFilter rightCurrentFilter = LinearFilter.movingAverage(15);
 
     @SuppressWarnings("unused")
     private boolean rightDisable = false;
@@ -41,9 +41,9 @@ public class Climber extends SubsystemBase {
     public final Solenoid armsExtend = new Solenoid(PneumaticsModuleType.REVPH, Constants.Climber.ARMS_EXTEND);
 
   public Climber() {
-      left.setIdleMode(IdleMode.kBrake);
-      right.setIdleMode(IdleMode.kBrake);
-      rightEncoder.setPosition(0);
+      // left.setIdleMode(IdleMode.kBrake);
+      // right.setIdleMode(IdleMode.kBrake);
+      // rightEncoder.setPosition(0);
 
       setDefaultCommand(new DefaultClimber(this));
 
@@ -73,17 +73,16 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-      if((!getLowerLeftLimit() || speed >= 0) && (!getUpperLeftLimit() || speed <= 0)){
-        left.set(speed);
-      }else{
-        left.set(0);
-      }
-      if((!getLowerRightLimit() || speed >= 0) && (!getUpperRightLimit() || speed <= 0)){
-        right.set(-speed);
-      }else{
-        right.set(0);
-      }
-
+      // if((!getLowerLeftLimit() || speed >= 0) && (!getUpperLeftLimit() || speed <= 0)){
+      //   left.set(speed);
+      // }else{
+      //   left.set(0);
+      // }
+      // if((!getLowerRightLimit() || speed >= 0) && (!getUpperRightLimit() || speed <= 0)){
+      //   right.set(-speed);
+      // }else{
+      //   right.set(0);
+      // }
   }
 
   public void stop(){
@@ -91,48 +90,56 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean limitTriggered(){
-      return !(lowerLeftLimit.get() && lowerRightLimit.get());
+      // return !(lowerLeftLimit.get() && lowerRightLimit.get());
+      return false;
   }
 
   public boolean getLowerRightLimit(){
-    return !lowerRightLimit.get();
+    // return !lowerRightLimit.get();
+    return false;
   }
 
   public boolean getLowerLeftLimit(){
-    return !lowerLeftLimit.get();
+    // return !lowerLeftLimit.get();
+    return false;
   }
 
   @Override
   public void periodic() {
-      SmartDashboard.putBoolean("LOWER LEFT Climber limit", !lowerLeftLimit.get());
-      SmartDashboard.putBoolean("LOWER RIGHT Climber limit", !lowerRightLimit.get());
-      SmartDashboard.putBoolean("UPPER LEFT Climber limit", !upperLeftLimit.get());
-      SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
-      SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
-      SmartDashboard.putNumber("Climber Right Current", getRightCurrent());
-      SmartDashboard.putNumber("Climber Left Current", getLeftCurrent());
-      leftCurrentFilter.calculate(left.getOutputCurrent());
-      rightCurrentFilter.calculate(right.getOutputCurrent());
+      // SmartDashboard.putBoolean("LOWER LEFT Climber limit", !lowerLeftLimit.get());
+      // SmartDashboard.putBoolean("LOWER RIGHT Climber limit", !lowerRightLimit.get());
+      // SmartDashboard.putBoolean("UPPER LEFT Climber limit", !upperLeftLimit.get());
+      // SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
+      // SmartDashboard.putBoolean("UPPER RIGHT Climber limit", !upperRightLimit.get());
+      // SmartDashboard.putNumber("Climber Right Current", getRightCurrent());
+      // SmartDashboard.putNumber("Climber Left Current", getLeftCurrent());
+      // leftCurrentFilter.calculate(left.getOutputCurrent());
+      // rightCurrentFilter.calculate(right.getOutputCurrent());
 
   }
 
   public double getRotations(){
-    return rightEncoder.getPosition();
+    // return rightEncoder.getPosition();
+    return 0;
   }
 
 public boolean getUpperRightLimit() {
-    return !upperRightLimit.get();
+    // return !upperRightLimit.get();
+    return false;
 }
 
 public boolean getUpperLeftLimit() {
-    return !upperLeftLimit.get();
+    // return !upperLeftLimit.get();
+    return false;
 }
 
 public double getRightCurrent() {
-    return rightCurrentFilter.calculate(right.getOutputCurrent());
+    // return rightCurrentFilter.calculate(right.getOutputCurrent());
+    return 0;
 }
 
 public double getLeftCurrent() {
-  return leftCurrentFilter.calculate(left.getOutputCurrent());
+  // return leftCurrentFilter.calculate(left.getOutputCurrent());
+  return 0;
 }
 }
