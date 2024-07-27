@@ -333,15 +333,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // JoystickButton controllerbtn3 = new JoystickButton(controller, 3);
-    // controllerbtn3.whenPressed(new InstantCommand(()->{
-    //   driveTrain.zeroEncoders();
-    // }));
-    //JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    //controllerBtn4.toggleWhenPressed(new AlignShooter(driveTrain, leds));
-
-    // JoystickButton controllerBtn3 = new JoystickButton(controller, 3);
-    // controllerBtn3.toggleWhenPressed(new SetGreen(leds));
 
     Trigger speedBtn = new Trigger(controller::getLeftBumper);
     speedBtn.onTrue(new InstantCommand(()->{
@@ -350,91 +341,6 @@ public class RobotContainer {
       Constants.DriveTrain.MAX_VELOCITY = 2;
     }));
 
-    // TURN ON FOR VISION
-    // JoystickButton controllerBtn1 = new JoystickButton(controller, XboxController.Button.kA.value);
-    // controllerBtn6.whenPressed(new AlignShooter(driveTrain, vision, leds)); 
-
-    // JoystickButton controllerBtn1 = new JoystickButton(controller, 1);
-    // controllerBtn1.whenPressed(new InstantCommand(()->{
-    //   driveTrain.setRampRate(true);
-    // }));
-
-    // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    // controllerBtn4.toggleWhenPressed(new StartEndCommand(()->{
-    //   // driveTrain.setFieldPos(new Pose2d(7.668997828753121,1.5791062893481724, new Rotation2d(-1.5707963267948966)));
-    //   // driveTrain.setFieldPos(new Pose2d(7.958396869730094,1.5205556378470781, new Rotation2d(-1.5474407682200622)));
-    //   driveTrain.setFieldPos(new Pose2d(7.694735697315309,1.7842168102618619, new Rotation2d(-1.7818896600176435)));
-
-    //   PreparedAuton intakeAuton = new PreparedAuton(driveTrain, "Right-5-Start");
-    //   TurnToAngle turn = new TurnToAngle(driveTrain, new Rotation2d(-1.917500707738926 - 2 * Math.PI).getDegrees());
-
-    //   AutonDrive3 toHuman = new AutonDrive3(driveTrain, SmartDashboard.getNumber("5 Ball Human X",1.835), SmartDashboard.getNumber("5 Ball Human Y", 0.16), SmartDashboard.getNumber("5 Ball Human Rot", -2.2), false);
-
-    //   AutonDrive3 toShoot = new AutonDrive3(driveTrain, SmartDashboard.getNumber("5 Ball Shoot X", 6.43), SmartDashboard.getNumber("5 Ball Shoot Y", 1.695), SmartDashboard.getNumber("5 Ball Shoot Rot", -1.82), true);
-
-
-    //   InstantCommand zero1 = new InstantCommand(()->{
-    //     driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
-    //   });
-
-    //   // TurnToAngle turn1 = new TurnToAngle(driveTrain, -49);
-    //   // AutonDrive2 drive1 = new AutonDrive2(driveTrain, -220);
-
-    //   // TurnToAngle turn2 = new TurnToAngle(driveTrain, 35);
-    //   // AutonDrive2 drive2 = new AutonDrive2(driveTrain, -15);
-
-    //   InstantCommand zero2 = new InstantCommand(()->{
-    //     driveTrain.setFieldPos(new Pose2d(0,0,new Rotation2d(0)));
-    //   });
-
-    //   // TurnToAngle turn1R = new TurnToAngle(driveTrain, 52);
-    //   // AutonDrive2 drive1R = new AutonDrive2(driveTrain, 210);
-
-    //   // TurnToAngle turn2R = new TurnToAngle(driveTrain, -42);
-    //   // AutonDrive2 drive2R = new AutonDrive2(driveTrain, 15);
-
-
-    //   InstantCommand startIntake = new InstantCommand(()->{
-    //     intake.extend();
-    //     intake.spin();
-    //     elevator.elevate();
-    //     (new AutoElevate(lightSensor, colorSensor, elevator, intake, 0)).schedule();
-    //   });
-    //   InstantCommand stopIntake = new InstantCommand(()->{
-    //     intake.retract();
-    //     intake.stop();
-    //     elevator.stop();
-    //     (new FillerDefaultElevate(elevator)).schedule();
-    //   });
-
-    //   ActuateShooter shoot1 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-    //   ActuateShooter shoot2 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-    //   ActuateShooter shoot3 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-    //   ActuateShooter shoot4 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-    //   ActuateShooter shoot5 = new ActuateShooter(shooter, 0.15, 0.15,true, true);
-
-    //   Wait wait1 = new Wait(0.5);
-
-    //   Wait wait2 = new Wait(0.5);
-    //   Wait wait3 = new Wait(1);
-    //   // SequentialCommandGroup auton = new SequentialCommandGroup(startIntake, shoot1, intakeAuton, turn, shoot2, wait1, shoot3, toHuman, toShoot, shoot4, wait2, shoot5, stopIntake);
-    //   SequentialCommandGroup auton = new SequentialCommandGroup(intakeAuton, turn, toHuman, toShoot);
-    //   auton.addRequirements(fillerSubsystem);
-    //   auton.schedule();
-    // },
-    // ()->{
-    //   InstantCommand endAuton = new InstantCommand(()->{}, fillerSubsystem);
-    //   endAuton.schedule();
-    // }));
-
-    // JoystickButton controllerBtn4 = new JoystickButton(controller, 4);
-    // controllerBtn4.whenPressed(new AlignShooter(driveTrain, vision));
-
-    // JoystickButton btn4 = new JoystickButton(joystick, 4);
-    // btn4.whenPressed(new InstantCommand(()->{
-    //   (new FillerDefaultElevate(elevator)).schedule();
-    //   Constants.Elevator.auto = false;
-    // }, climber));
     
     Trigger btn4 = new Trigger(controller::getRightBumper);
     btn4.toggleOnTrue(new StartEndCommand(()->{
@@ -501,13 +407,6 @@ public class RobotContainer {
     Trigger halfShotBtn = new Trigger(controller::getAButton);
     halfShotBtn.whileTrue(new ActuateShooter(shooter, 0.15, 0.15,true, false));
 
-  //   JoystickButton btn7 = new JoystickButton(joystick, 7);
-  //   btn7.whileHeld(new InstantCommand(()->{
-  //     climber.setSpeed(-0.1);
-  //   }, climber)).whenReleased(new InstantCommand(()->{
-  //     climber.stop();
-  //   }, climber));
-  // }
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
