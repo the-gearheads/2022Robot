@@ -471,7 +471,7 @@ public class RobotContainer {
     
 
     Trigger manualIntake = new Trigger(controller::getYButton);
-    manualIntake.whileTrue(new InstantCommand(()->{
+    manualIntake.whileTrue(new InstantCommand(()->{ 
       intake.extend();
       intake.reverse();
       elevator.reverse();
