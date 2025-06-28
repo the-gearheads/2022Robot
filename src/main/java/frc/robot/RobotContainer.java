@@ -80,7 +80,7 @@ public class RobotContainer {
 
     SmartDashboard.putBoolean("4 Ball?", true);
 
-    CameraServer.startAutomaticCapture().setResolution(640, 480);
+    // CameraServer.startAutomaticCapture().setResolution(640, 480);
   }
 
   /**

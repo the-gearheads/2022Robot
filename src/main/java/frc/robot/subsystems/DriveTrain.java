@@ -71,18 +71,22 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       System.out.println("Error is where we thought it was");
     }
 
-    TalonFXConfiguration mainConfig = new TalonFXConfiguration();
-    mainConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    mainConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    rfConfig = new TalonFXConfiguration().withMotorOutput(mainConfig.MotorOutput);
-    rbConfig = new TalonFXConfiguration().withMotorOutput(mainConfig.MotorOutput);
-    lfConfig = new TalonFXConfiguration().withMotorOutput(mainConfig.MotorOutput);
-    lbConfig = new TalonFXConfiguration().withMotorOutput(mainConfig.MotorOutput);
+    rfConfig = new TalonFXConfiguration();
+    rbConfig = new TalonFXConfiguration();
+    lfConfig = new TalonFXConfiguration();
+    lbConfig = new TalonFXConfiguration();
+
+    rfConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    rbConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    lfConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    lbConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
+    lfConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    lbConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     rfConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     rbConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
@@ -124,10 +128,10 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
   }
 
   public void setRampRate(double rr){
-    lfMotor.getConfigurator().apply(lfConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
-    lbMotor.getConfigurator().apply(lbConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
-    rfMotor.getConfigurator().apply(rfConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
-    rbMotor.getConfigurator().apply(rbConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
+    // lfMotor.getConfigurator().apply(lfConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
+    // lbMotor.getConfigurator().apply(lbConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
+    // rfMotor.getConfigurator().apply(rfConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
+    // rbMotor.getConfigurator().apply(rbConfig.OpenLoopRamps.withVoltageOpenLoopRampPeriod(rr));
   }
 
   public void printValues(){
@@ -175,13 +179,16 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       leftFeedforward = lfeedbackward.calculate(speeds.leftMetersPerSecond);
     }
 
+    System.out.println(leftFeedforward+ ", " + rightFeedforward);
+
     lfMotor.setVoltage(MathUtil.clamp(leftFeedforward,-12,12));
     rfMotor.setVoltage(MathUtil.clamp(rightFeedforward,-12,12));
   }
 
   public void setSpeeds(double leftSpeed, double rightSpeed){
-    lfMotor.setVoltage(leftSpeed);
-    rfMotor.setVoltage(rightSpeed);
+    System.out.println("noop setspeeds called");
+    // lfMotor.setVoltage(leftSpeed);
+    // rfMotor.setVoltage(rightSpeed);
   }
 
   /**
@@ -213,8 +220,9 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     }else{
       leftFeedforward = localBLFF.calculate(speeds.leftMetersPerSecond);
     }
-    lfMotor.set(MathUtil.clamp(leftFeedforward,-12,12)/12);
-    rfMotor.set(MathUtil.clamp(rightFeedforward,-12,12)/12);
+    // lfMotor.set(MathUtil.clamp(leftFeedforward,-12,12)/12);
+    // rfMotor.set(MathUtil.clamp(rightFeedforward,-12,12)/12);
+    System.out.println("noop debugdrive1 called");
   }
 
 
@@ -227,8 +235,9 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
     rightSpeed = MathUtil.clamp(rightSpeed,-12,12)/12;
     leftSpeed = MathUtil.clamp(leftSpeed,-12,12)/12;
 
-    rfMotor.set(rightSpeed);
-    lfMotor.set(leftSpeed);
+    // rfMotor.set(rightSpeed);
+    // lfMotor.set(leftSpeed);
+    System.out.println("nooop debugdrive2 called");
   }
 
   /** Updates the field-relative position. */

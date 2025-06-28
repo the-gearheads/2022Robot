@@ -25,7 +25,7 @@ public class ColorSensor extends SubsystemBase {
    * parameter. The device will be automatically initialized with default 
    * parameters.
    */
-  private final ColorSensorV3 colorSensor = new ColorSensorV3(Constants.ColorSensor.PORT);
+  // private final ColorSensorV3 colorSensor = new ColorSensorV3(Constants.ColorSensor.PORT);
 
   /**
    * A Rev Color Match object is used to register and detect known colors. This can 
@@ -74,12 +74,14 @@ public class ColorSensor extends SubsystemBase {
   }
 
   public double[] getRGB(){
-    Color detectedColor = colorSensor.getColor();
+    // Color detectedColor = colorSensor.getColor();
+    Color detectedColor = Color.kBlack;
     return new double[] {detectedColor.red, detectedColor.green, detectedColor.blue};
   }
 
   public double getProximity(){
-    return colorSensor.getProximity();
+    return 0;
+    // return colorSensor.getProximity();
   }
 
   public String redOrBlue(){
@@ -93,7 +95,8 @@ public class ColorSensor extends SubsystemBase {
      * an object is the more light from the surroundings will bleed into the 
      * measurements and make it difficult to accurately determine its color.
      */
-    Color detectedColor = colorSensor.getColor();
+    // Color detectedColor = colorSensor.getColor();
+    Color detectedColor = Color.kBlack;
 
     /**
      * Run the color match algorithm on our detected color
