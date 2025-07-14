@@ -179,7 +179,7 @@ public class DriveTrain extends SubsystemBase implements DriveTrainInterface{
       leftFeedforward = lfeedbackward.calculate(speeds.leftMetersPerSecond);
     }
 
-    System.out.println(leftFeedforward+ ", " + rightFeedforward);
+    // System.out.println(leftFeedforward+ ", " + rightFeedforward);
 
     lfMotor.setVoltage(MathUtil.clamp(leftFeedforward,-12,12));
     rfMotor.setVoltage(MathUtil.clamp(rightFeedforward,-12,12));
